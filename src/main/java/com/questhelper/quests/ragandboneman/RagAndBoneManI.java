@@ -141,7 +141,7 @@ public class RagAndBoneManI extends BasicQuestHelper
 	private void setupRequirements()
 	{
 		// Required items
-		coins = new ItemRequirement("Coins", ItemID.COINS_995);
+		coins = new ItemRequirement("Coins", ItemCollections.getCoins());
 		pots = new ItemRequirement("Pot", ItemID.POT);
 		potNeeded = new ItemRequirement("Pot", ItemID.POT, 8).alsoCheckBank(questBank).highlighted();
 		logs = new ItemRequirement("Logs", ItemID.LOGS);
@@ -325,7 +325,7 @@ public class RagAndBoneManI extends BasicQuestHelper
 			"Light the logs under the pot-boiler.", tinderbox.highlighted());
 		lightLogs.addIcon(ItemID.TINDERBOX);
 
-		waitForCooking = new DetailedQuestStep(this, "Wait for the bones to be cleaned.");
+		waitForCooking = new DetailedQuestStep(this, "Wait for the bones to be cleaned. You can hop worlds to make this happen instantly.");
 
 		removePot = new ObjectStep(this, NullObjectID.NULL_14004, new WorldPoint(3360, 3505, 0),
 			"Take the pot from the pot-boiler.");

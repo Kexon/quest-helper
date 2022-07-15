@@ -120,7 +120,7 @@ public class KaramjaEasy extends ComplexStateQuestHelper
 		notKilledJogre = new VarbitRequirement(3575, 0);
 
 		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.getPickaxes()).showConditioned(notMinedGold);
-		coins = new ItemRequirement("Coins", ItemID.COINS_995).showConditioned(new Conditions(LogicType.OR,
+		coins = new ItemRequirement("Coins", ItemCollections.getCoins()).showConditioned(new Conditions(LogicType.OR,
 			notGoneToSarim, notGoneToArdougne));
 		smallFishingNet = new ItemRequirement("Small fishing net", ItemID.SMALL_FISHING_NET).showConditioned(notFished);
 		combatGear = new ItemRequirement("Combat gear to defeat a Jogre (level 56)", -1, -1).showConditioned(notKilledJogre);
@@ -128,9 +128,6 @@ public class KaramjaEasy extends ComplexStateQuestHelper
 
 		food = new ItemRequirement("Food", ItemCollections.getGoodEatingFood(), -1);
 		antipoison = new ItemRequirement("Antipoison", ItemCollections.getAntipoisons(), -1);
-
-		// 3578 = 2, completed final task
-		// varplayer 2943 0->1>2>3 when done final task
 
 		inCave = new ZoneRequirement(cave);
 		inTzhaar = new ZoneRequirement(tzhaar);
@@ -207,16 +204,16 @@ public class KaramjaEasy extends ComplexStateQuestHelper
 	public List<ItemReward> getItemRewards()
 	{
 		return Arrays.asList(
-				new ItemReward("Karamja Gloves (1)", ItemID.KARAMJA_GLOVES_1, 1),
-				new ItemReward("1,000 Exp. Lamp (Any skill)", ItemID.ANTIQUE_LAMP, 1));
+			new ItemReward("Karamja Gloves (1)", ItemID.KARAMJA_GLOVES_1, 1),
+			new ItemReward("1,000 Exp. Lamp (Any skill)", ItemID.ANTIQUE_LAMP, 1));
 	}
 
 	@Override
 	public List<UnlockReward> getUnlockRewards()
 	{
 		return Arrays.asList(
-				new UnlockReward("Better prices in shops on Karamja and in Tzhaar City."),
-				new UnlockReward("Half price ships from Ardogune to Brimhaven and Musa Point to Port Sarim."));
+			new UnlockReward("Better prices in shops on Karamja and in Tzhaar City."),
+			new UnlockReward("Half price ships from Ardogune to Brimhaven and Musa Point to Port Sarim."));
 	}
 
 	@Override

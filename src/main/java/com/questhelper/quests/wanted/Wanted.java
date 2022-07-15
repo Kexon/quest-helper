@@ -33,7 +33,7 @@ import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.questhelpers.QuestUtil;
 import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.WidgetTextRequirement;
+import com.questhelper.requirements.widget.WidgetTextRequirement;
 import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.item.ItemRequirement;
@@ -69,8 +69,8 @@ public class Wanted extends BasicQuestHelper
 	private static final String TEXT_ASK_ABOUT_WANTED_QUEST = "Ask about the Wanted! Quest";
 
 	ItemRequirement commorbComponents, tenThousandGp, commorbComponentsOrTenThousandGp, lightSource, spinyHelmet, rope,
-		combatGear, commorb, highlightedCommorb, essence, amuletOfGlory, faladorTeleport, varrockTeleport,
-		canifisTeleport;
+		combatGear, commorb, highlightedCommorb, runeEssence, pureEssence, essence, amuletOfGlory, ringOfDueling, faladorTeleport,
+		varrockTeleport, canifisTeleport;
 
 	Zone whiteKnightsCastleF1, whiteKnightsCastleF2, taverleyDungeonP1, taverleyDungeonP2, blackKnightsBase, nearCanifis,
 		canifis, championsGuild, essenceMine, dorgeshKaan, lumbridgeCellar, musaPoint, draynorMarket, goblinVillage,
@@ -124,7 +124,8 @@ public class Wanted extends BasicQuestHelper
 		ConditionalStep goToSirAmik = new ConditionalStep(this, climbToWhiteKnightsCastleF1);
 		goToSirAmik.addStep(isInWhiteKnightsCastleF1, climbToWhiteKnightsCastleF2);
 
-		goTalkToSirAmik1 = new ConditionalStep(this, goToSirAmik, "Go tell Sir Amik Varze in the White Knights' Castle you wish to quit the White Knights.");
+		goTalkToSirAmik1 = new ConditionalStep(this, goToSirAmik, "Go tell Sir Amik Varze in the White Knights' " +
+			"Castle you wish to join the White Knights, BUT refuse to be a Squire.");
 		goTalkToSirAmik1.addStep(isInWhiteKnightsCastleF2, talkToSirAmik1);
 
 		ConditionalStep goDoAmikP1 = new ConditionalStep(this, goTalkToSirAmik1);
@@ -256,10 +257,12 @@ public class Wanted extends BasicQuestHelper
 		ItemRequirement moltenGlass = new ItemRequirement("Molten glass", ItemID.MOLTEN_GLASS, 1);
 		commorbComponents = new ItemRequirements("A law rune, an enchanted gem and some molten glass", lawRune, enchantedGem, moltenGlass);
 		commorbComponents.setTooltip("Alternatively, you can bring 10k gp.");
-		tenThousandGp = new ItemRequirement("10k gp", ItemID.COINS_995, 10000);
+		tenThousandGp = new ItemRequirement("10k gp", ItemCollections.getCoins(), 10000);
 		commorbComponentsOrTenThousandGp = new ItemRequirements(LogicType.OR, "A law rune, an enchanted gem and some molten glass OR 10k gp", commorbComponents, tenThousandGp);
-
-		essence = new ItemRequirement("Rune or Pure Essence (UNNOTED)", Arrays.asList(ItemID.RUNE_ESSENCE, ItemID.PURE_ESSENCE), 20);
+		
+		runeEssence = new ItemRequirement("20 Rune Essence (UNNOTED)", ItemID.RUNE_ESSENCE, 20);
+		pureEssence = new ItemRequirement("20 Pure Essence (UNNOTED)", ItemID.PURE_ESSENCE, 20);
+		essence =  new ItemRequirements(LogicType.OR, "20 Rune or Pure Essence (UNNOTED)", runeEssence, pureEssence);
 		lightSource = new ItemRequirement("A light source", ItemCollections.getLightSources());
 		rope = new ItemRequirement("A rope", ItemID.ROPE);
 
@@ -269,7 +272,8 @@ public class Wanted extends BasicQuestHelper
 		combatGear = new ItemRequirement("Combat gear", -1, -1);
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
 
-		amuletOfGlory = new ItemRequirement("Amulet of glory", ItemCollections.getAmuletOfGlories());
+		amuletOfGlory = new ItemRequirement("Amulet of Glory", ItemCollections.getAmuletOfGlories());
+		ringOfDueling = new ItemRequirement("Ring of Dueling", ItemCollections.getRingOfDuelings());
 		faladorTeleport = new ItemRequirement("A teleport to Falador", ItemID.FALADOR_TELEPORT, -1);
 		varrockTeleport = new ItemRequirement("A teleport to Varrock", ItemID.VARROCK_TELEPORT, -1);
 		canifisTeleport = new ItemRequirement("A teleport to Canifis", ItemID.FENKENSTRAINS_CASTLE_TELEPORT, -1);
@@ -410,10 +414,10 @@ public class Wanted extends BasicQuestHelper
 		talkToSirTiffy3.addDialogStep(TEXT_ASK_ABOUT_WANTED_QUEST);
 
 		getCommorbWithGp = new NpcStep(this, NpcID.SIR_TIFFY_CASHIEN, locationSirTaffy, "Get a Commorb from Sir Tiffy Cashien in Falador Park.");
-		getCommorbWithGp.addDialogSteps(TEXT_ASK_ABOUT_WANTED_QUEST, "YES");
+		getCommorbWithGp.addDialogSteps(TEXT_ASK_ABOUT_WANTED_QUEST, "Buy One", "YES");
 
 		getCommorbWithComponents = new NpcStep(this, NpcID.SIR_TIFFY_CASHIEN, locationSirTaffy, "Get a Commorb from Sir Tiffy Cashien in Falador Park.");
-		getCommorbWithComponents.addDialogSteps(TEXT_ASK_ABOUT_WANTED_QUEST, "YES");
+		getCommorbWithComponents.addDialogSteps(TEXT_ASK_ABOUT_WANTED_QUEST, "Have One Made", "YES");
 
 		doNotGetCommorbWithGp = new NpcStep(this, NpcID.SIR_TIFFY_CASHIEN, locationSirTaffy, "Get a Commorb from Sir Tiffy Cashien in Falador Park.");
 		doNotGetCommorbWithGp.addDialogSteps(TEXT_ASK_ABOUT_WANTED_QUEST, "NO");
@@ -442,7 +446,7 @@ public class Wanted extends BasicQuestHelper
 			"Talk to the Mage of Zamorak in south east Varrock.", commorb);
 		talkToMageOfZamorak.addDialogStep("Solus Dellagar");
 		giveEssenceToMageOfZamorak = new NpcStep(this, NpcID.MAGE_OF_ZAMORAK_2582, new WorldPoint(3258, 3388, 0),
-			"Bring the rune or pure essence to the Mage of Zamorak in Varrock.", commorb, essence);
+			"Bring the 20 rune or pure essence to the Mage of Zamorak in Varrock.", commorb, essence);
 		giveEssenceToMageOfZamorak.addDialogStep("Solus Dellagar");
 
 		// Hunt for Solus
@@ -517,7 +521,7 @@ public class Wanted extends BasicQuestHelper
 	@Override
 	public List<ItemRequirement> getItemRecommended()
 	{
-		return QuestUtil.toArrayList(amuletOfGlory, faladorTeleport, varrockTeleport, canifisTeleport, spinyHelmet);
+		return QuestUtil.toArrayList(amuletOfGlory, ringOfDueling, faladorTeleport, varrockTeleport, canifisTeleport, spinyHelmet);
 	}
 
 	@Override

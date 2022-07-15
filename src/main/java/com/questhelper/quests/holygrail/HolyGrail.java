@@ -39,7 +39,7 @@ import com.questhelper.steps.ItemStep;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.conditional.NpcCondition;
-import com.questhelper.requirements.WidgetTextRequirement;
+import com.questhelper.requirements.widget.WidgetTextRequirement;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -160,7 +160,7 @@ public class HolyGrail extends BasicQuestHelper
 		threeCamelotTele = new ItemRequirement("Camelot Teleports", ItemID.CAMELOT_TELEPORT, 3);
 		ardyTele = new ItemRequirement("Ardougne Teleport", ItemID.ARDOUGNE_TELEPORT);
 		faladorTele = new ItemRequirement("Falador Teleport", ItemID.FALADOR_TELEPORT);
-		sixtyCoins = new ItemRequirement("Coins", ItemID.COINS_995, 60);
+		sixtyCoins = new ItemRequirement("Coins", ItemCollections.getCoins(), 60);
 		antipoison = new ItemRequirement("Antipoison", ItemID.ANTIPOISON4);
 		food = new ItemRequirement("Food", ItemCollections.getGoodEatingFood(), -1);
 		combatGear = new ItemRequirement("A weapon and armour", -1, -1);
@@ -253,7 +253,7 @@ public class HolyGrail extends BasicQuestHelper
 		talkToMerlin = new NpcStep(this, NpcID.MERLIN_4059, new WorldPoint(2763, 3513, 1), "Talk to Merlin");
 		talkToMerlin.addDialogStep("Where can I find Sir Galahad?");
 
-		goToEntrana = new NpcStep(this, NpcID.MONK_OF_ENTRANA_1167, new WorldPoint(3048, 3235, 0), "Talk to a monk of Entrana. Bank all combat gear.");
+		goToEntrana = new NpcStep(this, NpcID.MONK_OF_ENTRANA_1167, new WorldPoint(3048, 3235, 0), "Talk to a monk of Entrana. Bank all combat gear.", true);
 		talkToHighPriest = new NpcStep(this, NpcID.HIGH_PRIEST, new WorldPoint(2851, 3348, 0), "Talk to the High Priest.");
 		talkToHighPriest.addDialogSteps("Ask about the Holy Grail Quest", "Ok, I will go searching.");
 
@@ -321,7 +321,7 @@ public class HolyGrail extends BasicQuestHelper
 	{
 		ArrayList<ItemRequirement> reqs = new ArrayList<>();
 		reqs.add(threeCamelotTele);
-		reqs.add(ardyTele);
+		reqs.add(ardyTele.quantity(2));
 		reqs.add(faladorTele);
 		reqs.add(sixtyCoins);
 		reqs.add(antipoison);

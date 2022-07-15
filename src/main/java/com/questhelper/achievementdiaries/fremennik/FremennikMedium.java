@@ -81,7 +81,7 @@ public class FremennikMedium extends ComplexStateQuestHelper
 		mineGold, lighthouse, moveToWaterbirth, moveToDagCave, moveToAxeSpot, throwAxe, moveToDagCave1,
 		moveToDagCave2, moveToDagCave3, moveToDagCave4, moveToDagCave5, moveToDagCave6, moveToDagCave7,
 		moveToDagCave8, moveToDagCave9, moveToDagCave10, moveToDagCave11, moveToDagCave12, moveToDagCave13,
-		moveToDagCave14, moveToDagCave15, claimReward;
+		moveToDagCave14, moveToDagCave15, claimReward, activateSpecial;
 
 	ObjectStep dropPetRock;
 
@@ -141,7 +141,8 @@ public class FremennikMedium extends ComplexStateQuestHelper
 		doMedium.addStep(new Conditions(notLighthouse, inDagCave2), moveToDagCave3);
 		doMedium.addStep(new Conditions(notLighthouse, inDagCave1), moveToDagCave2);
 		doMedium.addStep(new Conditions(notLighthouse, inDagCave_4), moveToDagCave1);
-		doMedium.addStep(new Conditions(notLighthouse, inDagCave_3), throwAxe);
+		doMedium.addStep(new Conditions(notLighthouse, inDagCave_3, specialAttackEnabled), throwAxe);
+		doMedium.addStep(new Conditions(notLighthouse, inDagCave_3), activateSpecial);
 		doMedium.addStep(new Conditions(notLighthouse, inDagCave_2), moveToAxeSpot);
 		doMedium.addStep(new Conditions(notLighthouse, inDagCave), dropPetRock);
 		doMedium.addStep(new Conditions(notLighthouse, inWaterbirthIsland), moveToDagCave);
@@ -166,8 +167,8 @@ public class FremennikMedium extends ComplexStateQuestHelper
 
 		specialAttackEnabled = new SpecialAttackRequirement(SpecialAttack.ON);
 
-		coins = new ItemRequirement("Coins", ItemID.COINS_995).showConditioned(notPetRockPOH);
-		coinsForFerry = new ItemRequirement("Coins", ItemID.COINS_995);
+		coins = new ItemRequirement("Coins", ItemCollections.getCoins()).showConditioned(notPetRockPOH);
+		coinsForFerry = new ItemRequirement("Coins", ItemCollections.getCoins());
 		rope = new ItemRequirement("Rope", ItemID.ROPE).showConditioned(notSnowyHunter);
 		spade = new ItemRequirement("Spade", ItemID.SPADE).showConditioned(notSlayBrineRat);
 		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.getPickaxes()).showConditioned(new Conditions(LogicType.OR, notMineGold, notMineCoal));
@@ -175,6 +176,7 @@ public class FremennikMedium extends ComplexStateQuestHelper
 		butterFlyJar = new ItemRequirement("Butterfly Jar", ItemID.BUTTERFLY_JAR).showConditioned(notSnowyKnight);
 		butterFlyNet = new ItemRequirement("Butterfly Net", ItemID.BUTTERFLY_NET).showConditioned(notSnowyKnight);
 		petRock = new ItemRequirement("Pet rock", ItemID.PET_ROCK).showConditioned(notPetRockPOH);
+		petRock.setTooltip("Obtained from Askeladden in Rellekka");
 		goldHelm = new ItemRequirement("Gold helmet", ItemID.GOLD_HELMET).showConditioned(notMineGold);
 		oakPlanks = new ItemRequirement("Oak planks", ItemID.OAK_PLANK).showConditioned(notPetRockPOH);
 		saw = new ItemRequirement("Saw", ItemID.SAW).showConditioned(notPetRockPOH);
@@ -203,7 +205,7 @@ public class FremennikMedium extends ComplexStateQuestHelper
 			"Partial completion of Olaf's Quest to access the Brine Rat Cavern");
 		fremennikTrials = new QuestRequirement(QuestHelperQuest.THE_FREMENNIK_TRIALS, QuestState.FINISHED);
 		betweenARock = new QuestRequirement(QuestHelperQuest.BETWEEN_A_ROCK, QuestState.FINISHED,
-			"Mostly completed Between a Rock for access to the Azinian Mine");
+			"Mostly completed Between a Rock for access to the Arzinian Mine");
 		dwarfCannon = new QuestRequirement(QuestHelperQuest.DWARF_CANNON, QuestState.FINISHED);
 		fishingContest = new QuestRequirement(QuestHelperQuest.FISHING_CONTEST, QuestState.FINISHED);
 		horrorFromTheDeep = new QuestRequirement(QuestHelperQuest.HORROR_FROM_THE_DEEP, QuestState.FINISHED);
@@ -323,6 +325,8 @@ public class FremennikMedium extends ComplexStateQuestHelper
 		dropPetRock.addTileMarker(new WorldPoint(2490, 10164, 0), SpriteID.SKILL_AGILITY);
 		moveToAxeSpot = new ObjectStep(this, 8945, new WorldPoint(2545, 10146, 0),
 			"Continue onwards until you reach the barrier.", thrownaxe);
+		activateSpecial = new DetailedQuestStep(this, "Activate special attack with the rune thrownaxes equpped.",
+			thrownaxe.equipped(), specialAttackEnabled);
 		throwAxe = new NpcStep(this, 2253, new WorldPoint(2543, 10143, 0),
 			"Attack the Door-Support with a rune thrownaxe special attack. If done correctly the axe should ricochet" +
 				" and lower all 3 barriers.", thrownaxe.equipped(), specialAttackEnabled);
@@ -360,7 +364,9 @@ public class FremennikMedium extends ComplexStateQuestHelper
 		lighthouse = new ObjectStep(this, ObjectID.LADDER_10194, new WorldPoint(1975, 4408, 3),
 			"Keep current protection and continue through the cave.", protectMelee);
 		petRockPOH = new DetailedQuestStep(this,
-			"Use a pet rock on your pet house in your menagerie in your player owned house and then pick it up off the GROUND.");
+			"Use a pet rock on your pet house in your menagerie in your player owned house and then pick it up off the GROUND." +
+				" You may need to re-enter your house after placing your pet rock in the pet house.",
+			petRock, oakPlanks.quantity(4), saw, hammer);
 
 		claimReward = new NpcStep(this, NpcID.THORODIN_5526, new WorldPoint(2658, 3627, 0),
 			"Talk to Thorodin south of Rellekka to claim your reward!");
@@ -385,13 +391,10 @@ public class FremennikMedium extends ComplexStateQuestHelper
 	public List<Requirement> getGeneralRequirements()
 	{
 		ArrayList<Requirement> req = new ArrayList<>();
-		req.add(new SkillRequirement(Skill.AGILITY, 35, true));
 		req.add(new SkillRequirement(Skill.CONSTRUCTION, 37, true));
-		req.add(new SkillRequirement(Skill.DEFENCE, 30));
 		req.add(new SkillRequirement(Skill.HUNTER, 35, true));
 		req.add(new SkillRequirement(Skill.MINING, 40));
 		req.add(new SkillRequirement(Skill.SLAYER, 47, true));
-		req.add(new SkillRequirement(Skill.SMITHING, 50, true));
 		req.add(new SkillRequirement(Skill.THIEVING, 42, true));
 		req.add(new SkillRequirement(Skill.PRAYER, 43, false,
 			"43 Prayer for protection prayers"));

@@ -39,7 +39,7 @@ import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.player.InInstanceRequirement;
 import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.ZoneRequirement;
-import com.questhelper.requirements.WidgetTextRequirement;
+import com.questhelper.requirements.widget.WidgetTextRequirement;
 import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.rewards.UnlockReward;
@@ -76,7 +76,7 @@ public class SinsOfTheFather extends BasicQuestHelper
 	ItemRequirement haemBook, unscentedTop, unscentedLegs, unscentedShoes, vyreTop, vyreLegs, vyreShoes, ivandisFlailEquipped, blisterwoodFlail, scentedTop, scentedLegs,
 			scentedShoes, blisterwood8, axe, knife, vine3, longVine, log1, log2, log3, axeEquipped, oldNote, ruby, sickle, enchantedSickle, enchantRubyRunesOrTablet, fireRune5,
 			fireStaff, cosmicRune, enchantRunes, enchantTablet, rubySickle, blisterwoodLog, blisterwoodSickle, ivandisFlailHighlighted, chisel, rubyHighlighted, ivandisFlail,
-			combatGear, vyrewatchOutfitOrCoins;
+			combatGear, rangedWeaponForBloodveld, vyrewatchOutfitOrCoins;
 
 	//Items Recommended
 	ItemRequirement antipoison, pickaxe, drakanMedallion, moryLegs3;
@@ -407,7 +407,8 @@ public class SinsOfTheFather extends BasicQuestHelper
 		blisterwood8 = new ItemRequirement("Blisterwood logs", ItemID.BLISTERWOOD_LOGS, 8);
 
 		blisterwoodFlail = new ItemRequirement("Blisterwood flail", ItemID.BLISTERWOOD_FLAIL);
-		blisterwoodFlail.setTooltip("You can get another Blisterwood Flail from Vertida in the Myreque Hideout in Old Man Ral's basement");
+		blisterwoodFlail.setTooltip("You can get another Blisterwood Flail from Vertida in the Myreque Hideout in Old" +
+			" Man Ral's basement or Veliaf Hurtz at the Icyene Graveyard");
 
 		axe = new ItemRequirement("Any axe", ItemCollections.getAxes());
 		axeEquipped = new ItemRequirement("Any axe", ItemCollections.getAxes(), 1, true);
@@ -440,7 +441,7 @@ public class SinsOfTheFather extends BasicQuestHelper
 		cosmicRune = new ItemRequirement("Cosmic rune", ItemID.COSMIC_RUNE);
 
 		enchantRunes = new ItemRequirements("Ruby enchant runes", new ItemRequirements(LogicType.OR, "3 air runes", fireRune5, fireStaff), cosmicRune);
-		enchantTablet = new ItemRequirement("Ruby enchant tablet", ItemID.ENCHANT_EMERALD_OR_JADE);
+		enchantTablet = new ItemRequirement("Ruby enchant tablet", ItemID.ENCHANT_RUBY_OR_TOPAZ);
 		enchantRubyRunesOrTablet = new ItemRequirements(LogicType.OR, "Runes or tablet for Enchant Ruby", enchantRunes, enchantTablet);
 
 		rubySickle = new ItemRequirement("Ruby sickle", ItemID.RUBY_SICKLE_B);
@@ -454,15 +455,18 @@ public class SinsOfTheFather extends BasicQuestHelper
 
 		combatGear = new ItemRequirement("Combat gear + food", -1, -1);
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
+		rangedWeaponForBloodveld = new ItemRequirement("Anything to range the bloodveld during bossfight", -1, -1);
+		rangedWeaponForBloodveld.setDisplayItemId(BankSlotIcons.getRangedCombatGear());
 		antipoison = new ItemRequirement("Antipoison", ItemCollections.getAntipoisons());
 		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.getPickaxes());
+		pickaxe.setTooltip("You can get one from one of the miners in the mine");
 		ItemRequirements vyrewatchOutfit = new ItemRequirements("Vyrewatch outfit",
 			new ItemRequirement("Vyrewatch top", ItemID.VYREWATCH_TOP),
 			new ItemRequirement("Vyrewatch legs", ItemID.VYREWATCH_LEGS),
 			new ItemRequirement("Vyrewatch shoes", ItemID.VYREWATCH_SHOES));
 
 		vyrewatchOutfitOrCoins = new ItemRequirements(LogicType.OR, "Vyrewatch outfit or 1950 coins", vyrewatchOutfit,
-			new ItemRequirement("Coins", ItemID.COINS_995, 1950));
+			new ItemRequirement("Coins", ItemCollections.getCoins(), 1950));
 
 		drakanMedallion = new ItemRequirement("Drakan's medallion", ItemID.DRAKANS_MEDALLION);
 		moryLegs3 = new ItemRequirement("Morytania legs 3/4", ItemID.MORYTANIA_LEGS_3);
@@ -893,7 +897,7 @@ public class SinsOfTheFather extends BasicQuestHelper
 			Arrays.asList(bringVertidaLogs, talkToVertidaForFlail, getSickle, addRubyToSickle, enchantRubySickle, useLogOnSickle, useFlailOnSickle), blisterwood8, chisel, knife, ruby, ivandisFlail, enchantRubyRunesOrTablet));
 		allSteps.add(new PanelDetails("Taking on Drakan",
 			Arrays.asList(talkToVanesculaWithFlail, talkToSafalaanWithFlail, talkToVanesculaBeforeFight,
-				fightVanstromSidebar, finishQuest), combatGear, blisterwoodFlail));
+				fightVanstromSidebar, finishQuest), combatGear, rangedWeaponForBloodveld, blisterwoodFlail));
 
 		return allSteps;
 	}

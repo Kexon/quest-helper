@@ -41,7 +41,7 @@ import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.player.WeightRequirement;
 import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
-import com.questhelper.requirements.WidgetTextRequirement;
+import com.questhelper.requirements.widget.WidgetTextRequirement;
 import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.util.Operation;
 import com.questhelper.requirements.util.Spellbook;
@@ -106,9 +106,9 @@ public class TheGiantDwarf extends BasicQuestHelper
 	public void setupItemRequirements()
 	{
 		// Required
-		coins2500 = new ItemRequirement("coins", ItemID.COINS_995, 2500);
+		coins2500 = new ItemRequirement("coins", ItemCollections.getCoins(), 2500);
 		coins2500.setTooltip("Bring more to be safe.");
-		coins200 = new ItemRequirement("Coins", ItemID.COINS_995, 200);
+		coins200 = new ItemRequirement("Coins", ItemCollections.getCoins(), 200);
 		logs = new ItemRequirement("Logs", ItemID.LOGS);
 		logs.setTooltip("Most logs will work, however, arctic pine logs do not work.");
 		logs.addAlternates(ItemID.OAK_LOGS, ItemID.WILLOW_LOGS, ItemID.TEAK_LOGS, ItemID.MAPLE_LOGS,
@@ -230,7 +230,7 @@ public class TheGiantDwarf extends BasicQuestHelper
 		talkedToVermundiWithBook = new VarbitRequirement(584, 1);
 
 		askedToStartMachine = new Conditions(true, LogicType.OR,
-			new WidgetTextRequirement(217, 4,
+			new WidgetTextRequirement(WidgetInfo.DIALOG_PLAYER_TEXT,
 				"Don't worry, I'll get them for you. Let's see... some<br>coal and some logs. Shouldn't be too hard."),
 			new WidgetTextRequirement(WidgetInfo.DIALOG_NPC_TEXT, "Well, like I said, I can't do anything really " +
 				"without my<br>spinning machine."),
@@ -254,7 +254,7 @@ public class TheGiantDwarf extends BasicQuestHelper
 
 		talkedToSaro = new Conditions(true, LogicType.OR,
 			// TODO: You need to click 'click to continue' here for the step to actually progress
-			new WidgetTextRequirement(217, 4, "Thanks!"),
+			new WidgetTextRequirement(WidgetInfo.DIALOG_PLAYER_TEXT, "Thanks!"),
 			new WidgetTextRequirement(119, 3, true, "<col=000080>I should seek out the <col=800000>eccentric old dwarf<col=000080> in <col=800000>Keldagrim-"),
 			new WidgetTextRequirement(WidgetInfo.DIALOG_NPC_TEXT, "I thought I already told you where to get them?")
 		);
@@ -263,7 +263,7 @@ public class TheGiantDwarf extends BasicQuestHelper
 			// TODO: You need to click 'click to continue' here for the step to actually progress
 			new WidgetTextRequirement(WidgetInfo.DIALOG_NPC_TEXT, "Get out you pesky human! The boots are mine and"),
 			new WidgetTextRequirement(119, 3, true, "<col=000080>I must find some way to get the <col=800000>pair of boots<col=000080> from the"),
-			new WidgetTextRequirement(217, 4, "Are you sure you don't want to give me those boots?"));
+			new WidgetTextRequirement(WidgetInfo.DIALOG_PLAYER_TEXT, "Are you sure you don't want to give me those boots?"));
 
 		hasLeftBoot = new Conditions(true, LogicType.OR,
 			leftBoot,
@@ -286,7 +286,7 @@ public class TheGiantDwarf extends BasicQuestHelper
 
 		talkedToLibrarianAboutReldo = new Conditions(true, LogicType.OR,
 			new WidgetTextRequirement(WidgetInfo.DIALOG_NPC_TEXT, "I suppose you could try Reldo"),
-			new WidgetTextRequirement(217, 4, "Do you think he can help me?"),
+			new WidgetTextRequirement(WidgetInfo.DIALOG_PLAYER_TEXT, "Do you think he can help me?"),
 			new WidgetTextRequirement(WidgetInfo.DIALOG_NPC_TEXT, "He lives quite a good deal closer"));
 		previouslyGivenPieToThurgo = new VarplayerRequirement(QuestVarPlayer.QUEST_THE_KNIGHTS_SWORD.getId(), 3, Operation.GREATER_EQUAL);
 		talkedToReldo = new Conditions(true, LogicType.OR,

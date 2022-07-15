@@ -205,7 +205,7 @@ public class PriestInPeril extends BasicQuestHelper
 		bucket = new ItemRequirement("Bucket", ItemID.BUCKET);
 		bucketHighlighted = new ItemRequirement("Bucket", ItemID.BUCKET);
 		bucketHighlighted.setHighlightInInventory(true);
-		runePouches = new ItemRequirements(LogicType.AND, "Rune pouches for carrying essence",
+		runePouches = new ItemRequirements(LogicType.AND, "Essence pouches for carrying essence",
 			new ItemRequirement("Small pouch", ItemID.SMALL_POUCH),
 			new ItemRequirement("Medium pouch", ItemID.MEDIUM_POUCH),
 			new ItemRequirement("Large pouch", ItemID.LARGE_POUCH),
@@ -284,7 +284,7 @@ public class PriestInPeril extends BasicQuestHelper
 		fillBucket = new ObjectStep(this, ObjectID.WELL_3485, new WorldPoint(3423, 9890, 0), "Use the bucket on the well in the central room.", bucketHighlighted);
 		fillBucket.addIcon(ItemID.BUCKET);
 
-		useKeyForKey = new DetailedQuestStep(this, "Got to the central room, and study the monuments to find which has a key on it. Use the Golden Key on it.", goldenKeyHighlighted);
+		useKeyForKey = new DetailedQuestStep(this, "Go to the central room, and study the monuments to find which has a key on it. Use the Golden Key on it.", goldenKeyHighlighted);
 		useKeyForKey.addIcon(ItemID.GOLDEN_KEY);
 
 		goDownToFloorOneTemple = new ObjectStep(this, ObjectID.LADDER_16679, new WorldPoint(3410, 3485, 2), "Go down to the underground of the temple.", bucket);

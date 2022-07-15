@@ -156,9 +156,9 @@ public class GardenOfTranquillity extends BasicQuestHelper
 
 		helpingBernald = new ConditionalStep(this, talkToBernald);
 		helpingBernald.addStep(curedVine, talkToBernaldForSeeds);
-		helpingBernald.addStep(hasEnhancedCure, useMagicalCureOnVine);
-		helpingBernald.addStep(hasDust, useEssenceOnCure);
-		helpingBernald.addStep(hasShards, usePestleOnShards);
+		helpingBernald.addStep(new Conditions(talkedToAlain, hasEnhancedCure), useMagicalCureOnVine);
+		helpingBernald.addStep(new Conditions(talkedToAlain, hasDust), useEssenceOnCure);
+		helpingBernald.addStep(new Conditions(talkedToAlain, hasShards), usePestleOnShards);
 		helpingBernald.addStep(talkedToAlain, useHammerOnEssence);
 		helpingBernald.addStep(usedCureOnVines, talkToAlain);
 		helpingBernald.addStep(talkedToBernald, useCureOnVine);
@@ -438,7 +438,7 @@ public class GardenOfTranquillity extends BasicQuestHelper
 		talkToLyraAgain.addSubSteps(waitForLyraToGrow);
 
 		talkToKragen = new NpcStep(this, NpcID.KRAGEN, new WorldPoint(2668, 3376, 0),
-			"Talk to Kragen east of Ardougne.", ringOfCharosA.equipped());
+			"Talk to Kragen northeast of Ardougne.", ringOfCharosA.equipped());
 		talkToKragen.addDialogSteps("Do you have any snowdrop seeds to spare?", "[Charm] You seem to be a little " +
 			"irritable, my friend.", "[Charm] I don't like to see a fellow human being so upset.", "[Charm] So what " +
 			"ails you, my friend?", "[Charm] Well, is there anything I can do for you?", "[Charm] So what can I do " +
@@ -450,7 +450,7 @@ public class GardenOfTranquillity extends BasicQuestHelper
 		waitForKragenToGrow = new ObjectStep(this, NullObjectID.NULL_8554, new WorldPoint(2669, 3378, 0),
 			"Wait for your cabbages to finish growing. If they died you'll need to plant more in Kragen's patches.", spade);
 		talkToKragenAgain = new NpcStep(this, NpcID.KRAGEN, new WorldPoint(2668, 3376, 0),
-			"Talk to Kragen east of Ardougne for his seeds.");
+			"Talk to Kragen northeast of Ardougne for his seeds.");
 		talkToKragenAgain.addDialogSteps("Okay, I've grown those cabbages like you asked.");
 		talkToKragenAgain.addSubSteps(waitForKragenToGrow);
 
@@ -507,10 +507,10 @@ public class GardenOfTranquillity extends BasicQuestHelper
 			"Talk to Bernald for his seeds.", ringOfCharosA.equipped());
 
 		fillPotWithCompost = new ObjectStep(this, NullObjectID.NULL_9197, new WorldPoint(3229, 3486, 0), "Fill the " +
-			"plantpots in Ellmaria's garden with compost.", compost.highlighted());
+			"plantpots in Ellamaria's garden with compost.", compost.highlighted());
 		fillPotWithCompost.addIcon(ItemID.COMPOST);
 		fillPotWithCompost2 = new ObjectStep(this, NullObjectID.NULL_9198, new WorldPoint(3231, 3486, 0), "Fill the " +
-		"plantpots in Ellmaria's garden with compost.", compost.highlighted());
+		"plantpots in Ellamaria's garden with compost.", compost.highlighted());
 		fillPotWithCompost2.addIcon(ItemID.COMPOST);
 		plantDelphinium = new ObjectStep(this, NullObjectID.NULL_9165, new WorldPoint(3226, 3477, 0), "Plant the " +
 			"delphinum seeds.", delphiniumSeed4.highlighted(), rake, dibber);
@@ -583,7 +583,7 @@ public class GardenOfTranquillity extends BasicQuestHelper
 		talkToEllmariaAfterGrown = new NpcStep(this, NpcID.QUEEN_ELLAMARIA, new WorldPoint(3230, 3478, 0),
 		"Talk to Ellamaria once everything's finished growing.");
 		talkToRoald = new NpcStep(this, NpcID.KING_ROALD_5215, new WorldPoint(3221, 3473, 0),
-			"Talk to King Roald in Varrock Castle, watch the cutscene, then finish the dialog with Ellmaria to finish" +
+			"Talk to King Roald in Varrock Castle, watch the cutscene, then finish the dialog with Ellamaria to finish" +
 				" the quest!",	ringOfCharosA.equipped());
 		talkToRoald.addDialogSteps("Ask King Roald to follow me.", "[Charm] Of course, your majesty - please forgive " +
 			"me.", "[Charm] The Queen asked me to bring you.");

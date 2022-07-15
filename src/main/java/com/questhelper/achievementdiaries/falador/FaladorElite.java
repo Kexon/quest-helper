@@ -46,7 +46,6 @@ import com.questhelper.steps.*;
 import com.questhelper.steps.emote.QuestEmote;
 import net.runelite.api.*;
 import net.runelite.api.coords.WorldPoint;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -64,6 +63,8 @@ public class FaladorElite extends ComplexStateQuestHelper
 
 	//Items Recommended
 	ItemRequirement faladorTeleport;
+
+	Requirement wanted;
 
 	Requirement notCraftedAirRunes, notPurchasedWhite2hSword, notGotMagicRoots, notPerformedSkillCapeEmote, notJumpedOverStrangeFloor,
 		notMadeSaraBrew, magicTreeNearbyNotCheckedVar, stumpNearbyVar, magicTreeNearbyCheckedVar;
@@ -97,6 +98,7 @@ public class FaladorElite extends ComplexStateQuestHelper
 		doElite.addStep(new Conditions(notJumpedOverStrangeFloor, inTavDungeon), crossStrangeFloor);
 		doElite.addStep(notJumpedOverStrangeFloor, goToTavDungeon);
 		doElite.addStep(new Conditions(notMadeSaraBrew, inEastBank), craftSaraBrew);
+		doElite.addStep(new Conditions(notMadeSaraBrew), goToEastBank);
 		doElite.addStep(new Conditions(notPurchasedWhite2hSword, inFaladorCastle2), purchaseWhite2hSword);
 		doElite.addStep(new Conditions(notPurchasedWhite2hSword, inFaladorCastle1), goUpFaladorCastle2);
 		doElite.addStep(notPurchasedWhite2hSword, goUpFaladorCastle1);
@@ -115,7 +117,7 @@ public class FaladorElite extends ComplexStateQuestHelper
 
 		pureEss28 = new ItemRequirement("Pure Essence", ItemID.PURE_ESSENCE, 28).showConditioned(notCraftedAirRunes);
 		airTiara = new ItemRequirement("Air Tiara", ItemID.AIR_TIARA, 1, true).showConditioned(notCraftedAirRunes);
-		coins1920 = new ItemRequirement("Coins", ItemID.COINS_995, 1920).showConditioned(notPurchasedWhite2hSword);
+		coins1920 = new ItemRequirement("Coins", ItemCollections.getCoins(), 1920).showConditioned(notPurchasedWhite2hSword);
 		spade = new ItemRequirement("Spade", ItemID.SPADE).showConditioned(notGotMagicRoots);
 		axe = new ItemRequirement("Axe", ItemCollections.getAxes()).showConditioned(notGotMagicRoots);
 		rake = new ItemRequirement("Rake", ItemID.RAKE).showConditioned(notGotMagicRoots);
@@ -136,6 +138,8 @@ public class FaladorElite extends ComplexStateQuestHelper
 		inFaladorCastle3 = new ZoneRequirement(faladorCastle3);
 		inTavDungeon = new ZoneRequirement(tavDungeon);
 		inEastBank = new ZoneRequirement(eastBank);
+
+		wanted = new QuestRequirement(QuestHelperQuest.WANTED, QuestState.FINISHED);
 	}
 
 	public void loadZones()
@@ -151,7 +155,7 @@ public class FaladorElite extends ComplexStateQuestHelper
 	public void setupSteps()
 	{
 		//Step 1 - Air Runes
-		enterAirAltar = new ObjectStep(this, ObjectID.MYSTERIOUS_RUINS_29090, new WorldPoint(2984, 3291, 0),
+		enterAirAltar = new ObjectStep(this, ObjectID.MYSTERIOUS_RUINS_29090, new WorldPoint(2985, 3292, 0),
 			"Go to the Air Altar south of Falador", pureEss28, airTiara);
 		craftAirRunes = new ObjectStep(this, ObjectID.ALTAR_34760, new WorldPoint(2843, 4833, 0),
 			"Use your essence on the Altar to craft the Air Runes.", pureEss28);
@@ -231,12 +235,12 @@ public class FaladorElite extends ComplexStateQuestHelper
 		ArrayList<Requirement> req = new ArrayList<>();
 
 		req.add(new SkillRequirement(Skill.AGILITY, 80, true));
-		req.add(new SkillRequirement(Skill.RUNECRAFT, 88, true));
 		req.add(new SkillRequirement(Skill.FARMING, 91, true));
-		req.add(new SkillRequirement(Skill.WOODCUTTING, 75, true));
 		req.add(new SkillRequirement(Skill.HERBLORE, 81, true));
+		req.add(new SkillRequirement(Skill.RUNECRAFT, 88, true));
+		req.add(new SkillRequirement(Skill.WOODCUTTING, 75, true));
 
-		req.add(new QuestRequirement(QuestHelperQuest.WANTED, QuestState.FINISHED));
+		req.add(wanted);
 
 		return req;
 	}
@@ -290,8 +294,7 @@ public class FaladorElite extends ComplexStateQuestHelper
 		allSteps.add(saraBrewSteps);
 
 		PanelDetails swordSteps = new PanelDetails("*Tips Fedora*", Arrays.asList(goUpFaladorCastle1,
-			goUpFaladorCastle2,	purchaseWhite2hSword), new QuestRequirement(QuestHelperQuest.WANTED,
-			QuestState.FINISHED), coins1920);
+			goUpFaladorCastle2,	purchaseWhite2hSword), wanted, coins1920);
 		swordSteps.setDisplayCondition(notPurchasedWhite2hSword);
 		allSteps.add(swordSteps);
 

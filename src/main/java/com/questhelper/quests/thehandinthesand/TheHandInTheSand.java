@@ -24,6 +24,7 @@
  */
 package com.questhelper.quests.thehandinthesand;
 
+import com.questhelper.ItemCollections;
 import com.questhelper.QuestHelperQuest;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.player.SkillRequirement;
@@ -176,7 +177,7 @@ public class TheHandInTheSand extends BasicQuestHelper
 
 		beerOr2Coins = new ItemRequirement("Beer or 2 gp", ItemID.BEER);
 		earthRunes5 = new ItemRequirement("Earth runes", ItemID.EARTH_RUNE, 5);
-		coins = new ItemRequirement("Coins or more for boat travel", ItemID.COINS_995, 150);
+		coins = new ItemRequirement("Coins or more for boat travel", ItemCollections.getCoins(), 150);
 
 		bucketOfSand = new ItemRequirement("Bucket of sand", ItemID.BUCKET_OF_SAND);
 
@@ -212,6 +213,7 @@ public class TheHandInTheSand extends BasicQuestHelper
 		talkToBert.addDialogStep("Sure, I'll give you a hand.");
 		giveCaptainABeer = new NpcStep(this, NpcID.GUARD_CAPTAIN, new WorldPoint(2552, 3080, 0), "Give the Guard Captain in the pub south of Bert a beer. You can buy one for 2gp from the pub.", beer);
 		ringBell = new ObjectStep(this, ObjectID.BELL_6847, new WorldPoint(2598, 3085, 0), "Ring the bell outside the Wizards' Guild in Yanille. Talk to Zavistic Rarve when he appears.", beerHand);
+		ringBell.addDialogStep("I have a rather sandy problem that I'd like to palm off on you.");
 		talkToBertAboutRota = new NpcStep(this, NpcID.BERT, new WorldPoint(2551, 3099, 0), "Return to Bert in west Yanille.");
 
 		searchSandysDesk = new ObjectStep(this, ObjectID.SANDYS_DESK, new WorldPoint(2789, 3174, 0), "Travel to Brimhaven, then enter Sandy's building south of the restaurant. Search Sandy's desk for Sandy's rota.");

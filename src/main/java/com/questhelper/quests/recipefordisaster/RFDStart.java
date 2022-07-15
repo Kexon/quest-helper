@@ -30,7 +30,6 @@ import com.questhelper.QuestVarbits;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.item.ItemRequirement;
-import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.player.SkillRequirement;
@@ -86,6 +85,7 @@ public class RFDStart extends BasicQuestHelper
 		eyeOfNewt = new ItemRequirement("Eye of newt", ItemID.EYE_OF_NEWT);
 		greenmansAle = new ItemRequirement("Greenman's ale", ItemID.GREENMANS_ALE);
 		rottenTomato = new ItemRequirement("Rotten tomato", ItemID.ROTTEN_TOMATO);
+		rottenTomato.setTooltip("You can buy one from the crate next to Toby in Varrock for 1gp");
 		fruitBlast = new ItemRequirement("Fruit blast", ItemID.FRUIT_BLAST);
 		ashes = new ItemRequirement("Ashes", ItemID.ASHES);
 		ashesHighlighted = new ItemRequirement("Ashes", ItemID.ASHES);
@@ -116,6 +116,7 @@ public class RFDStart extends BasicQuestHelper
 
 		talkToCookAgain = new NpcStep(this, NpcID.COOK_4626, new WorldPoint(3209, 3215, 0),
 			"Talk to the Lumbridge Cook with the required items.", eyeOfNewt, greenmansAle, rottenTomato, dirtyBlast);
+		talkToCookAgain.addDialogStep("About those ingredients you wanted for the banquet...");
 
 		enterDiningRoom = new ObjectStep(this, ObjectID.DOOR_12348, new WorldPoint(3207, 3217, 0), "Enter the Lumbridge Castle dining room.");
 	}

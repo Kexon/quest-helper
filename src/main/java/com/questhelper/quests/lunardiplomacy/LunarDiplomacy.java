@@ -415,7 +415,7 @@ public class LunarDiplomacy extends BasicQuestHelper
 		thread = new ItemRequirement("Thread", ItemID.THREAD);
 		combatGear = new ItemRequirement("Combat gear", -1, -1);
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
-		coins400 = new ItemRequirement("Coins", ItemID.COINS_995, 400);
+		coins400 = new ItemRequirement("Coins", ItemCollections.getCoins(), 400);
 
 		combatRunes = new ItemRequirement("Combat runes", -1, -1);
 		combatRunes.setDisplayItemId(ItemID.DEATH_RUNE);
@@ -723,7 +723,7 @@ public class LunarDiplomacy extends BasicQuestHelper
 		talkToOneiromancerWithStaff = new NpcStep(this, NpcID.ONEIROMANCER, new WorldPoint(2151, 3867, 0), "Bring the staff to the Oneiromancer in the south east of Lunar Isle.", sealOfPassage, lunarStaff);
 
 		enterMine = new ObjectStep(this, ObjectID.LADDER_14996, new WorldPoint(2142, 3944, 0), "Enter the mine in the north east of Lunar Isle.", pickaxe);
-		mineOre = new ObjectStep(this, ObjectID.STALAGMITE_15251, "Mine a lunar ore from one of the stalagmites in the area.", pickaxe);
+		mineOre = new ObjectStep(this, ObjectID.STALAGMITE_15251, "Mine a lunar ore from one of the stalagmites in the area. (Tip: Grab 3 extra ores to save time during The Fremennik Exiles quest)", pickaxe);
 		mineOre.addAlternateObjects(ObjectID.STALAGMITES_15250);
 		smeltBar = new DetailedQuestStep(this, "Smelt the ore at a furnace.", lunarOre);
 		makeHelmet = new DetailedQuestStep(this, "Make the lunar helmet on an anvil.", lunarBar, hammer);
@@ -792,7 +792,7 @@ public class LunarDiplomacy extends BasicQuestHelper
 		startNumber = new NpcStep(this, NpcID.ETHEREAL_NUMERATOR, new WorldPoint(1786, 5066, 2),
 			"Talk to the Ethereal Numerator to begin the challenge.");
 
-		doTreeChallenge = new DetailedQuestStep(this, "Chop logs and deposit them in the log pile.");
+		doTreeChallenge = new DetailedQuestStep(this, "Chop 20 logs and deposit them in the log pile.");
 
 		startRace = new NpcStep(this, NpcID.ETHEREAL_EXPERT, new WorldPoint(1788, 5068, 2), "Talk to the Ethereal Expert. Be prepared to race!");
 		startRace.addDialogStep("Ok.");

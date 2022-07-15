@@ -24,6 +24,7 @@
  */
 package com.questhelper.quests.shadowofthestorm;
 
+import com.questhelper.ItemCollections;
 import com.questhelper.QuestDescriptor;
 import com.questhelper.QuestHelperQuest;
 import com.questhelper.Zone;
@@ -200,7 +201,7 @@ public class ShadowOfTheStorm extends BasicQuestHelper
 		strangeImplementHighlighted = new ItemRequirement("Strange implement", ItemID.STRANGE_IMPLEMENT);
 		strangeImplementHighlighted.setHighlightInInventory(true);
 		strangeImplementHighlighted.setTooltip("You can find another in the underground of Uzer");
-		blackMushroomInk = new ItemRequirement("Black mushroom ink", ItemID.BLACK_MUSHROOM_INK);
+		blackMushroomInk = new ItemRequirement("Black mushroom ink", ItemID.BLACK_DYE);
 		pestle = new ItemRequirement("Pestle and mortar", ItemID.PESTLE_AND_MORTAR);
 		vial = new ItemRequirement("Vial", ItemID.VIAL);
 		silverBar = new ItemRequirement("Silver bar", ItemID.SILVER_BAR);
@@ -213,7 +214,7 @@ public class ShadowOfTheStorm extends BasicQuestHelper
 		sigilMould = new ItemRequirement("Demonic sigil mould", ItemID.DEMONIC_SIGIL_MOULD);
 		combatGear = new ItemRequirement("Combat gear + potions", -1, -1);
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
-		coinsForCarpet = new ItemRequirement("Coins or more for carpet rides", ItemID.COINS_995, 400);
+		coinsForCarpet = new ItemRequirement("Coins or more for carpet rides", ItemCollections.getCoins(), 400);
 		sigil = new ItemRequirement("Demonic sigil", ItemID.DEMONIC_SIGIL);
 		sigil.setTooltip("You can make another if needed with the demonic sigil mould");
 		sigil2 = new ItemRequirement("Demonic sigil", ItemID.DEMONIC_SIGIL, 2);

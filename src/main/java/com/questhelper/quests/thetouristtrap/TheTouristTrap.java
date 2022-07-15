@@ -33,7 +33,7 @@ import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.var.VarplayerRequirement;
 import com.questhelper.requirements.ZoneRequirement;
-import com.questhelper.requirements.WidgetTextRequirement;
+import com.questhelper.requirements.widget.WidgetTextRequirement;
 import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.rewards.UnlockReward;
@@ -248,7 +248,7 @@ public class TheTouristTrap extends BasicQuestHelper
 		waterskins = new ItemRequirement("Waterskins", ItemID.WATERSKIN4, -1);
 		knife = new ItemRequirement("Knife", ItemID.KNIFE);
 		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.getPickaxes());
-		coins100 = new ItemRequirement("Coins", ItemID.COINS_995, 100);
+		coins100 = new ItemRequirement("Coins", ItemCollections.getCoins(), 100);
 	}
 
 	public void loadZones()
@@ -332,7 +332,7 @@ public class TheTouristTrap extends BasicQuestHelper
 		searchChest.addDialogSteps("I wanted to have a chat?", "You seem to have a lot of books!", "So, you're interested in sailing?", "I could tell by the cut of your jib.");
 		returnToShabim = new NpcStep(this, NpcID.AL_SHABIM, new WorldPoint(3171, 3028, 0), "Return to Al Shabim in the Bedabin Camp with the plans.", technicalPlans, bronzeBar, hammer, feather10);
 		returnToShabim.addDialogSteps("Yes, I'm very interested.", "Yes, I'm kind of curious.");
-		useAnvil = new ObjectStep(this, ObjectID.AN_EXPERIMENTAL_ANVIL, new WorldPoint(3171, 3048, 0), "Enter the north tent and attempt to make an prototype dart tip on the anvil.", technicalPlans, bronzeBarHighlighted, hammer, feather10);
+		useAnvil = new ObjectStep(this, ObjectID.AN_EXPERIMENTAL_ANVIL, new WorldPoint(3171, 3048, 0), "Enter the north tent and attempt to make a prototype dart tip on the anvil. Bring all 3 bars with you for this.", technicalPlans, bronzeBarHighlighted, hammer, feather10);
 		useAnvil.addDialogStep("Yes. I'd like to try.");
 		useAnvil.addIcon(ItemID.BRONZE_BAR);
 		useFeatherOnTip = new DetailedQuestStep(this, "Add 10 feathers to the prototype dart tip.", prototypeDartTip, feather10.highlighted());

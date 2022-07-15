@@ -40,7 +40,7 @@ import com.questhelper.requirements.player.SpellbookRequirement;
 import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
-import com.questhelper.requirements.WidgetTextRequirement;
+import com.questhelper.requirements.widget.WidgetTextRequirement;
 import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.util.Operation;
 import com.questhelper.requirements.util.Spellbook;
@@ -517,7 +517,9 @@ public class DarknessOfHallowvale extends BasicQuestHelper
 			NpcID.VYREWATCH_3725, NpcID.VYREWATCH_3726, NpcID.VYREWATCH_3727, NpcID.VYREWATCH_3728, NpcID.VYREWATCH_3729, NpcID.VYREWATCH_3730, NpcID.VYREWATCH_3748, NpcID.VYREWATCH_3749,
 			NpcID.VYREWATCH_3750, NpcID.VYREWATCH_3751, NpcID.VYREWATCH_3752, NpcID.VYREWATCH_3753, NpcID.VYREWATCH_3754, NpcID.VYREWATCH_3755, NpcID.VYREWATCH_3756, NpcID.VYREWATCH_3757,
 			NpcID.VYREWATCH_3758, NpcID.VYREWATCH_3759, NpcID.VYREWATCH_3760, NpcID.VYREWATCH_3761, NpcID.VYREWATCH_3762, NpcID.VYREWATCH_3763);
-		mineDaeyaltThenLeave = new NpcStep(this, NpcID.VAMPYRE_JUVINATE, new WorldPoint(2389, 4624, 2), "Mine Daeyalt ore from the walls and put them into the mine carts. Once you've mined 15, talk to the vampyres to leave.", pickaxe);
+		mineDaeyaltThenLeave = new NpcStep(this, NpcID.VAMPYRE_JUVINATE, new WorldPoint(2389, 4624, 2),
+			"Mine Daeyalt ore from the walls and put them into the mine carts. If you have no pickaxe, talk to a " +
+				"miner to obtain a bronze one. Once you've mined 15, talk to the vampyres to leave.", pickaxe);
 		mineDaeyaltThenLeave.addDialogStep("Do you have a spare pick?");
 
 		List<WorldPoint> pathFromMineToBase = Arrays.asList(
@@ -621,10 +623,10 @@ public class DarknessOfHallowvale extends BasicQuestHelper
 			new WorldPoint(3640, 3302, 0)
 		);
 
-		useKnifeOnTapestry = new ObjectStep(this, NullObjectID.NULL_18125, new WorldPoint(3638, 3304, 0), "Slash the tapestry in the building in north east Meiyerditch.");
+		useKnifeOnTapestry = new ObjectStep(this, NullObjectID.NULL_18125, new WorldPoint(3638, 3304, 0), "Slash the tapestry in the building in north east Meiyerditch.", knife.highlighted());
 		useKnifeOnTapestry.setLinePoints(pathFromBaseToTapestry);
 		useKnifeOnTapestry.addIcon(ItemID.KNIFE);
-		useKeyOnStatue = new ObjectStep(this, NullObjectID.NULL_18127, new WorldPoint(3641, 3304, 0), "Use the ornate key on the nearby statue.", largeOrnateKey);
+		useKeyOnStatue = new ObjectStep(this, NullObjectID.NULL_18127, new WorldPoint(3641, 3304, 0), "Use the ornate key on the nearby statue.", largeOrnateKey.highlighted());
 		useKeyOnStatue.addIcon(ItemID.LARGE_ORNATE_KEY);
 		goDownToLab = new ObjectStep(this, ObjectID.STAIRCASE_18049, new WorldPoint(3643, 3305, 0), "Go down the staircase to the lab.");
 		getRunes = new ObjectStep(this, ObjectID.BROKEN_RUNE_CASE, new WorldPoint(3629, 9695, 0), "Search the broken rune case.");
@@ -766,7 +768,7 @@ public class DarknessOfHallowvale extends BasicQuestHelper
 	@Override
 	public List<ItemRequirement> getItemRecommended()
 	{
-		return Arrays.asList(lawRune, airRune);
+		return Arrays.asList(lawRune, airRune, pickaxe);
 	}
 
 	@Override
@@ -807,7 +809,8 @@ public class DarknessOfHallowvale extends BasicQuestHelper
 			talkToVeliafAfterDrezel)));
 
 		allSteps.add(new PanelDetails("Mapping Castle Drakan", Arrays.asList(returnToMeiyerditch, goToSafalaan, goSketchNorth, goSketchWest, goSketchSouth,
-			tankVanstrom, goTalkToSarius, goFinishSouthSketch, goOpenFireplace, useKnifeOnPortrait, readMessage, returnToSafalaanInBaseNoSketches), knife));
+			tankVanstrom, goTalkToSarius, goFinishSouthSketch, goOpenFireplace, useKnifeOnPortrait, readMessage,
+			returnToSafalaanInBaseNoSketches), knife));
 
 		allSteps.add(new PanelDetails("Investigate the lab", Arrays.asList(useKnifeOnTapestry, useKeyOnStatue, goDownToLab, telegrabBook, bringSafalaanBook, bringMessageToVeliafToFinish), knife));
 

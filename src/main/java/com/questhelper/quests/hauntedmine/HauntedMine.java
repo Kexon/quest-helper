@@ -31,6 +31,7 @@ import com.questhelper.Zone;
 import com.questhelper.banktab.BankSlotIcons;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
+import com.questhelper.questhelpers.QuestUtil;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.npc.NpcHintArrowRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
@@ -67,7 +68,7 @@ public class HauntedMine extends BasicQuestHelper
 {
 	//Items Required
 	ItemRequirement zealotsKey, chisel, glowingFungus, glowingFungusHighlight, crystalMineKey, combatGear,
-	zealotsKeyHighlighted, food;
+	zealotsKeyHighlighted, food, emptyInvSpots;
 
 	Requirement askedAboutKey, inLevel1South, valveOpened, valveOpen, hasKeyOrOpenedValve,
 		inLiftRoom, inLevel2North, inLevel3North, inLevel2South, inLevel3South, inCartRoom, inCollectRoom, leverAWrong, leverBWrong,
@@ -176,6 +177,8 @@ public class HauntedMine extends BasicQuestHelper
 		glowingFungusHighlight = new ItemRequirement("Glowing fungus", ItemID.GLOWING_FUNGUS);
 		glowingFungusHighlight.setHighlightInInventory(true);
 
+		emptyInvSpots = new ItemRequirement("Empty Inventory Spot", -1, 3);
+
 		crystalMineKey = new ItemRequirement("Crystal-mine key", ItemID.CRYSTALMINE_KEY);
 
 		combatGear = new ItemRequirement("Combat gear", -1, -1);
@@ -271,7 +274,8 @@ public class HauntedMine extends BasicQuestHelper
 	public void setupSteps()
 	{
 		talkToZealot = new NpcStep(this, NpcID.ZEALOT, new WorldPoint(3443, 3258, 0), "Talk to the Zealot outside the Abandoned Mine in south west Morytania.");
-		talkToZealot.addDialogSteps("And what sort of purpose would that be?", "Yes.", "Is there any other way into the mines?");
+		talkToZealot.addDialogSteps("And what sort of purpose would that be?", "Yes.", "Is there any other way into the mines?", "I come seeking challenges and quests.",
+			"I follow the path of Saradomin.", "What quest is that then?");
 		pickpocketZealot = new NpcStep(this, NpcID.ZEALOT, new WorldPoint(3443, 3258, 0), "Pickpocket the Zealot outside the Abandoned Mine in south west Morytania.");
 
 		enterMine = new ObjectStep(this, ObjectID.CART_TUNNEL_4915, new WorldPoint(3429, 3225, 0), "Enter the south cart tunnel around the back of the mine.");
@@ -375,6 +379,11 @@ public class HauntedMine extends BasicQuestHelper
 		return reqs;
 	}
 
+	@Override
+	public List<ItemRequirement> getItemRecommended()
+	{
+		return QuestUtil.toArrayList(food);
+	}
 
 	@Override
 	public List<String> getCombatRequirements()
@@ -409,7 +418,7 @@ public class HauntedMine extends BasicQuestHelper
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();
 		allSteps.add(new PanelDetails("Starting off", Arrays.asList(talkToZealot, pickpocketZealot),
-			combatGear, food));
+			combatGear, food, emptyInvSpots));
 		allSteps.add(new PanelDetails("Getting a light source",
 			Arrays.asList(enterMine, goDownFromLevel1South, goDownFromLevel2South, goDownToFungusRoom,
 				pickFungus, putFungusInCart, solvePuzzle, readPanel, goUpFromFungusRoom)));

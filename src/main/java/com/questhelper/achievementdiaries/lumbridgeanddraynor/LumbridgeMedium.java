@@ -40,6 +40,8 @@ import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.util.Operation;
 import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.var.VarplayerRequirement;
+import com.questhelper.rewards.ItemReward;
+import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.ItemStep;
@@ -69,7 +71,7 @@ public class LumbridgeMedium extends ComplexStateQuestHelper
 	// Items required
 	ItemRequirement crossbow, mithGrap, steelArrows, avasAttractor, coins, fairyAccess, earthRune,
 		airRune, lawRune, earthTali, fireAccess, flyFishingRod, feathers, leather, needle, thread, axe, butterflyNet,
-		implingJar, ess, bindingNeck;
+		implingJar, essence, bindingNeck;
 
 	ItemRequirements avasAccumulator;
 	// magic imbue
@@ -134,12 +136,12 @@ public class LumbridgeMedium extends ComplexStateQuestHelper
 		notCraftLava = new VarplayerRequirement(1194, false, 24);
 
 		crossbow = new ItemRequirement("A crossbow", ItemCollections.getCrossbows()).showConditioned(notGrappleLum);
-		mithGrap = new ItemRequirement("Mith Grapple", ItemID.MITH_GRAPPLE_9419).showConditioned(notGrappleLum);
+		mithGrap = new ItemRequirement("Mith grapple", ItemID.MITH_GRAPPLE_9419).showConditioned(notGrappleLum);
 		earthTali = new ItemRequirement("Earth talisman", ItemID.EARTH_TALISMAN).showConditioned(notCraftLava);
 		fireAccess = new ItemRequirement("Access to fire altar", ItemCollections.getFireAltar()).showConditioned(notCraftLava);
 		earthRune = new ItemRequirement("Earth rune", ItemID.EARTH_RUNE)
 			.showConditioned(new Conditions(LogicType.OR, notCraftLava, notTPlumb));
-		ess = new ItemRequirement("Essence", ItemCollections.getEssenceLow()).showConditioned(notCraftLava);
+		essence = new ItemRequirement("Essence", ItemCollections.getEssenceLow()).showConditioned(notCraftLava);
 		bindingNeck = new ItemRequirement("Binding necklace", ItemID.BINDING_NECKLACE).showConditioned(notCraftLava);
 		feathers = new ItemRequirement("Feathers", ItemID.FEATHER).showConditioned(notCatchSalmon);
 		flyFishingRod = new ItemRequirement("Fly fishing rod", ItemID.FLY_FISHING_ROD).showConditioned(notCatchSalmon);
@@ -189,7 +191,7 @@ public class LumbridgeMedium extends ComplexStateQuestHelper
 		moveToLavaAltar = new ObjectStep(this, 34817, new WorldPoint(3313, 3255, 0),
 			"Enter the fire altar north of Al Kharid.", fireAccess);
 		craftLava = new ObjectStep(this, ObjectID.ALTAR_34764, new WorldPoint(2585, 4838, 0),
-			"Use an earth talisman on the fire altar.", earthTali.highlighted(), ess, earthRune);
+			"Use an earth talisman on the fire altar.", earthTali.highlighted(), essence, earthRune);
 		craftLava.addIcon(ItemID.EARTH_TALISMAN);
 
 		catchSalmon = new NpcStep(this, NpcID.ROD_FISHING_SPOT_1527, new WorldPoint(3241, 3248, 0),
@@ -238,7 +240,7 @@ public class LumbridgeMedium extends ComplexStateQuestHelper
 	@Override
 	public List<ItemRequirement> getItemRequirements()
 	{
-		return Arrays.asList(crossbow, mithGrap, earthTali, fireAccess, earthRune.quantity(2), ess, feathers, needle,
+		return Arrays.asList(crossbow, mithGrap, earthTali, fireAccess, earthRune.quantity(2), essence, feathers.quantity(10), flyFishingRod, needle,
 			thread, leather, lawRune.quantity(1), airRune.quantity(3), steelArrows.quantity(75), avasAccumulator, axe,
 			fairyAccess, butterflyNet, implingJar);
 	}
@@ -263,7 +265,7 @@ public class LumbridgeMedium extends ComplexStateQuestHelper
 		reqs.add(new SkillRequirement(Skill.RUNECRAFT, 23));
 		reqs.add(new SkillRequirement(Skill.STRENGTH, 19));
 		reqs.add(new SkillRequirement(Skill.THIEVING, 38));
-		reqs.add(new SkillRequirement(Skill.WOODCUTTING, 36));
+		reqs.add(new SkillRequirement(Skill.WOODCUTTING, 30));
 
 		reqs.add(fairyTaleII);
 		reqs.add(animalMagnetism);
@@ -271,6 +273,24 @@ public class LumbridgeMedium extends ComplexStateQuestHelper
 		return reqs;
 	}
 
+	@Override
+	public List<ItemReward> getItemRewards()
+	{
+		return Arrays.asList(
+			new ItemReward("Explorer's ring 2", ItemID.EXPLORERS_RING_2),
+			new ItemReward("7,500 Exp. Lamp (Any skill over 40)", ItemID.ANTIQUE_LAMP)
+		);
+	}
+
+	@Override
+	public List<UnlockReward> getUnlockRewards()
+	{
+		return Arrays.asList(
+			new UnlockReward("50% run energy replenish 3 times a day from Explorer's ring"),
+			new UnlockReward("Three daily teleports to cabbage patch near Falador farm for Explorer's ring"),
+			new UnlockReward("Access to Draynor Village wall shortcut")
+		);
+	}
 
 	@Override
 	public List<PanelDetails> getPanels()
@@ -298,7 +318,7 @@ public class LumbridgeMedium extends ComplexStateQuestHelper
 		allSteps.add(chopWillowSteps);
 
 		PanelDetails pickpocketMasterGardenerSteps = new PanelDetails("Pickpocket Master Gardener",
-			Collections.singletonList(pickGardener),new SkillRequirement(Skill.THIEVING, 38));
+			Collections.singletonList(pickGardener), new SkillRequirement(Skill.THIEVING, 38));
 		pickpocketMasterGardenerSteps.setDisplayCondition(notPickGardener);
 		allSteps.add(pickpocketMasterGardenerSteps);
 
@@ -307,7 +327,8 @@ public class LumbridgeMedium extends ComplexStateQuestHelper
 		upgradeSteps.setDisplayCondition(notUpgradeDevice);
 		allSteps.add(upgradeSteps);
 
-		PanelDetails tpLumbSteps = new PanelDetails("Teleport to Lumbridge", Collections.singletonList(tpLumb));
+		PanelDetails tpLumbSteps = new PanelDetails("Teleport to Lumbridge", Collections.singletonList(tpLumb),
+		airRune, earthRune, lawRune);
 		tpLumbSteps.setDisplayCondition(notTPlumb);
 		allSteps.add(tpLumbSteps);
 
@@ -321,6 +342,11 @@ public class LumbridgeMedium extends ComplexStateQuestHelper
 		craftACoifSteps.setDisplayCondition(notCraftCoif);
 		allSteps.add(craftACoifSteps);
 
+		PanelDetails alKaridRooftopCourseSteps = new PanelDetails("Al Karid Rooftop Course",
+			Collections.singletonList(alKaridRooftop), new SkillRequirement(Skill.AGILITY, 20));
+		alKaridRooftopCourseSteps.setDisplayCondition(notAlKaridRooftop);
+		allSteps.add(alKaridRooftopCourseSteps);
+
 		PanelDetails grappleRiverLumSteps = new PanelDetails("Grapple River Lum",
 			Collections.singletonList(grappleLum), new SkillRequirement(Skill.AGILITY, 8),
 			new SkillRequirement(Skill.STRENGTH, 19), new SkillRequirement(Skill.RANGED, 37),
@@ -328,13 +354,8 @@ public class LumbridgeMedium extends ComplexStateQuestHelper
 		grappleRiverLumSteps.setDisplayCondition(notGrappleLum);
 		allSteps.add(grappleRiverLumSteps);
 
-		PanelDetails alKaridRooftopCourseSteps = new PanelDetails("Al Karid Rooftop Course",
-			Collections.singletonList(alKaridRooftop), new SkillRequirement(Skill.AGILITY, 20));
-		alKaridRooftopCourseSteps.setDisplayCondition(notAlKaridRooftop);
-		allSteps.add(alKaridRooftopCourseSteps);
-
 		PanelDetails lavaRunesSteps = new PanelDetails("Craft Lava Runes", Arrays.asList(moveToLavaAltar, craftLava),
-			new SkillRequirement(Skill.RUNECRAFT, 23), fireAccess, earthTali, earthRune, ess);
+			new SkillRequirement(Skill.RUNECRAFT, 23), fireAccess, earthTali, earthRune, essence);
 		lavaRunesSteps.setDisplayCondition(notCraftLava);
 		allSteps.add(lavaRunesSteps);
 

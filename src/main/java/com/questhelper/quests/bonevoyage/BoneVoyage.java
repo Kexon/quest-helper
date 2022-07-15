@@ -188,7 +188,7 @@ public class BoneVoyage extends BasicQuestHelper
 	{
 		talkToHaig = new NpcStep(this, NpcID.CURATOR_HAIG_HALEN, new WorldPoint(3257, 3448, 0),
 			"Talk to Curator Haig in the Varrock Museum.");
-		talkToHaig.addDialogSteps("Have you any interesting news?", "Sign me up!");
+		talkToHaig.addDialogSteps("Have you any interesting news?", "Sign me up!", "Yes.");
 
 		talkToForeman = new NpcStep(this, NpcID.BARGE_FOREMAN, new WorldPoint(3364, 3445, 0),
 			"Talk to the Barge Foreman north of the Dig Site.");
@@ -199,6 +199,7 @@ public class BoneVoyage extends BasicQuestHelper
 
 		talkToOperatorInGuild = new NpcStep(this, NpcID.SAWMILL_OPERATOR_9140, new WorldPoint(1620, 3499, 0),
 			"Talk to the Sawmill Operator in the Woodcutting Guild on Zeah.", sawmillProposal);
+		talkToOperatorInGuild.addDialogStep("I'm here on behalf of the museum archaeological team.");
 		talkToOperatorInGuildFromGate = new ObjectStep(this, ObjectID.GATE_28852, new WorldPoint(1657, 3504, 0),
 			"Attempt to enter the Woodcutting Guild on Zeah to talk to the guild's sawmill operator.", sawmillProposal);
 
@@ -220,6 +221,7 @@ public class BoneVoyage extends BasicQuestHelper
 		talkToNavigator = new NpcStep(this, NpcID.LEAD_NAVIGATOR, new WorldPoint(3363, 3453, 1),
 			"Talk to the Lead Navigator.");
 		talkToNavigator.addDialogStep("Yep, that would be me.");
+		talkToNavigator.addDialogStep("No, what happened?");
 		talkToJack = new NpcStep(this, NpcID.JACK_SEAGULL, new WorldPoint(3050, 3257, 0),
 			"Talk to Jack Seagull in the Port Sarim Pub.");
 		talkToJack.addDialogStep("Ever made any cursed voyages?");

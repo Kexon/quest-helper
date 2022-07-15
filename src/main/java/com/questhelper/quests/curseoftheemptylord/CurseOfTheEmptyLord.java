@@ -131,8 +131,8 @@ public class CurseOfTheEmptyLord extends BasicQuestHelper
 	{
 		ringOfVis = new ItemRequirement("Ring of visibility", ItemID.RING_OF_VISIBILITY, 1, true);
 		ghostspeak = new ItemRequirement("Ghostspeak amulet", ItemID.GHOSTSPEAK_AMULET, 1, true);
-		ghostspeakItems = new ItemRequirement("Ghostspeak amulet or any pair of morytania legs", ItemID.GHOSTSPEAK_AMULET, 1, true);
-		ghostspeakItems.addAlternates(ItemID.MORYTANIA_LEGS, ItemID.MORYTANIA_LEGS_1, ItemID.MORYTANIA_LEGS_2, ItemID.MORYTANIA_LEGS_3, ItemID.MORYTANIA_LEGS_4);
+		ghostspeakItems = new ItemRequirement("Ghostspeak amulet or Morytania legs 2 or better", ItemID.GHOSTSPEAK_AMULET, 1, true);
+		ghostspeakItems.addAlternates(ItemID.MORYTANIA_LEGS_2, ItemID.MORYTANIA_LEGS_3, ItemID.MORYTANIA_LEGS_4);
 		knife = new ItemRequirement("Knife", ItemID.KNIFE).showConditioned(new VarbitRequirement(PATH_VARBIT, 3));
 	}
 
@@ -215,7 +215,7 @@ public class CurseOfTheEmptyLord extends BasicQuestHelper
 			talkToLennissa.setWorldPoint(2846, 3349, 0);
 
 			talkToDhalak.setText("Talk to the Mysterious Ghost in the Wizard's Tower ground floor.");
-			talkToDhalak.setWorldPoint(3109, 3163, 1);
+			talkToDhalak.setWorldPoint(3109, 3163, 0);
 
 			talkToViggora.setText("Talk to the Mysterious Ghost Viggora upstairs in the Rogues' Castle in 54 Wilderness.");
 			talkToViggora.setWorldPoint(3295, 3934, 1);

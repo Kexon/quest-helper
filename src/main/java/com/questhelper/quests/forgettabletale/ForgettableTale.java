@@ -24,13 +24,14 @@
  */
 package com.questhelper.quests.forgettabletale;
 
+import com.questhelper.ItemCollections;
 import com.questhelper.QuestDescriptor;
 import com.questhelper.QuestHelperQuest;
 import com.questhelper.Zone;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.WidgetTextRequirement;
+import com.questhelper.requirements.widget.WidgetTextRequirement;
 import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.conditional.ObjectCondition;
@@ -46,6 +47,7 @@ import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
+import com.questhelper.steps.ItemStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
@@ -110,7 +112,7 @@ public class ForgettableTale extends BasicQuestHelper
 		getKeldaTicket, takeCartFromWWMToKelda, talkToGauss;
 
 	QuestStep talkToRind, rakeKelda, plantKelda, waitForKelda, harvestHops, goUpstairsPub, buyYeast, addWater,
-		addMalts, addKelda, addYeast, waitBrewing, turnValve, useGlassOnBarrel, goDownFromPub;
+		pickupPot, addMalts, addKelda, addYeast, waitBrewing, turnValve, useGlassOnBarrel, goDownFromPub;
 
 	QuestStep talkToCartConductor, goUpToDirector, talkToDirector, goDownFromDirector, takeSecretCart;
 
@@ -188,7 +190,8 @@ public class ForgettableTale extends BasicQuestHelper
 		brewing.addStep(new Conditions(inPubUpstairs, yeast, addedMalt), addKelda);
 		brewing.addStep(new Conditions(inPubUpstairs, yeast, addedWater), addMalts);
 		brewing.addStep(new Conditions(inPubUpstairs, yeast), addWater);
-		brewing.addStep(inPubUpstairs, buyYeast);
+		brewing.addStep(new Conditions(inPubUpstairs, pot), buyYeast);
+		brewing.addStep(inPubUpstairs, pickupPot);
 		steps.put(50, brewing);
 
 		steps.put(60, goGiveDrunkenDwarfKelda);
@@ -355,8 +358,8 @@ public class ForgettableTale extends BasicQuestHelper
 
 	public void setupRequirements()
 	{
-		coins500 = new ItemRequirement("Coins", ItemID.COINS_995, 500);
-		coins = new ItemRequirement("Coins", ItemID.COINS_995);
+		coins500 = new ItemRequirement("Coins", ItemCollections.getCoins(), 500);
+		coins = new ItemRequirement("Coins", ItemCollections.getCoins());
 		barleyMalt2 = new ItemRequirement("Barley malt", ItemID.BARLEY_MALT, 2);
 		bucketOfWater2 = new ItemRequirement("Bucket of water", ItemID.BUCKET_OF_WATER, 2);
 		spade = new ItemRequirement("Spade", ItemID.SPADE);
@@ -364,8 +367,11 @@ public class ForgettableTale extends BasicQuestHelper
 		rake = new ItemRequirement("Rake", ItemID.RAKE);
 		yeast = new ItemRequirement("Ale yeast", ItemID.ALE_YEAST);
 		kebab = new ItemRequirement("Kebab", ItemID.KEBAB);
+		kebab.setTooltip("You can buy one for 1 coin in the food shop northeast in Keldagrim");
 		beer = new ItemRequirement("Beer", ItemID.BEER);
+		beer.setTooltip("You can buy these from either of the bars in Keldagrim for 2 coins");
 		dwarvenStout = new ItemRequirement("Dwarven stout", ItemID.DWARVEN_STOUT);
+		dwarvenStout.setTooltip("You can pick up one of these next to the NPC you need to give it to.");
 		beerGlass = new ItemRequirement("Beer glass", ItemID.BEER_GLASS);
 		randomItem = new ItemRequirement("A random item per player", -1, -1);
 		pot = new ItemRequirement("Pot", ItemID.POT);
@@ -593,6 +599,9 @@ public class ForgettableTale extends BasicQuestHelper
 			"");
 		goUpstairsPub = new ObjectStep(this, ObjectID.STAIRS_6085, new WorldPoint(2916, 10196, 0),
 			"Go upstairs in Keldagrim's east pub.");
+
+		pickupPot = new ItemStep(this, "Pick up the pot in the brewing room.", pot);
+
 		buyYeast = new NpcStep(this, NpcID.BLANDEBIR, new WorldPoint(2916, 10193, 1),
 			"Buy yeast from Blandebir. You can get a pot from the table in the brewing room.", coins.quantity(25), pot);
 		buyYeast.addDialogSteps("Do you have any spare ale yeast?", "That's a good deal - please fill my pot with ale" +
@@ -779,10 +788,10 @@ public class ForgettableTale extends BasicQuestHelper
 
 		startPuzzle7 = new ObjectStep(this, ObjectID.DWARVEN_MACHINERY, new WorldPoint(1860, 4955, 1),
 			"Use the dwarven machinery.");
-		puzzle7P1 = new WidgetStep(this, "Click the marked junction until it's got the yellow piece in.", 247, 68);
-		puzzle7P2 = new WidgetStep(this, "Click the marked junction until it's got the yellow piece in.", 247, 69);
-		puzzle7P3 = new WidgetStep(this, "Click the marked junction until it's got the green piece in.", 247, 71);
-		puzzle7P4 = new WidgetStep(this, "Click the marked junction until it's got the green piece in.", 247, 73);
+		puzzle7P1 = new WidgetStep(this, "Click the marked junction until it's got the green piece in.", 247, 68);
+		puzzle7P2 = new WidgetStep(this, "Click the marked junction until it's got the green piece in.", 247, 69);
+		puzzle7P3 = new WidgetStep(this, "Click the marked junction until it's got the yellow piece in.", 247, 71);
+		puzzle7P4 = new WidgetStep(this, "Click the marked junction until it's got the yellow piece in.", 247, 73);
 		puzzle7Ok = new WidgetStep(this, "Click the Ok button.", 247, 108);
 		takePuzzle7Cart = new ObjectStep(this, ObjectID.TRAIN_CART_8924, new WorldPoint(1864, 4957, 1),
 			"Take the cart.");
@@ -982,7 +991,7 @@ public class ForgettableTale extends BasicQuestHelper
 		allSteps.add(new PanelDetails("Brewing",
 			Arrays.asList(goTalkVeldaban, goTalkDrunkDwarf, goTalkDrunkDwarfAgain,
 				goTalkRowdyDwarf, goTalkToKhorvak, goGiveKhorvakBeer, goTalkToGuass, goTalkToRind,
-				goPlantKelda, waitForKelda, goHarvestKelda, goBrew, buyYeast, addWater, addMalts, addKelda, addYeast,
+				goPlantKelda, waitForKelda, goHarvestKelda, goBrew, pickupPot, buyYeast, addWater, addMalts, addKelda, addYeast,
 				waitBrewing, goTurnValve, goUseGlass, goGiveDrunkenDwarfKelda), coins500, barleyMalt2, bucketOfWater2,
 			spade,	dibber, rake, beer.quantity(2), dwarvenStout, beerGlass, randomItem));
 		allSteps.add(new PanelDetails("Unlocking the tunnels", Arrays.asList(goTalkToConductor, goTalkToDirector,

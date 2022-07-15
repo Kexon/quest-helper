@@ -47,7 +47,7 @@ import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.conditional.NpcCondition;
 import com.questhelper.requirements.conditional.ObjectCondition;
-import com.questhelper.requirements.WidgetTextRequirement;
+import com.questhelper.requirements.widget.WidgetTextRequirement;
 import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.util.Operation;
 import com.questhelper.rewards.ExperienceReward;
@@ -88,7 +88,7 @@ public class MonkeyMadnessII extends BasicQuestHelper
 	ItemRequirement combatGear, combatGear2, magicLog, food, staminaPotions, prayerPotions, antidote;
 
 	//Other Requirements
-	Requirement nieveFollower;
+	Requirement nieveFollower, strongholdBalloon;
 
 	QuestStep talkToNarnode;
 
@@ -255,6 +255,8 @@ public class MonkeyMadnessII extends BasicQuestHelper
 
 	public void setupItemRequirements()
 	{
+		strongholdBalloon = new VarbitRequirement(2870, Operation.EQUAL, 1, "Unlocked the Tree Gnome Stronghold balloon route");
+
 		lemon = new ItemRequirement("Lemon", ItemID.LEMON);
 		grape = new ItemRequirement("Grapes", ItemID.GRAPES);
 		pestle = new ItemRequirement("Pestle and mortar", ItemID.PESTLE_AND_MORTAR);
@@ -277,7 +279,7 @@ public class MonkeyMadnessII extends BasicQuestHelper
 
 		talisman = new ItemRequirement("Monkey talisman", ItemID.MONKEY_TALISMAN);
 		talisman.setTooltip("You can buy one from the Ape Atoll magic shop for 1000 coins");
-		talismanOr1000Coins = new ItemRequirements(LogicType.OR, "Monkey talisman or 1000 coins", talisman, new ItemRequirement("1000 coins", ItemID.COINS_995, 1000));
+		talismanOr1000Coins = new ItemRequirements(LogicType.OR, "Monkey talisman or 1000 coins", talisman, new ItemRequirement("1000 coins", ItemCollections.getCoins(), 1000));
 		ninjaGreegree = new ItemRequirement("Ninja greegree", ItemID.NINJA_MONKEY_GREEGREE);
 		ninjaGreegree.addAlternates(ItemID.NINJA_MONKEY_GREEGREE_4025);
 
@@ -329,7 +331,7 @@ public class MonkeyMadnessII extends BasicQuestHelper
 		krukGreegree = new ItemRequirement("Kruk monkey greegree", ItemID.KRUK_MONKEY_GREEGREE, 1, true);
 		krukGreegree.setTooltip("If you've lost this you can get another from Zooknock");
 
-		coins20 = new ItemRequirement("Coins", ItemID.COINS_995, 20);
+		coins20 = new ItemRequirement("Coins", ItemCollections.getCoins(), 20);
 
 		chiselHighlighted = new ItemRequirement("Chisel", ItemID.CHISEL);
 		chiselHighlighted.setHighlightInInventory(true);
@@ -754,7 +756,7 @@ public class MonkeyMadnessII extends BasicQuestHelper
 	{
 		ArrayList<Requirement> req = new ArrayList<>();
 		req.add(new QuestRequirement(QuestHelperQuest.ENLIGHTENED_JOURNEY, QuestState.FINISHED));
-		req.add(new ItemRequirement("Unlocked the Tree Gnome Stronghold balloon route", -1, -1));
+		req.add(strongholdBalloon);
 		req.add(new QuestRequirement(QuestHelperQuest.THE_EYES_OF_GLOUPHRIE, QuestState.FINISHED));
 		req.add(new VarbitRequirement(QuestVarbits.QUEST_RECIPE_FOR_DISASTER_MONKEY_AMBASSADOR.getId(),
 			Operation.GREATER_EQUAL,  50, "Finished the 'Freeing King Awowogei' subquest of RFD"));

@@ -178,7 +178,7 @@ public class BetweenARock extends BasicQuestHelper
 	{
 		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.getPickaxes());
 		hammer = new ItemRequirement("Hammer", ItemCollections.getHammer());
-		coins5 = new ItemRequirement("Coins", ItemID.COINS_995, 5);
+		coins5 = new ItemRequirement("Coins", ItemCollections.getCoins(), 5);
 		page1 = new ItemRequirement("Book page 1", ItemID.BOOK_PAGE_1);
 		page2 = new ItemRequirement("Book page 2", ItemID.BOOK_PAGE_2);
 		page3 = new ItemRequirement("Book page 3", ItemID.BOOK_PAGE_3);
@@ -225,7 +225,7 @@ public class BetweenARock extends BasicQuestHelper
 		goldOre6 = new ItemRequirement("Gold ores", ItemID.GOLD_ORE, 6);
 
 		goldBars4 = new ItemRequirement("Gold bars", ItemID.GOLD_BAR, 4);
-		coins1000 = new ItemRequirement("Coins for travelling", ItemID.COINS_995, 1000);
+		coins1000 = new ItemRequirement("Coins for travelling", ItemCollections.getCoins(), 1000);
 	}
 
 	public void loadZones()
@@ -365,12 +365,13 @@ public class BetweenARock extends BasicQuestHelper
 		talkToDondakanForEnd.addDialogStep("Ready as I'll ever be.");
 		talkToDondakanWithHelmet.addSubSteps(enterDwarfCaveWithHelmet, enterDwarfCave2WithHelmet, talkToFerrymanWithHelmet, talkToDondakanForEnd);
 
-		mine6GoldOre = new DetailedQuestStep(this, "Mine 6 gold ores. If you want the Avatar to be level 75 vs 125, get 15. Keep these in your inventory for the boss fight.", pickaxe);
+		mine6GoldOre = new DetailedQuestStep(this, "Mine 6 gold ores. If you want the Avatar to be level 75 vs 125, get 15. " +
+				"Keep these in your inventory for the boss fight. Do not remove your gold helmet.", pickaxe, goldHelmetEquipped);
 
 		talkToSecondFlame = new ObjectStep(this, ObjectID.WALL_OF_FLAME_5979, new WorldPoint(2373, 4956, 0),
-			"TALK to the central wall of flame.");
+			"TALK to the central wall of flame.", goldHelmetEquipped);
 		killAvatar = new NpcStep(this, NpcID.ARZINIAN_AVATAR_OF_MAGIC, new WorldPoint(2375, 4953, 0), "Kill the " +
-			"avatar. Make sure to keep the gold ores in your inventory.");
+			"avatar. Make sure to keep the gold ores in your inventory.", goldHelmetEquipped);
 		killAvatar.addAlternateNpcs(NpcID.ARZINIAN_AVATAR_OF_MAGIC_1234, NpcID.ARZINIAN_AVATAR_OF_MAGIC_1235,
 			NpcID.ARZINIAN_AVATAR_OF_RANGING, NpcID.ARZINIAN_AVATAR_OF_RANGING_1231, NpcID.ARZINIAN_AVATAR_OF_RANGING_1232,
 			NpcID.ARZINIAN_AVATAR_OF_STRENGTH, NpcID.ARZINIAN_AVATAR_OF_STRENGTH_1228, NpcID.ARZINIAN_AVATAR_OF_STRENGTH_1229);

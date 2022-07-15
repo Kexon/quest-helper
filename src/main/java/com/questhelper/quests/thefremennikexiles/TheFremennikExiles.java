@@ -78,11 +78,11 @@ import com.questhelper.steps.QuestStep;
 public class TheFremennikExiles extends BasicQuestHelper
 {
 	//Items Required
-	ItemRequirement combatGear, mirrorShield, kegsOfBeer, moltenGlass, astralRunes, petRock, kegs2Or700Coins,
+	ItemRequirement combatGear, mirrorShield, kegsOfBeer, moltenGlass, astralRunes, petRock, kegs2Or650Coins,
 	fishingOrFlyFishingRod, fremennikShield, iceGloves, hammer, glassblowingPipe, pickaxe, sealOfPassage, coins150kOrCharos;
 
 	//Items Recommended
-	ItemRequirement food, rellekkaTeleport, coins700;
+	ItemRequirement food, rellekkaTeleport, coins650, restorePot;
 
 	ItemRequirement letter, fang, venomGland, lunarOre, lunarBar, lunarGlass, moltenGlassI, sigil, sigilE,
 	polishedRock, vShield, runeThrowingaxeOrFriend;
@@ -238,11 +238,14 @@ public class TheFremennikExiles extends BasicQuestHelper
 		fishingOrFlyFishingRod.addAlternates(ItemID.FLY_FISHING_ROD);
 		fremennikShield = new ItemRequirement("Fremennik shield", ItemID.FREMENNIK_SHIELD);
 		fremennikShield.setTooltip("Obtainable during the quest for 150k, or free with a Ring of Charos(a)");
-		iceGloves = new ItemRequirement("Ice gloves", ItemID.ICE_GLOVES);
-		iceGloves.setTooltip("You can get another pair by killing the Ice Queen under White Wolf Mountain");
+		iceGloves = new ItemRequirement("Ice gloves or smiths gloves(i)", ItemID.ICE_GLOVES);
+		iceGloves.setTooltip("You can get another pair of ice gloves by killing the Ice Queen under White Wolf Mountain");
+		iceGloves.addAlternates(ItemID.SMITHS_GLOVES_I);
 		hammer = new ItemRequirement("Hammer", ItemCollections.getHammer());
 		glassblowingPipe = new ItemRequirement("Glassblowing pipe", ItemID.GLASSBLOWING_PIPE);
 		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.getPickaxes());
+		restorePot = new ItemRequirement("Restore potions", ItemCollections.getRestorePotions());
+		restorePot.setTooltip("Highly recommended to make up for mistakes");
 
 		runeThrowingaxeOrFriend = new ItemRequirement("Rune thrownaxe, or a friend to help enter Waterbirth Isle " +
 			"Dungeon",
@@ -250,20 +253,17 @@ public class TheFremennikExiles extends BasicQuestHelper
 
 		sealOfPassage = new ItemRequirement("Seal of passage", ItemID.SEAL_OF_PASSAGE);
 		sealOfPassageOrEliteDiary = ComplexRequirementBuilder.or("Seal of Passage")
-			.with(new VarbitRequirement(Varbits.DIARY_FREMENNIK_ELITE.getId(), 1))
+			.with(new VarbitRequirement(Varbits.DIARY_FREMENNIK_ELITE, 1))
 			.with(sealOfPassage)
 			.build();
 
 		coins150kOrCharos = new ItemRequirements(LogicType.OR,
 			"Ring of Charos(a) or 150k coins",
 			new ItemRequirement("Ring of Charos(a)", ItemID.RING_OF_CHAROSA),
-			new ItemRequirement("Coins", ItemID.COINS_995, 150000));
+			new ItemRequirement("Coins", ItemCollections.getCoins(), 150000));
 
-		coins700 = new ItemRequirement("Coins", ItemID.COINS_995, 700);
-		kegs2Or700Coins = new ItemRequirements(LogicType.OR,
-			kegsOfBeer.quantity(2),
-			coins700
-		);
+		coins650 = new ItemRequirement("Coins", ItemCollections.getCoins(), 650);
+		kegs2Or650Coins = new ItemRequirements(LogicType.OR, "2x kegs of beer or 650 coins", kegsOfBeer.quantity(2), coins650);
 
 		food = new ItemRequirement("Food", ItemCollections.getGoodEatingFood(), -1);
 		rellekkaTeleport = new ItemRequirement("Rellekka teleports", ItemID.RELLEKKA_TELEPORT, -1);
@@ -337,13 +337,13 @@ public class TheFremennikExiles extends BasicQuestHelper
 			"Talk to Brundt in Rellekka's longhall.");
 		talkToBrundt.addDialogSteps("Ask for a quest.", "Yes.");
 		buyKegs = new NpcStep(this, NpcID.THORA_THE_BARKEEP, new WorldPoint(2662, 3673, 0),
-			"Buy 2 kegs of beer from Thora in Rellekka.", coins700);
+			"Buy 2 kegs of beer from Thora in Rellekka.", coins650);
 		talkToFreygerd = new NpcStep(this, NpcID.FREYGERD_3942, new WorldPoint(2668, 3703, 0),
 			"Talk to Freygerd in north Rellekka.", combatGear, mirrorShield.equipped());
 		searchSandpit = new ObjectStep(this, NullObjectID.NULL_4373, new WorldPoint(2668, 3708, 0),
 			"Search the sand pit near Freygerd, ready to fight a basilisk youngling.", combatGear, mirrorShield.equipped());
 		searchSandpitForLetter = new ObjectStep(this, NullObjectID.NULL_4373, new WorldPoint(2668, 3708, 0),
-			"Search the sand pit near Freygerd for a letter.");
+			"Search the sand pit near Freygerd for a letter.", letter.highlighted());
 		killYoungling = new NpcStep(this, NpcID.BASILISK_YOUNGLING, new WorldPoint(2666, 3708, 0),
 			"Defeat the Basilisk Youngling.", combatGear, mirrorShield.equipped());
 		pickupLetter = new ItemStep(this, "Pick up the letter.", letter);
@@ -445,8 +445,8 @@ public class TheFremennikExiles extends BasicQuestHelper
 		enterCaveToFight = new ObjectStep(this, NullObjectID.NULL_37433, new WorldPoint(2465, 4012, 0),
 			"Enter the door, ready to fight.", combatGear, vShield.equipped());
 		enterCaveToFight.addDialogStep("Yes.");
-		fightTyphor = new NpcStep(this, NpcID.TYPHOR, new WorldPoint(2457, 10384, 0), "Fight Typhor. Protect from " +
-			"Melee until he's half health, then Protect from Magic.", vShield.equipped());
+		fightTyphor = new NpcStep(this, NpcID.TYPHOR, new WorldPoint(2457, 10384, 0), "Fight Typhor, who attacks " +
+			"with both Melee and Magic", vShield.equipped());
 		((NpcStep) fightTyphor).addAlternateNpcs(NpcID.TYPHOR_9296);
 
 		PrayerRequirement protectFromMagic = new PrayerRequirement("Protect from Magic", Prayer.PROTECT_FROM_MAGIC);
@@ -465,14 +465,14 @@ public class TheFremennikExiles extends BasicQuestHelper
 	@Override
 	public List<ItemRequirement> getItemRequirements()
 	{
-		return Arrays.asList(combatGear, mirrorShield, kegs2Or700Coins, moltenGlass, astralRunes.quantity(100), petRock,
+		return Arrays.asList(combatGear, mirrorShield, kegs2Or650Coins, moltenGlass, astralRunes.quantity(100), petRock,
 			runeThrowingaxeOrFriend, fishingOrFlyFishingRod, fremennikShield, iceGloves, hammer, glassblowingPipe, pickaxe, sealOfPassage);
 	}
 
 	@Override
 	public List<ItemRequirement> getItemRecommended()
 	{
-		return Arrays.asList(food, rellekkaTeleport);
+		return Arrays.asList(food, rellekkaTeleport, restorePot);
 	}
 
 	@Override

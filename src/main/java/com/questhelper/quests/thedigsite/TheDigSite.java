@@ -37,7 +37,7 @@ import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.conditional.ObjectCondition;
-import com.questhelper.requirements.WidgetTextRequirement;
+import com.questhelper.requirements.widget.WidgetTextRequirement;
 import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.var.VarplayerRequirement;
 import com.questhelper.rewards.ExperienceReward;
@@ -217,6 +217,7 @@ public class TheDigSite extends BasicQuestHelper
 		opal.setTooltip("You can get one by panning at the Digsite");
 		opal.addAlternates(ItemID.UNCUT_OPAL);
 		charcoal = new ItemRequirement("Charcoal", ItemID.CHARCOAL);
+		charcoal.setTooltip("Obtainable during quest by searching specimen trays");
 		specimenBrush = new ItemRequirement("Specimen brush", ItemID.SPECIMEN_BRUSH);
 		specimenJar = new ItemRequirement("Specimen jar", ItemID.SPECIMEN_JAR);
 		panningTray = new ItemRequirement("Panning tray", ItemID.PANNING_TRAY);
@@ -292,12 +293,12 @@ public class TheDigSite extends BasicQuestHelper
 		syncedUp2 = new Conditions(true, LogicType.OR, knowStateAsJustCompletedFirstExam,
 			new WidgetTextRequirement(119, 2, "The Dig Site"),
 			new WidgetTextRequirement(WidgetInfo.DIALOG_NPC_TEXT, "You got all the questions correct. Well done!"),
-			new WidgetTextRequirement(217, 4, "Hey! Excellent!"));
+			new WidgetTextRequirement(WidgetInfo.DIALOG_PLAYER_TEXT, "Hey! Excellent!"));
 
 		syncedUp3 = new Conditions(true, LogicType.OR, knowStateAsJustCompletedSecondExam,
 			new WidgetTextRequirement(119,	2, "The Dig Site"),
 			new WidgetTextRequirement(WidgetInfo.DIALOG_NPC_TEXT, "You got all the questions correct, well done!"),
-			new WidgetTextRequirement(217, 4, "Great, I'm getting good at this."));
+			new WidgetTextRequirement(WidgetInfo.DIALOG_PLAYER_TEXT, "Great, I'm getting good at this."));
 
 		talkedToGuide = new VarbitRequirement(2544, 1);
 		tea = tea.hideConditioned(talkedToGuide);
@@ -314,7 +315,7 @@ public class TheDigSite extends BasicQuestHelper
 		WidgetTextRequirement orangeGivenAnswer1Diary = new WidgetTextRequirement(119, 3, true, "He gave me an answer to one of the questions");
 		orangeGivenAnswer1Diary.addRange(20, 35);
 		talkedToOrangeStudent = new Conditions(true, LogicType.OR,
-			new WidgetTextRequirement(217, 4, "Look what I found!"),
+			new WidgetTextRequirement(WidgetInfo.DIALOG_PLAYER_TEXT, "Look what I found!"),
 			new WidgetTextRequirement(119, 3, true, "<str>to find it and return it to him."));
 		orangeStudentQ1Learnt = new Conditions(true, LogicType.OR,
 			new WidgetTextRequirement(WidgetInfo.DIALOG_NPC_TEXT, "The people eligible to use the digsite are:"),
@@ -351,7 +352,7 @@ public class TheDigSite extends BasicQuestHelper
 
 		// Exam questions 3
 		femaleExtorting = new Conditions(true, LogicType.OR,
-			new WidgetTextRequirement(217, 4, "OK, I'll see what I can turn up for you."),
+			new WidgetTextRequirement(WidgetInfo.DIALOG_PLAYER_TEXT, "OK, I'll see what I can turn up for you."),
 			new WidgetTextRequirement(WidgetInfo.DIALOG_NPC_TEXT, "Well, I have seen people get them from panning"),
 			new WidgetTextRequirement(119, 3, true, "I need to bring her an opal"));
 		WidgetTextRequirement femaleGivenAnswer3Diary = new WidgetTextRequirement(119, 3, true, "<str>I need to speak to the student in the purple skirt about");
@@ -481,7 +482,7 @@ public class TheDigSite extends BasicQuestHelper
 		grindCharcoal = new DetailedQuestStep(this, "Grind charcoal with a pestle and mortar.", pestleAndMortar, charcoal);
 		usePowderOnExpert = new NpcStep(this, NpcID.ARCHAEOLOGICAL_EXPERT, new WorldPoint(3357, 3334, 0), "Use the powder on the Archaeological expert in the Exam Centre.", powder);
 		usePowderOnExpert.addIcon(ItemID.CHEMICAL_POWDER);
-		useLiquidOnExpert = new NpcStep(this, NpcID.ARCHAEOLOGICAL_EXPERT, new WorldPoint(3357, 3334, 0), "Use the liquid on the Archaeological expert in the Exam Centre.", liquid);
+		useLiquidOnExpert = new NpcStep(this, NpcID.ARCHAEOLOGICAL_EXPERT, new WorldPoint(3357, 3334, 0), "(DO NOT LEFT CLICK) Right-click use the liquid on the Archaeological expert in the Exam Centre.", liquid);
 		useLiquidOnExpert.addIcon(ItemID.UNIDENTIFIED_LIQUID);
 		mixNitroWithNitrate = new DetailedQuestStep(this, "Mix the nitroglycerin and ammonium nitrate together.", nitro, nitrate);
 		addCharcoal = new DetailedQuestStep(this, "Add charcoal to the vial.", groundCharcoal, mixedChemicals);

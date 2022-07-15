@@ -42,7 +42,7 @@ import com.questhelper.overlays.QuestHelperWorldArrowOverlay;
 import com.questhelper.overlays.QuestHelperWorldLineOverlay;
 import com.questhelper.overlays.QuestHelperWorldOverlay;
 import com.questhelper.panel.QuestHelperPanel;
-import com.questhelper.questhelpers.Quest;
+import com.questhelper.questhelpers.QuestDetails;
 import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.steps.QuestStep;
 import java.awt.image.BufferedImage;
@@ -107,9 +107,7 @@ public class QuestHelperPlugin extends Plugin
 {
 	private static final int[] QUESTLIST_WIDGET_IDS = new int[]
 		{
-			WidgetInfo.QUESTLIST_FREE_CONTAINER.getId(),
-			WidgetInfo.QUESTLIST_MEMBERS_CONTAINER.getId(),
-			WidgetInfo.QUESTLIST_MINIQUEST_CONTAINER.getId()
+			QuestWidgets.QUEST_CONTAINER.getId()
 		};
 
 	private static final String[] RFD_NAMES = new String[]
@@ -441,7 +439,7 @@ public class QuestHelperPlugin extends Plugin
 				.stream()
 				.filter(config.filterListBy())
 				.filter(config.difficulty())
-				.filter(Quest::showCompletedQuests)
+				.filter(QuestDetails::showCompletedQuests)
 				.sorted(config.orderListBy())
 				.collect(Collectors.toList());
 			Map<QuestHelperQuest, QuestState> completedQuests = quests.values()
@@ -638,14 +636,12 @@ public class QuestHelperPlugin extends Plugin
 	{
 		menuEntries = Arrays.copyOf(menuEntries, menuEntries.length + 1);
 
-		MenuEntry menuEntry = menuEntries[menuEntries.length - 1] = new MenuEntry();
-		menuEntry.setTarget(target);
-		menuEntry.setParam0(widgetIndex);
-		menuEntry.setParam1(widgetID);
-		menuEntry.setType(MenuAction.RUNELITE.getId());
-		menuEntry.setOption(newEntry);
-
-		client.setMenuEntries(menuEntries);
+		client.createMenuEntry(menuEntries.length - 1)
+			.setOption(newEntry)
+			.setTarget(target)
+			.setType(MenuAction.RUNELITE)
+			.setParam0(widgetIndex)
+			.setParam1(widgetID);
 
 		return menuEntries;
 	}

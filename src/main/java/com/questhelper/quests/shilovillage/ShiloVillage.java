@@ -31,7 +31,7 @@ import com.questhelper.Zone;
 import com.questhelper.banktab.BankSlotIcons;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
-import com.questhelper.requirements.WidgetTextRequirement;
+import com.questhelper.requirements.widget.WidgetTextRequirement;
 import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.conditional.ObjectCondition;
@@ -199,7 +199,7 @@ public class ShiloVillage extends BasicQuestHelper
 		stonePlaque = new ItemRequirement("Stone-plaque", ItemID.STONEPLAQUE);
 		tatteredScroll = new ItemRequirement("Tattered scroll", ItemID.TATTERED_SCROLL);
 		crumpledScroll = new ItemRequirement("Crumpled scroll", ItemID.CRUMPLED_SCROLL);
-		zadimusCorpse = new ItemRequirement("Zadminus corpse", ItemID.ZADIMUS_CORPSE);
+		zadimusCorpse = new ItemRequirement("Zadimus corpse", ItemID.ZADIMUS_CORPSE);
 		zadimusCorpse.addAlternates(ItemID.BONE_SHARD, ItemID.BONE_KEY);
 		boneShard = new ItemRequirement("Bone shard", ItemID.BONE_SHARD);
 		boneShard.addAlternates(ItemID.BONE_KEY);
@@ -349,7 +349,8 @@ public class ShiloVillage extends BasicQuestHelper
 			"Enter the doors behind the palm trees.", beadsOfTheDead.equipped(), bones3,
 			combatGear);
 		useBonesOnDoor = new ObjectStep(this, ObjectID.TOMB_DOORS, new WorldPoint(2892, 9480, 0),
-			"Make your way through the gate, down the rocks, then to the north west corner. Use bones on the door there.",
+			"Equip the beads of the dead, then make your way through the gate, down the rocks, then to the south west" +
+				" corner. Use bones on the door there.",
 			beadsOfTheDead.equipped(), bones3.highlighted());
 		useBonesOnDoor.addIcon(ItemID.BONES);
 		searchDolmenForFight = new ObjectStep(this, ObjectID.TOMB_DOLMEN_2258, new WorldPoint(2893, 9488, 0),

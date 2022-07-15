@@ -156,7 +156,9 @@ public class SpiritsOfTheElid extends BasicQuestHelper
 		rope.setHighlightInInventory(true);
 		pickaxe = new ItemRequirement("Any Pickaxe", ItemCollections.getPickaxes(), 1);
 		bow = new ItemRequirement("Any bow", ItemCollections.getBows(), 1, true);
+		bow.setTooltip("Short bow obtainable during quest east of the cave entrance");
 		arrows = new ItemRequirement("Arrows for bow", ItemCollections.getMetalArrows(), 1, true);
+		arrows.setTooltip("Bronze arrows obtainable during quest south of cave entrance");
 
 		//Quest Items
 		tornRobeTop = new ItemRequirement("Torn Robe (top)", ItemID.TORN_ROBE, 1);
@@ -182,7 +184,7 @@ public class SpiritsOfTheElid extends BasicQuestHelper
 		waterskins = new ItemRequirement("Waterskins", ItemID.WATERSKIN4, -1);
 		waterskins.addAlternates(ItemID.WATERSKIN3, ItemID.WATERSKIN2, ItemID.WATERSKIN1);
 		shantaypass = new ItemRequirement("Shantay Passes", ItemID.SHANTAY_PASS, -1);
-		coins = new ItemRequirement("Coins for magic carpet", ItemID.COINS_995, -1);
+		coins = new ItemRequirement("Coins for magic carpet", ItemCollections.getCoins(), -1);
 		spear = new ItemRequirement("Spear or Hasta for the 3 weapon styles", -1, 1);
 		spear.setDisplayItemId(ItemID.DRAGON_SPEAR);
 		food = new ItemRequirement("Food", ItemCollections.getGoodEatingFood(), -1);

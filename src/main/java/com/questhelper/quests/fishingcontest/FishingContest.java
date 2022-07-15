@@ -41,7 +41,7 @@ import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
-import com.questhelper.requirements.WidgetTextRequirement;
+import com.questhelper.requirements.widget.WidgetTextRequirement;
 import com.questhelper.requirements.util.LogicType;
 import com.questhelper.rewards.ExperienceReward;
 import com.questhelper.rewards.QuestPointReward;
@@ -110,7 +110,7 @@ public class FishingContest extends BasicQuestHelper
 
 	public void setupItemRequirements()
 	{
-		coins = new ItemRequirement("Coins", ItemID.COINS_995, 5);
+		coins = new ItemRequirement("Coins", ItemCollections.getCoins(), 5);
 		coins.setTooltip("10 if you buy a fishing rod from Jack");
 		fishingPass = new ItemRequirement("Fishing Pass", ItemID.FISHING_PASS);
 		fishingPass.setTooltip("<html>This can be obtained during the quest.<br>If you lose this you can get another from Vestri.</html>");
@@ -219,7 +219,7 @@ public class FishingContest extends BasicQuestHelper
 		garlicInPipeVarbit = new VarbitRequirement(2054, 1);
 		enteredContest = new Conditions(true, LogicType.AND, hasEverything, onContestGrounds);
 		garlicInPipeScreen = new WidgetTextRequirement(WidgetInfo.DIALOG_SPRITE_TEXT, "You stash the garlic in the pipe.");
-		confirmGarlicInPipe = new WidgetTextRequirement(217, 4, "I shoved some garlic up here.");
+		confirmGarlicInPipe = new WidgetTextRequirement(WidgetInfo.DIALOG_PLAYER_TEXT, "I shoved some garlic up here.");
 		hasPutGarlicInPipe = new Conditions(true, LogicType.OR, garlicInPipeVarbit, garlicInPipeScreen, confirmGarlicInPipe);
 	}
 

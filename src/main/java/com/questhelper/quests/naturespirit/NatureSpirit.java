@@ -37,7 +37,7 @@ import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.conditional.NpcCondition;
-import com.questhelper.requirements.WidgetTextRequirement;
+import com.questhelper.requirements.widget.WidgetTextRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.util.LogicType;
 import com.questhelper.rewards.ExperienceReward;
@@ -76,7 +76,7 @@ public class NatureSpirit extends BasicQuestHelper
 	QuestStep goDownToDrezel, talkToDrezel, leaveDrezel, enterSwamp, tryToEnterGrotto, talkToFilliman, takeWashingBowl,
 		takeMirror, useMirrorOnFilliman, searchGrotto, useJournalOnFilliman, goBackDownToDrezel, talkToDrezelForBlessing,
 		castSpellAndGetMushroom, useMushroom, useSpellCard, standOnOrange, tellFillimanToCast, enterGrotto, searchAltar,
-		blessSickle, fillPouches, killGhasts, killGhast, enterGrottoAgain, touchAltarAgain, talkToNatureSpiritToFinish, offerToHelp,
+		blessSickle, fillPouches, killGhasts, killGhast, enterGrottoAgain, touchAltarAgain, talkToNatureSpiritToFinish,
 		spawnFillimanForRitual, talkToFillimanInGrotto;
 
 	//Zones
@@ -243,10 +243,9 @@ public class NatureSpirit extends BasicQuestHelper
 		useMirrorOnFilliman.addDialogStep("How long have you been a ghost?");
 		useMirrorOnFilliman.addIcon(ItemID.MIRROR);
 		searchGrotto = new ObjectStep(this, ObjectID.GROTTO_TREE, new WorldPoint(3440, 3339, 0), "Right-click search the grotto tree.");
-		useJournalOnFilliman = new NpcStep(this, NpcID.FILLIMAN_TARLOCK, new WorldPoint(3440, 3336, 0), "Talk to Filliman Tarlock.", ghostspeak, journalHighlighted);
+		useJournalOnFilliman = new NpcStep(this, NpcID.FILLIMAN_TARLOCK, new WorldPoint(3440, 3336, 0), "Use the journal on Filliman Tarlock.", ghostspeak, journalHighlighted);
 		useJournalOnFilliman.addIcon(ItemID.JOURNAL);
-		offerToHelp = new NpcStep(this, NpcID.FILLIMAN_TARLOCK, new WorldPoint(3440, 3336, 0), "Talk to Filliman Tarlock and offer to help.", ghostspeak);
-		offerToHelp.addDialogStep("How can I help?");
+		useJournalOnFilliman.addDialogStep("How can I help?");
 		goBackDownToDrezel = new ObjectStep(this, ObjectID.TRAPDOOR_3432, new WorldPoint(3422, 3485, 0), "Talk to Drezel to get blessed.");
 		((ObjectStep) (goBackDownToDrezel)).addAlternateObjects(ObjectID.TRAPDOOR_3433);
 		talkToDrezelForBlessing = new NpcStep(this, NpcID.DREZEL, new WorldPoint(3439, 9896, 0), "Talk to Drezel under the Paterdomus Temple.");
@@ -343,9 +342,9 @@ public class NatureSpirit extends BasicQuestHelper
 				takeMirror, useMirrorOnFilliman, searchGrotto, useJournalOnFilliman), ghostspeak, silverSickle));
 		allSteps.add(new PanelDetails("Helping Filliman",
 			Arrays.asList(talkToDrezelForBlessing, castSpellAndGetMushroom, useMushroom, useSpellCard, standOnOrange,
-				tellFillimanToCast, enterGrotto, searchAltar, talkToFillimanInGrotto), ghostspeak, silverSickle));
+				tellFillimanToCast, enterGrotto, searchAltar, talkToFillimanInGrotto, blessSickle), ghostspeak, silverSickle));
 		allSteps.add(new PanelDetails("Killing Ghasts",
-			Arrays.asList(blessSickle, fillPouches, killGhasts, enterGrottoAgain, talkToNatureSpiritToFinish), ghostspeak, silverSickle));
+			Arrays.asList(fillPouches, killGhasts, enterGrottoAgain, talkToNatureSpiritToFinish), ghostspeak, blessedSickle));
 
 		return allSteps;
 	}

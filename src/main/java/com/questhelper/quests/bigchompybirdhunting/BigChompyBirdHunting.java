@@ -37,7 +37,7 @@ import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.conditional.NpcCondition;
-import com.questhelper.requirements.WidgetTextRequirement;
+import com.questhelper.requirements.widget.WidgetTextRequirement;
 import com.questhelper.requirements.util.LogicType;
 import com.questhelper.rewards.ExperienceReward;
 import com.questhelper.rewards.ItemReward;
@@ -229,7 +229,7 @@ public class BigChompyBirdHunting extends BasicQuestHelper
 		chompyNearby = new NpcHintArrowRequirement(NpcID.CHOMPY_BIRD);
 		deadChompyNearby = new NpcCondition(NpcID.CHOMPY_BIRD_1476);
 
-		rantzWantsOnion = new Conditions(true, new WidgetTextRequirement(WidgetInfo.DIALOG_NPC_TEXT, "wants Onion wiv mine"));
+		rantzWantsOnion = new Conditions(true, new WidgetTextRequirement(WidgetInfo.DIALOG_NPC_TEXT, "want Onion wiv mine"));
 		rantzWantsPotato = new Conditions(true, new WidgetTextRequirement(WidgetInfo.DIALOG_NPC_TEXT, "wants Potato wiv mine"));
 		knowWhatRantzWants = new Conditions(LogicType.OR, rantzWantsOnion, rantzWantsPotato);
 
@@ -284,8 +284,7 @@ public class BigChompyBirdHunting extends BasicQuestHelper
 
 		killChompy = new NpcStep(this, NpcID.CHOMPY_BIRD, new WorldPoint(2635, 2966, 0), "Kill the chompy. You can only hurt it with an ogre bow + ogre arrows.", ogreBow, ogreArrows);
 		pluckCarcass = new NpcStep(this, NpcID.CHOMPY_BIRD_1476, new WorldPoint(2635, 2966, 0), "Pluck the chompy.");
-		talkToRantzWithChompy = new NpcStep(this, NpcID.RANTZ, new WorldPoint(2631, 2982, 0), "Pick up the chompy and use it on Rantz in the east of Feldip Hills.", chompyHighlighted);
-		talkToRantzWithChompy.addIcon(ItemID.RAW_CHOMPY);
+		talkToRantzWithChompy = new NpcStep(this, NpcID.RANTZ, new WorldPoint(2631, 2982, 0), "Talk to Rantz in the east of Feldip Hills.", chompy);
 
 		enterCaveAgain = new ObjectStep(this, ObjectID.CAVE_ENTRANCE_3379, new WorldPoint(2630, 2999, 0), "Enter Rantz's cave.");
 		talkToFycie = new NpcStep(this, NpcID.FYCIE, new WorldPoint(2649, 9391, 0), "Talk to Fycie.");

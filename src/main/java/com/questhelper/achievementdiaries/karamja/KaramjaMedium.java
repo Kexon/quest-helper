@@ -157,7 +157,7 @@ public class KaramjaMedium extends BasicQuestHelper
 		pickaxe =
 			new ItemRequirement("Any pickaxe", ItemCollections.getPickaxes()).showConditioned(new Conditions(LogicType.OR,
 				notMinedRedRopaz, notEarned100));
-		coins = new ItemRequirement("Coins", ItemID.COINS_995).showConditioned(new Conditions(LogicType.OR,
+		coins = new ItemRequirement("Coins", ItemCollections.getCoins()).showConditioned(new Conditions(LogicType.OR,
 			notClaimedTicket, notUsedCart, notTraveledToKhazard, notCharteredFromShipyard));
 		smallFishingNet = new ItemRequirement("Small fishing net", ItemID.SMALL_FISHING_NET).showConditioned(notCaughtKarambwan);
 
@@ -178,7 +178,7 @@ public class KaramjaMedium extends BasicQuestHelper
 		knife = new ItemRequirement("Knife", ItemID.KNIFE).showConditioned(notTrappedGraahk);
 		logs = new ItemRequirement("Logs", ItemID.LOGS).showConditioned(notTrappedGraahk);
 		axe = new ItemRequirement("Any axe", ItemCollections.getAxes()).showConditioned(new Conditions(LogicType.OR,
-			notTrappedGraahk, notCrossedLava, notClimbedStairs, notCutVine));
+			notTrappedGraahk, notCrossedLava, notClimbedStairs, notCutVine, notCutTeak, notCutMahog));
 		tradingSticks = new ItemRequirement("Trading sticks", ItemID.TRADING_STICKS).showConditioned(notExchangedGems);
 		tradingSticks.setTooltip("You can get these from villagers when doing Tai Bwo Wannai Cleanup");
 		opal = new ItemRequirement("Opal", ItemID.OPAL).showConditioned(notExchangedGems);
@@ -216,11 +216,6 @@ public class KaramjaMedium extends BasicQuestHelper
 		shiloVillage = new QuestRequirement(QuestHelperQuest.SHILO_VILLAGE, QuestState.FINISHED);
 		junglePotion = new QuestRequirement(QuestHelperQuest.JUNGLE_POTION, QuestState.FINISHED);
 
-		// 3578 = 2, completed final task
-		// varplayer 2943 0->1>2>3 when done final task
-
-		// Used skewer on spider, 2943 3->4 (VARPLAYER)
-
 		inCave = new ZoneRequirement(cave);
 		inAgilityArena = new ZoneRequirement(agilityArena);
 		inBrimhavenDungeon = new ZoneRequirement(brimhavenDungeon);
@@ -257,9 +252,9 @@ public class KaramjaMedium extends BasicQuestHelper
 		travelToKhazard.addDialogSteps("Yes, I'll buy a ticket for the ship.", "Khazard Port please.");
 		travelToKhazard.addSubSteps(climbUpToBoat);
 		cutTeak = new ObjectStep(this, ObjectID.TEAK, new WorldPoint(2822, 3078, 0), "Chop a teak tree down either in" +
-			" the Hardwood Grove in Tai Bwo Wannai or in the Khazari Jungle (requires Legends' Quest started).", axe, tradingSticks.quantity(100));
+			" the Hardwood Grove in Tai Bwo Wannai or in the Kharazi Jungle (requires Legends' Quest started).", axe, tradingSticks.quantity(100));
 		cutMahogany = new ObjectStep(this, ObjectID.MAHOGANY, new WorldPoint(2820, 3080, 0), "Chop a mahogany tree " +
-			"down either in the Hardwood Grove in Tai Bwo Wannai or in the Khazari Jungle (requires Legends' Quest started).", axe,
+			"down either in the Hardwood Grove in Tai Bwo Wannai or in the Kharazi Jungle (requires Legends' Quest started).", axe,
 			tradingSticks.quantity(100));
 		catchKarambwan = new NpcStep(this, NpcID.FISHING_SPOT_4712, new WorldPoint(2899, 3119, 0),
 			"Fish a karambwan from the north east coast of Karamja.", karambwanVessel, rawKarambwanji);
@@ -336,17 +331,17 @@ public class KaramjaMedium extends BasicQuestHelper
 	public List<ItemReward> getItemRewards()
 	{
 		return Arrays.asList(
-				new ItemReward("Karamja Gloves (2)", ItemID.KARAMJA_GLOVES_2, 1),
-				new ItemReward("5,000 Exp. Lamp (Any skill above level 30)", ItemID.ANTIQUE_LAMP, 1));
+			new ItemReward("Karamja Gloves (2)", ItemID.KARAMJA_GLOVES_2, 1),
+			new ItemReward("5,000 Exp. Lamp (Any skill above level 30)", ItemID.ANTIQUE_LAMP, 1));
 	}
 
 	@Override
 	public List<UnlockReward> getUnlockRewards()
 	{
 		return Arrays.asList(
-				new UnlockReward("Increased Agility Experience when redeeming Agility tickets"),
-				new UnlockReward("10% increased Agility experience earned from Brimhaven Agility Arena"),
-				new UnlockReward("Access to the stepping stone shortcut across the river of Shilo Village"));
+			new UnlockReward("Increased Agility Experience when redeeming Agility tickets"),
+			new UnlockReward("10% increased Agility experience earned from Brimhaven Agility Arena"),
+			new UnlockReward("Access to the stepping stone shortcut across the river of Shilo Village"));
 	}
 
 	@Override
@@ -366,7 +361,7 @@ public class KaramjaMedium extends BasicQuestHelper
 
 		PanelDetails enterAgiSteps = new PanelDetails("Claim a ticket in The Agility Arena",
 			Arrays.asList(enterAgilityArena,
-			tag2Pillars), coins.quantity(200));
+				tag2Pillars), coins.quantity(200));
 		enterAgiSteps.setDisplayCondition(notClaimedTicket);
 		allSteps.add(enterAgiSteps);
 

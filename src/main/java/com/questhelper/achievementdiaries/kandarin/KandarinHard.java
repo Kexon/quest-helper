@@ -29,6 +29,7 @@ import com.questhelper.QuestHelperQuest;
 import com.questhelper.Zone;
 import com.questhelper.banktab.BankSlotIcons;
 import com.questhelper.questhelpers.ComplexStateQuestHelper;
+import com.questhelper.requirements.ChatMessageRequirement;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
@@ -66,7 +67,7 @@ public class KandarinHard extends ComplexStateQuestHelper
 	// unlisted item reqs
 	ItemRequirement unstrungYewLong;
 
-	Requirement piety;
+	Requirement piety, choppedLogs;
 
 	Requirement notCatchStur, notSeersRooftop, notYewLong, notPietyCourt, notWaterOrb, notBurnMaple,
 		notShadowHound, notMithrilDrag, notBuyGranite, notFancyStone, notAddySpear;
@@ -94,7 +95,7 @@ public class KandarinHard extends ComplexStateQuestHelper
 		doHard.addStep(notWaterOrb, moveToTavDungeon);
 		doHard.addStep(notSeersRooftop, seersRooftop);
 		doHard.addStep(new Conditions(notYewLong, unstrungYewLong), stringBow);
-		doHard.addStep(new Conditions(notYewLong, yewLogs), cutLongbow);
+		doHard.addStep(new Conditions(notYewLong, yewLogs, choppedLogs), cutLongbow);
 		doHard.addStep(notYewLong, yewLong);
 		doHard.addStep(notPietyCourt, pietyCourt);
 		doHard.addStep(new Conditions(notBurnMaple, inSeers), burnMaple);
@@ -144,9 +145,10 @@ public class KandarinHard extends ComplexStateQuestHelper
 		dustyKey.setTooltip("You can get this by killing the Jailor in the Black Knights Base in Taverley Dungeon and" +
 			" using the key he drops to enter the jail cell there to talk to Velrak for the dusty key");
 		mapleLogs = new ItemRequirement("Maple logs", ItemID.MAPLE_LOGS).showConditioned(notBurnMaple);
-		bow = new ItemRequirement("Dusty key", ItemCollections.getBows()).showConditioned(notBurnMaple);
+		bow = new ItemRequirement("Any bow", ItemCollections.getBows()).showConditioned(notBurnMaple);
 		ringOfVis = new ItemRequirement("Ring of Visibility", ItemID.RING_OF_VISIBILITY).showConditioned(notShadowHound);
-		coins = new ItemRequirement("Coins", ItemID.COINS).showConditioned(new Conditions(LogicType.OR, notFancyStone, notBuyGranite));
+		coins = new ItemRequirement("Coins", ItemCollections.getCoins())
+			.showConditioned(new Conditions(LogicType.OR, notFancyStone, notBuyGranite));
 		addyBar = new ItemRequirement("Adamantite bar", ItemID.ADAMANTITE_BAR).showConditioned(notAddySpear);
 		hammer = new ItemRequirement("Hammer", ItemID.HAMMER).showConditioned(notAddySpear);
 		yewLogs = new ItemRequirement("Yew logs", ItemID.YEW_LOGS).showConditioned(notAddySpear);
@@ -168,6 +170,18 @@ public class KandarinHard extends ComplexStateQuestHelper
 		inAncient1 = new ZoneRequirement(ancient1);
 		inAncient2 = new ZoneRequirement(ancient2);
 		inAncient3 = new ZoneRequirement(ancient3);
+
+		choppedLogs = new ChatMessageRequirement(
+			inSeers,
+			"<col=0040ff>Achievement Diary Stage Task - Current stage: 1.</col>"
+		);
+		((ChatMessageRequirement) choppedLogs).setInvalidateRequirement(
+			new ChatMessageRequirement(
+				new Conditions(LogicType.NOR, inSeers),
+				"<col=0040ff>Achievement Diary Stage Task - Current stage: 1.</col>"
+			)
+		);
+
 	}
 
 	public void loadZones()
@@ -196,7 +210,7 @@ public class KandarinHard extends ComplexStateQuestHelper
 		seersRooftop = new ObjectStep(this, ObjectID.WALL_14927, new WorldPoint(2729, 3489, 0),
 			"Complete a lap of the Seers' village Rooftop course.");
 		yewLong = new ObjectStep(this, ObjectID.YEW, new WorldPoint(2715, 3460, 0),
-			"Cut some yew logs near Catherby. Make sure to use the knife on the ones you cut.", axe);
+			"Cut some yew logs near Seers' Village. Make sure to use the knife on the ones you cut.", axe);
 		cutLongbow = new ItemStep(this, "Use knife on yew logs to make a yew longbow (u)", yewLogs.highlighted(), knife.highlighted());
 		stringBow = new ItemStep(this, "String the bow.", bowString.highlighted(), unstrungYewLong.highlighted());
 		pietyCourt = new DetailedQuestStep(this, new WorldPoint(2735, 3469, 0),
@@ -264,18 +278,11 @@ public class KandarinHard extends ComplexStateQuestHelper
 	{
 		setupGeneralRequirements();
 		ArrayList<Requirement> req = new ArrayList<>();
-		req.add(taiBwoWannai);
-		req.add(desertTreasure);
-
-		req.add(barbFishing);
-		req.add(barbFiremaking);
-		req.add(barbSmithing);
-		req.add(knightWaves);
 
 		req.add(new SkillRequirement(Skill.AGILITY, 60, true));
 		req.add(new SkillRequirement(Skill.CONSTRUCTION, 50));
 		req.add(new SkillRequirement(Skill.DEFENCE, 70));
-		req.add(new SkillRequirement(Skill.FIREMAKING, 65));
+		req.add(new SkillRequirement(Skill.FIREMAKING, 65, true));
 		req.add(new SkillRequirement(Skill.FISHING, 70, true));
 		req.add(new SkillRequirement(Skill.FLETCHING, 70, true));
 		req.add(new SkillRequirement(Skill.PRAYER, 70));
@@ -284,6 +291,13 @@ public class KandarinHard extends ComplexStateQuestHelper
 		req.add(new SkillRequirement(Skill.STRENGTH, 50));
 		req.add(new SkillRequirement(Skill.THIEVING, 53));
 		req.add(new SkillRequirement(Skill.WOODCUTTING, 60, true));
+
+		req.add(taiBwoWannai);
+		req.add(desertTreasure);
+		req.add(barbFishing);
+		req.add(barbFiremaking);
+		req.add(barbSmithing);
+		req.add(knightWaves);
 
 		return req;
 	}

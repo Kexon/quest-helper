@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 Abex
+ * Copyright (c) 2017, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,62 +22,55 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.questhelper.panel.configpanel;
+package com.questhelper;
 
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import javax.swing.JButton;
-import lombok.Getter;
-import net.runelite.client.config.Keybind;
-import net.runelite.client.config.ModifierlessKeybind;
-import net.runelite.client.ui.FontManager;
-
-class HotkeyButton extends JButton
+public enum QuestWidgets
 {
-	@Getter
-	private Keybind value;
+	QUESTLIST_SCROLLBAR(399, 5),
+	QUESTLIST_CONTAINER(399, 6),
+	QUEST_CONTAINER(399, 7);
 
-	public HotkeyButton(Keybind value, boolean modifierless)
+	private final int groupId;
+	private final int childId;
+
+	QuestWidgets(int groupId, int childId)
 	{
-		setFont(FontManager.getDefaultFont().deriveFont(12.f));
-		setValue(value);
-		addMouseListener(new MouseAdapter()
-		{
-			@Override
-			public void mouseReleased(MouseEvent e)
-			{
-				// We have to use a mouse adapter instead of an action listener so the press action key (space) can be bound
-				setValue(Keybind.NOT_SET);
-			}
-		});
-
-		addKeyListener(new KeyAdapter()
-		{
-			@Override
-			public void keyPressed(KeyEvent e)
-			{
-				if (modifierless)
-				{
-					setValue(new ModifierlessKeybind(e));
-				}
-				else
-				{
-					setValue(new Keybind(e));
-				}
-			}
-		});
+		this.groupId = groupId;
+		this.childId = childId;
 	}
 
-	public void setValue(Keybind value)
+	public int getId()
 	{
-		if (value == null)
-		{
-			value = Keybind.NOT_SET;
-		}
+		return groupId << 16 | childId;
+	}
 
-		this.value = value;
-		setText(value.toString());
+	/**
+	 * Gets the group ID of the pair.
+	 *
+	 * @return the group ID
+	 */
+	public int getGroupId()
+	{
+		return groupId;
+	}
+
+	/**
+	 * Gets the ID of the child in the group.
+	 *
+	 * @return the child ID
+	 */
+	public int getChildId()
+	{
+		return childId;
+	}
+
+	/**
+	 * Gets the packed widget ID.
+	 *
+	 * @return the packed ID
+	 */
+	public int getPackedId()
+	{
+		return groupId << 16 | childId;
 	}
 }

@@ -24,10 +24,11 @@
  */
 package com.questhelper.quests.piratestreasure;
 
+import com.questhelper.ItemCollections;
 import com.questhelper.requirements.ChatMessageRequirement;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.ZoneRequirement;
-import com.questhelper.requirements.WidgetTextRequirement;
+import com.questhelper.requirements.widget.WidgetTextRequirement;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -148,7 +149,7 @@ public class RumSmugglingStep extends ConditionalStep
 
 		Requirement haveRumFromWidget = new Conditions(inPirateTreasureMenu, new WidgetTextRequirement(119, 8, "I should take it to"));
 
-		Requirement agreedToGetRum = new WidgetTextRequirement(217, 4, "Ok, I will bring you some rum.");
+		Requirement agreedToGetRum = new WidgetTextRequirement(WidgetInfo.DIALOG_PLAYER_TEXT, "Ok, I will bring you some rum.");
 		Requirement atStartFromWidget = new Conditions(inPirateTreasureMenu, new WidgetTextRequirement(119, 8, "I need to go to"));
 		atStart = new Conditions(true, LogicType.OR, agreedToGetRum, atStartFromWidget, lostRum, hadRumOffKaramja, haveRumFromWidget);
 
@@ -184,11 +185,11 @@ public class RumSmugglingStep extends ConditionalStep
 	private void setupSteps()
 	{
 		goToKaramja = new NpcStep(getQuestHelper(), NpcID.SEAMAN_LORRIS, new WorldPoint(3027, 3222, 0),
-			"Talk to one of the Seamen on the docks in Port Sarim to go to Karamja.", new ItemRequirement("Coins", ItemID.COINS_995, 60));
+			"Talk to one of the Seamen on the docks in Port Sarim to go to Karamja.", new ItemRequirement("Coins", ItemCollections.getCoins(), 60));
 		goToKaramja.addDialogStep("Yes please.");
 
 		talkToZambo = new NpcStep(getQuestHelper(), NpcID.ZAMBO, new WorldPoint(2929, 3145, 0),
-			"Talk to Zambo in the Karamja Wines, Spirits and Beers bar. Buy one Karamjan rum.", new ItemRequirement("Coins", ItemID.COINS_995, 30));
+			"Talk to Zambo in the Karamja Wines, Spirits and Beers bar. Buy one Karamjan rum.", new ItemRequirement("Coins", ItemCollections.getCoins(), 30));
 		talkToZambo.addDialogStep("Yes please.");
 
 		talkToLuthas = new NpcStep(getQuestHelper(), NpcID.LUTHAS, new WorldPoint(2938, 3154, 0),
@@ -198,18 +199,17 @@ public class RumSmugglingStep extends ConditionalStep
 		talkToLuthas.addDialogStep("Will you pay me for another crate full?");
 
 		addRumToCrate = new ObjectStep(getQuestHelper(), ObjectID.CRATE_2072, new WorldPoint(2943, 3151, 0),
-			"Put the Karamjan rum into the crate.",
-			karamjanRum, tenBananas);
+			"Put the Karamjan rum into the crate.", karamjanRum.highlighted(), tenBananas);
+		addRumToCrate.addIcon(ItemID.KARAMJAN_RUM);
 
 		addBananasToCrate = new ObjectStep(getQuestHelper(), ObjectID.CRATE_2072, new WorldPoint(2943, 3151, 0),
-			"Fill the rest of the crate with bananas, then talk to Luthas.",
-			new ItemRequirement("Banana", ItemID.BANANA, 10));
+			"Right-click fill the rest of the crate with bananas, then talk to Luthas.", tenBananas);
 
 		talkToLuthasAgain = new NpcStep(getQuestHelper(), NpcID.LUTHAS, new WorldPoint(2938, 3154, 0),
 			"Talk to Luthas and tell him you finished filling the crate.");
 
 		talkToCustomsOfficer = new NpcStep(getQuestHelper(), NpcID.CUSTOMS_OFFICER, new WorldPoint(2955, 3146, 0),
-			"Head back to Port Sarim. Pay the Customs Officer to sail there.", new ItemRequirement("Coins", ItemID.COINS_995, 30));
+			"Head back to Port Sarim. Pay the Customs Officer to sail there.", new ItemRequirement("Coins", ItemCollections.getCoins(), 30));
 		talkToCustomsOfficer.addDialogStep("Thank you, I'll be on my way");
 		talkToCustomsOfficer.addDialogStep("Can I journey on this ship?");
 		talkToCustomsOfficer.addDialogStep("Search away, I have nothing to hide.");

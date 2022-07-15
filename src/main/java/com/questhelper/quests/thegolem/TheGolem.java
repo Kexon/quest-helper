@@ -186,7 +186,7 @@ public class TheGolem extends BasicQuestHelper
 
 		vial = new ItemRequirement("Vial", ItemID.VIAL);
 
-		inkHighlight = new ItemRequirement("Black mushroom ink", ItemID.BLACK_MUSHROOM_INK);
+		inkHighlight = new ItemRequirement("Black mushroom ink", ItemID.BLACK_DYE);
 		inkHighlight.setHighlightInInventory(true);
 
 		papyrus = new ItemRequirement("Papyrus", ItemID.PAPYRUS);
@@ -350,9 +350,9 @@ public class TheGolem extends BasicQuestHelper
 	public List<ItemReward> getItemRewards()
 	{
 		return Arrays.asList(
-				new ItemReward("Rubies", ItemID.RUBY, 2),
-				new ItemReward("Emeralds", ItemID.EMERALD, 2),
-				new ItemReward("Sapphires", ItemID.SAPPHIRE, 2));
+				new ItemReward("Rubies (by using a chisel and hammer on the throne)", ItemID.RUBY, 2),
+				new ItemReward("Emeralds (by using a chisel and hammer on the throne)", ItemID.EMERALD, 2),
+				new ItemReward("Sapphires (by using a chisel and hammer on the throne)", ItemID.SAPPHIRE, 2));
 	}
 
 	@Override

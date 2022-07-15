@@ -34,7 +34,7 @@ import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
-import com.questhelper.requirements.WidgetTextRequirement;
+import com.questhelper.requirements.widget.WidgetTextRequirement;
 import com.questhelper.requirements.util.LogicType;
 import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.QuestPointReward;
@@ -153,7 +153,7 @@ public class PrinceAliRescue extends BasicQuestHelper
 		ropeHighlighted = new ItemRequirement("Rope", ItemID.ROPE);
 		ropeHighlighted.setHighlightInInventory(true);
 		ropeReqs = new ItemRequirement("Rope, or 15 coins / 4 balls of wool to obtain during the quest", ItemID.ROPE);
-		coins100 = new ItemRequirement("Coins minimum", ItemID.COINS_995, 100);
+		coins100 = new ItemRequirement("Coins minimum", ItemCollections.getCoins(), 100);
 		wig = new ItemRequirement("Wig", ItemID.WIG_2421);
 		wig.setHighlightInInventory(true);
 		dyedWig = new ItemRequirement("Wig (dyed)", ItemID.WIG);
@@ -205,11 +205,11 @@ public class PrinceAliRescue extends BasicQuestHelper
 		talkToKeli.addDialogStep("Could I touch the key for a moment please?");
 		bringImprintToOsman = new NpcStep(this, NpcID.OSMAN_4286, new WorldPoint(3285, 3179, 0), "Bring the key print to Osman north of the Al Kharid Palace. If you already have, open the quest journal to re-sync.", keyMould, bronzeBar);
 		talkToLeela = new NpcStep(this, NpcID.LEELA, new WorldPoint(3113, 3262, 0), "Talk to Leela east of Draynor Village.", beers3, dyedWig, paste, rope, pinkSkirt);
-		talkToJoe = new NpcStep(this, NpcID.JOE_4275, new WorldPoint(3124, 3245, 0), "Bring everything to the jail and give Joe there three beers.", beers3, key, dyedWig, paste, rope, pinkSkirt);
+		talkToJoe = new NpcStep(this, NpcID.JOE_11577, new WorldPoint(3124, 3245, 0), "Bring everything to the jail and give Joe there three beers.", beers3, key, dyedWig, paste, rope, pinkSkirt);
 		talkToJoe.addDialogStep("I have some beer here, fancy one?");
 		useRopeOnKeli = new NpcStep(this, NpcID.LADY_KELI, new WorldPoint(3127, 3244, 0), "Use rope on Keli.", ropeHighlighted);
 		useRopeOnKeli.addIcon(ItemID.ROPE);
-		useKeyOnDoor = new ObjectStep(this, ObjectID.PRISON_DOOR_2881, new WorldPoint(3123, 3243, 0), "Use the key on the prison door. If Lady Keli respawned you'll need to tie her up again.", key, dyedWig, paste, pinkSkirt);
+		useKeyOnDoor = new ObjectStep(this, ObjectID.PRISON_GATE, new WorldPoint(3123, 3243, 0), "Use the key on the prison door. If Lady Keli respawned you'll need to tie her up again.", key, dyedWig, paste, pinkSkirt);
 		useKeyOnDoor.addIcon(ItemID.BRONZE_KEY);
 		talkToAli = new NpcStep(this, NpcID.PRINCE_ALI, new WorldPoint(3123, 3240, 0), "Talk to Prince Ali and free him.", key, dyedWig, paste, pinkSkirt);
 

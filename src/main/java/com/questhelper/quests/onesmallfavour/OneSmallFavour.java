@@ -212,7 +212,7 @@ public class OneSmallFavour extends BasicQuestHelper
 		fightSlagilith.addStep(slagilithNearby, killSlagilith);
 		fightSlagilith.addStep(inScrollSpot, readScroll);
 		fightSlagilith.addStep(inGoblinCave, standNextToSculpture);
-		fightSlagilith.addStep(pigeonCages5, enterGoblinCaveAgain);
+		fightSlagilith.addStep(pigeonCages5.alsoCheckBank(questBank), enterGoblinCaveAgain);
 
 		steps.put(145, fightSlagilith);
 		steps.put(150, fightSlagilith);
@@ -221,7 +221,7 @@ public class OneSmallFavour extends BasicQuestHelper
 		freePetra.addStep(petraNearby, talkToPetra);
 		freePetra.addStep(inScrollSpot, readScroll);
 		freePetra.addStep(inGoblinCave, standNextToSculpture);
-		freePetra.addStep(pigeonCages5, enterGoblinCaveAgain);
+		freePetra.addStep(pigeonCages5.alsoCheckBank(questBank), enterGoblinCaveAgain);
 
 		steps.put(152, freePetra);
 		steps.put(155, freePetra);
@@ -609,7 +609,7 @@ public class OneSmallFavour extends BasicQuestHelper
 		enterGoblinCave = new ObjectStep(this, ObjectID.CAVE_ENTRANCE, new WorldPoint(2624, 3393, 0), "Enter the cave south east of the Fishing Guild.");
 		searchWall = new ObjectStep(this, ObjectID.SCULPTURE, new WorldPoint(2621, 9835, 0), "Right-click search the sculpture in the wall in the north east corner of the cave.");
 
-		talkToCromperty = new NpcStep(this, NpcID.WIZARD_CROMPERTY, new WorldPoint(2684, 3323, 0), "Talk to Wizard Crompety in north east Ardougne.");
+		talkToCromperty = new NpcStep(this, NpcID.WIZARD_CROMPERTY, new WorldPoint(2684, 3323, 0), "Talk to Wizard Cromperty in north east Ardougne.");
 		talkToCromperty.addDialogStep("I need to talk to you about a girl stuck in some rock!");
 		talkToCromperty.addDialogStep("Oh! Ok, one more 'small favour' isn't going to kill me...I hope!");
 
@@ -668,12 +668,12 @@ public class OneSmallFavour extends BasicQuestHelper
 		returnToTindel = new NpcStep(this, NpcID.TINDEL_MARCHANT, new WorldPoint(2678, 3153, 0), "Return to Tindel Marchant in Port Khazard.", mattress);
 		returnToTindel.addDialogStep("I have the mattress.");
 
-		returnToCromperty = new NpcStep(this, NpcID.WIZARD_CROMPERTY, new WorldPoint(2684, 3323, 0), "Return to Wizard Crompety in north east Ardougne.", ironOxide);
+		returnToCromperty = new NpcStep(this, NpcID.WIZARD_CROMPERTY, new WorldPoint(2684, 3323, 0), "Return to Wizard Cromperty in north east Ardougne.", ironOxide);
 		returnToCromperty.addDialogStep("I have that iron oxide you asked for!");
 
-		getPigeonCages = new DetailedQuestStep(this, new WorldPoint(2618, 3325, 0), "Get 5 pigeon cage from behind Jerico's house in central East Ardougne.", pigeonCages5);
+		getPigeonCages = new DetailedQuestStep(this, new WorldPoint(2618, 3325, 0), "Get 5 pigeon cages from behind Jerico's house in central East Ardougne.", pigeonCages5);
 
-		enterGoblinCaveAgain = new ObjectStep(this, ObjectID.CAVE_ENTRANCE, new WorldPoint(2624, 3393, 0), "Enter the cave south east of the Fishing Guild. Be prepared to fight the Slagilith (level 92).", pigeonCages5, animateRockScroll);
+		enterGoblinCaveAgain = new ObjectStep(this, ObjectID.CAVE_ENTRANCE, new WorldPoint(2624, 3393, 0), "Enter the cave south east of the Fishing Guild. Be prepared to fight the Slagilith (level 92, weak to crush/magic).", pigeonCages5, animateRockScroll);
 		standNextToSculpture = new DetailedQuestStep(this, new WorldPoint(2616, 9835, 0), "Use the animate rock scroll next to the sculpture in the north east cavern.", animateRockScroll);
 		readScroll = new DetailedQuestStep(this, "Read the animate rock scroll.", animateRockScrollHighlight);
 
@@ -745,7 +745,7 @@ public class OneSmallFavour extends BasicQuestHelper
 		returnToHammerspike = new NpcStep(this, NpcID.HAMMERSPIKE_STOUTBEARD, new WorldPoint(2968, 9811, 0), "Return to Hammerspike Stoutbeard in the west cavern of the Dwarven Mine.");
 		returnToHammerspike.addSubSteps(goDownToHammerspikeAgain);
 
-		killGangMembers = new NpcStep(this, NpcID.DWARF_GANG_MEMBER, new WorldPoint(2968, 9811, 0), "Kill dwarf gang members until Hammerspike gives in.");
+		killGangMembers = new NpcStep(this, NpcID.DWARF_GANG_MEMBER, new WorldPoint(2968, 9811, 0), "Kill 3 dwarf gang members until Hammerspike gives in. One dwarf gang member should appear after each kill");
 		talkToHammerspikeFinal = new NpcStep(this, NpcID.HAMMERSPIKE_STOUTBEARD, new WorldPoint(2968, 9811, 0), "Return to Hammerspike Stoutbeard in the west cavern of the Dwarven Mine.");
 		returnToTassie = new NpcStep(this, NpcID.TASSIE_SLIPCAST, new WorldPoint(3085, 3409, 0), "Return to Tassie Slipcast in the Barbarian Village pottery building.");
 		spinPotLid = new ObjectStep(this, ObjectID.POTTERS_WHEEL_14887, new WorldPoint(3087, 3409, 0), "Spin the clay into a pot lid.", softClay);
@@ -811,7 +811,7 @@ public class OneSmallFavour extends BasicQuestHelper
 	@Override
 	public List<String> getCombatRequirements()
 	{
-		return Collections.singletonList("Slagilith (level 92)");
+		return Arrays.asList("Slagilith (level 92)", "3x Dwarf gang members (level 44)");
 	}
 
 	@Override
@@ -859,12 +859,13 @@ public class OneSmallFavour extends BasicQuestHelper
 			talkToHorvik, talkToApoth, talkToTassie, talkToHammerspike, talkToSanfew, makeGuthixRest, talkToBleemadge, talkToArhein, talkToPhantuwti, enterGoblinCave,
 			searchWall, talkToCromperty, talkToTindel, talkToRantz, talkToGnormadium, fixAllLamps),
 			chisel, steelBars3, emptyCup, hotWaterBowl, guam2, marrentill, harralander));
-		allSteps.add(new PanelDetails("Completing the favours", Arrays.asList(talkToGnormadiumAgain, returnToRantz, returnToTindel, returnToCromperty,
-			enterGoblinCaveAgain, standNextToSculpture, killSlagilith, readScrollAgain, talkToPetra, returnToPhantuwti, searchVane, useHammerOnVane, searchVaneAgain,
-			useVane123OnAnvil, goBackUpLadder, finishWithPhantuwti, returnToArhein, returnToBleemadge, returnToSanfew, returnToHammerspike, killGangMembers,
-			talkToHammerspikeFinal, returnToTassie, spinPotLid, firePotLid, pickUpPot, usePotLidOnPot, returnToApothecary, returnToHorvik, talkToHorvikFinal,
-			returnToSeth, returnToJohnahus, returnToAggie, returnToBrian, returnToForester, returnToYanni), bronzeBar
-			, ironBar, steelBar, hammer, pot));
+		allSteps.add(new PanelDetails("Completing the favours", Arrays.asList(talkToGnormadiumAgain, returnToRantz,
+			returnToTindel, returnToCromperty, getPigeonCages, enterGoblinCaveAgain, standNextToSculpture, killSlagilith,
+			readScrollAgain, talkToPetra, returnToPhantuwti, searchVane, useHammerOnVane, searchVaneAgain,
+			useVane123OnAnvil, goBackUpLadder, finishWithPhantuwti, returnToArhein, returnToBleemadge, returnToSanfew,
+			returnToHammerspike, killGangMembers, talkToHammerspikeFinal, returnToTassie, spinPotLid, firePotLid, pickUpPot,
+			usePotLidOnPot, returnToApothecary, returnToHorvik, talkToHorvikFinal, returnToSeth, returnToJohnahus, returnToAggie,
+			returnToBrian, returnToForester, returnToYanni), bronzeBar, ironBar, steelBar, hammer, pot));
 
 		return allSteps;
 	}

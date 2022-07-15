@@ -71,9 +71,11 @@ public class WaterfallQuest extends BasicQuestHelper
 		inGolrieRoom, gotPebble, inEndRoom, inEnd2;
 
 	QuestStep talkToAlmera, boardRaft, talkToHudon, useRopeOnRock, useRopeOnTree, getInBarrel, goUpstairsHadley, searchBookcase,
-		readBook, enterGnomeDungeon, searchGnomeCrate, enterGnomeDoor, talkToGolrie, usePebble, searchGlarialChest, searchGlarialCoffin,
+		readBook, enterGnomeDungeon, searchGnomeCrate, enterGnomeDoor, talkToGolrie, usePebble, searchGlarialCoffin,
 		getFinalItems, boardRaftFinal, useRopeOnRockFinal, useRopeOnTreeFinal, enterFalls, searchFallsCrate, useKeyOnFallsDoor,
 		useRunes, useAmuletOnStatue, useUrnOnChalice;
+
+	ObjectStep searchGlarialChest;
 
 	ConditionalStep goGetPebble, getGlarialStuff;
 
@@ -225,6 +227,7 @@ public class WaterfallQuest extends BasicQuestHelper
 		usePebble.addIcon(ItemID.GLARIALS_PEBBLE);
 
 		searchGlarialChest = new ObjectStep(this, ObjectID.CHEST_1994, new WorldPoint(2530, 9844, 0), "Search the chest in the western room.");
+		searchGlarialChest.addAlternateObjects(ObjectID.CHEST_1995);
 		searchGlarialCoffin = new ObjectStep(this, ObjectID.GLARIALS_TOMB, new WorldPoint(2542, 9812, 0), "Search Glarial's Tomb in the south room.");
 		getFinalItems = new DetailedQuestStep(this, "Leave Glarial's Tomb and get 6 air, water and earth runes, a rope, glarial's amulet, glarial's urn, a rope, and some food.", airRunes, earthRunes, waterRunes, glarialsAmulet, glarialsUrn, rope);
 
@@ -244,7 +247,7 @@ public class WaterfallQuest extends BasicQuestHelper
 		useAmuletOnStatue = new ObjectStep(this, ObjectID.STATUE_OF_GLARIAL, new WorldPoint(2603, 9915, 0), "Use Glarial's amulet on the Statue of Glarial", unequippedAmulet);
 		useAmuletOnStatue.addIcon(ItemID.GLARIALS_AMULET);
 
-		useUrnOnChalice = new ObjectStep(this, ObjectID.CHALICE, new WorldPoint(2604, 9911, 0), "Use Glarial's urn on the Chalice to finish the quest.", glarialsUrn);
+		useUrnOnChalice = new ObjectStep(this, ObjectID.CHALICE, new WorldPoint(2604, 9911, 0), "DO NOT LEFT-CLICK THE CHALICE! Use Glarial's urn on the Chalice to finish the quest.", glarialsUrn);
 		useUrnOnChalice.addIcon(ItemID.GLARIALS_URN);
 	}
 

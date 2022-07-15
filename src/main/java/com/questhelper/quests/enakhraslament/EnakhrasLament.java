@@ -33,6 +33,7 @@ import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.player.PrayerRequirement;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.player.SpellbookRequirement;
 import com.questhelper.requirements.var.VarbitRequirement;
@@ -58,6 +59,7 @@ import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.NullObjectID;
 import net.runelite.api.ObjectID;
+import net.runelite.api.Prayer;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
 
@@ -78,7 +80,7 @@ public class EnakhrasLament extends BasicQuestHelper
 		inTempleGroundFloor, startedTemple, gottenLimbs, openedDoor1, openedDoor2, openedDoor3, openedDoor4, mPlaced, kPlaced,
 		rPlaced, zPlaced, goneUpstairs, hasGottenRightArm, hasGottenRightLeg, inCentreRoom, inPuzzleFloor,
 		fedBread, meltedFountain, cleanedFurnace, litBraziers, litLog, litOak, litWillow, litMaple, litCandle, litCoal, inNorthPuzzleRoom,
-		inTopRoom, inLastRoom, wallNeedsChisel, finishedWall;
+		inTopRoom, inLastRoom, wallNeedsChisel, finishedWall, protectFromMelee;
 
 	DetailedQuestStep talkToLazim, bringLazim32Sandstone, useChiselOn32Sandstone, placeBase, bringLazim20Sandstone,
 		useChiselOn20Sandstone, placeBody, talkToLazimToChooseHead, getGranite, craftHead, talkToLazimAboutBody,
@@ -122,10 +124,10 @@ public class EnakhrasLament extends BasicQuestHelper
 		exploreBottomLayer.addStep(camelMould, useChiselOnGranite);
 		exploreBottomLayer.addStep(inPuzzleFloor, useSoftClayOnPedestal);
 		exploreBottomLayer.addStep(new Conditions(gottenLimbs, inTempleGroundFloor, openedDoor1, openedDoor2, openedDoor3, openedDoor4), goUpToPuzzles);
-		exploreBottomLayer.addStep(new Conditions(gottenLimbs, inTempleGroundFloor, openedDoor1, openedDoor2, openedDoor3, kSigil), enterDoor4);
-		exploreBottomLayer.addStep(new Conditions(gottenLimbs, inTempleGroundFloor, openedDoor1, openedDoor2, openedDoor3), takeK);
-		exploreBottomLayer.addStep(new Conditions(gottenLimbs, inTempleGroundFloor, openedDoor1, openedDoor2, rSigil), enterDoor3);
-		exploreBottomLayer.addStep(new Conditions(gottenLimbs, inTempleGroundFloor, openedDoor1, openedDoor2), takeR);
+		exploreBottomLayer.addStep(new Conditions(gottenLimbs, inTempleGroundFloor, openedDoor1, openedDoor2, openedDoor3, rSigil), enterDoor4);
+		exploreBottomLayer.addStep(new Conditions(gottenLimbs, inTempleGroundFloor, openedDoor1, openedDoor2, openedDoor3), takeR);
+		exploreBottomLayer.addStep(new Conditions(gottenLimbs, inTempleGroundFloor, openedDoor1, openedDoor2, kSigil), enterDoor3);
+		exploreBottomLayer.addStep(new Conditions(gottenLimbs, inTempleGroundFloor, openedDoor1, openedDoor2), takeK);
 		// It's possible to skip the rest of this, but it skips some of the quest story and leaves doors locked after you finish, so this encourages players to explore
 		exploreBottomLayer.addStep(new Conditions(gottenLimbs, inTempleGroundFloor, openedDoor1, zSigil), enterDoor2);
 		exploreBottomLayer.addStep(new Conditions(gottenLimbs, inTempleGroundFloor, openedDoor1), takeZ);
@@ -237,9 +239,9 @@ public class EnakhrasLament extends BasicQuestHelper
 		breadOrCake.setHighlightInInventory(true);
 		breadOrCake.setDisplayMatchedItemName(true);
 
-		airSpellRunes = new ItemRequirement("Runes for an air spell", -1, -1);
+		airSpellRunes = new ItemRequirement("Runes to cast Wind Bolt or stronger", -1, -1);
 		airSpellRunes.setDisplayItemId(ItemID.AIR_RUNE);
-		fireSpellRunes = new ItemRequirement("Runes for a fire spell", -1, -1);
+		fireSpellRunes = new ItemRequirement("Runes to cast Fire Bolt or stronger", -1, -1);
 		fireSpellRunes.setDisplayItemId(ItemID.FIRE_RUNE);
 		crumbleUndeadRunes = new ItemRequirement("Runes for crumble undead spell", -1, -1);
 		crumbleUndeadRunes.setDisplayItemId(ItemID.SKULL);
@@ -333,6 +335,8 @@ public class EnakhrasLament extends BasicQuestHelper
 
 		wallNeedsChisel = new VarbitRequirement(1620, 1);
 		finishedWall = new VarbitRequirement(1602, 3);
+
+		protectFromMelee = new PrayerRequirement("Protect from Melee", Prayer.PROTECT_FROM_MELEE);
 	}
 
 	public void setupSteps()
@@ -386,10 +390,14 @@ public class EnakhrasLament extends BasicQuestHelper
 		talkToLazimForHead = new NpcStep(this, NpcID.LAZIM, new WorldPoint(3127, 9324, 0), "Talk to Lazim in the temple for the stone head.");
 		talkToLazimForHead.addDialogStep("Do you know where the statue's head is?");
 
-		enterDoor1 = new ObjectStep(this, ObjectID.DOOR_11066, new WorldPoint(3126, 9337, 0), "Enter the right arm door.", rightArm);
-		enterDoor2 = new ObjectStep(this, ObjectID.DOOR_11068, new WorldPoint(3079, 9334, 0), "Enter the left leg door.", leftLeg);
-		enterDoor3 = new ObjectStep(this, ObjectID.DOOR_11064, new WorldPoint(3082, 9387, 0), "Enter the left arm door.", leftArm);
-		enterDoor4 = new ObjectStep(this, ObjectID.DOOR_11070, new WorldPoint(3129, 9290, 0), "Enter the right leg door.", rightLeg);
+		enterDoor1 = new ObjectStep(this, ObjectID.DOOR_11066, new WorldPoint(3126, 9337, 0), "Enter the right arm door.", rightArm.highlighted());
+		enterDoor1.addIcon(ItemID.STONE_RIGHT_ARM);
+		enterDoor2 = new ObjectStep(this, ObjectID.DOOR_11068, new WorldPoint(3079, 9334, 0), "Enter the left leg door.", leftLeg.highlighted());
+		enterDoor2.addIcon(ItemID.STONE_LEFT_LEG);
+		enterDoor3 = new ObjectStep(this, ObjectID.DOOR_11064, new WorldPoint(3082, 9287, 0), "Enter the left arm door.", leftArm.highlighted());
+		enterDoor3.addIcon(ItemID.STONE_LEFT_ARM);
+		enterDoor4 = new ObjectStep(this, ObjectID.DOOR_11070, new WorldPoint(3129, 9290, 0), "Enter the right leg door.", rightLeg.highlighted());
+		enterDoor4.addIcon(ItemID.STONE_RIGHT_LEG);
 
 		enterKDoor = new ObjectStep(this, ObjectID.DOOR_11057, new WorldPoint(3111, 9312, 0), "Enter the door with a K.", kSigil);
 		enterRDoor = new ObjectStep(this, ObjectID.DOOR_11055, new WorldPoint(3104, 9319, 0), "Enter the door with an R.", rSigil);
@@ -398,12 +406,13 @@ public class EnakhrasLament extends BasicQuestHelper
 
 		goUpToPuzzles = new ObjectStep(this, ObjectID.LADDER_11041, new WorldPoint(3104, 9309, 0), "Open the central room's doors using the metal letters. Go up the ladder in the central room.");
 
-		useSoftClayOnPedestal = new ObjectStep(this, NullObjectID.NULL_10987, new WorldPoint(3104, 9312, 1), "Use soft clay on the pedestal.", softClay);
+			useSoftClayOnPedestal = new ObjectStep(this, NullObjectID.NULL_10987, new WorldPoint(3104, 9312, 1),
+				"Use soft clay on the pedestal.", softClay.highlighted());
 		useChiselOnGranite = new DetailedQuestStep(this, "Use a chisel on granite (5kg).", granite, chiselHighlighted);
 		useStoneHeadOnPedestal = new ObjectStep(this, NullObjectID.NULL_10987, new WorldPoint(3104, 9312, 1), "Use the camel stone head on the pedestal.", camelHead);
 		useStoneHeadOnPedestal.addIcon(ItemID.STONE_HEAD_7002);
 
-		useBread = new NpcStep(this, NpcID.PENTYN, new WorldPoint(3091, 9324, 1), "Use bread or cake on Pentyn.", breadOrCake);
+		useBread = new NpcStep(this, NpcID.PENTYN, new WorldPoint(3091, 9324, 1), "Right-click use bread or cake on Pentyn.",	breadOrCake.highlighted());
 		castFireSpell = new NpcStep(this, NpcID.CRUST_OF_ICE, new WorldPoint(3092, 9308, 1), "Cast a fire spell on the frozen fountain.", fireSpellRunes, onNormals);
 		castAirSpell = new NpcStep(this, NpcID.FURNACE_GRATE, new WorldPoint(3116, 9323, 1), "Cast an air spell on the furnace.", airSpellRunes, onNormals);
 		useMapleLog = new ObjectStep(this, NullObjectID.NULL_11014, new WorldPoint(3114, 9309, 1), "Use a maple log on the north west brazier.", mapleLog);
@@ -427,13 +436,14 @@ public class EnakhrasLament extends BasicQuestHelper
 
 		goDownToFinalRoom = new ObjectStep(this, ObjectID.STONE_LADDER_11044, new WorldPoint(3105, 9300, 2), "Climb down the stone ladder past the Boneguard.");
 
-		protectThenTalk = new NpcStep(this, NpcID.BONEGUARD_3577, new WorldPoint(3105, 9297, 1), "Put on Protect from Melee, then talk to the Boneguard.");
+		protectThenTalk = new NpcStep(this, NpcID.BONEGUARD_3577, new WorldPoint(3105, 9297, 1),
+			"Put on Protect from Melee, then talk to the Boneguard.", protectFromMelee);
 		repairWall = new ObjectStep(this, NullObjectID.NULL_11027, new WorldPoint(3107, 9291, 1), "Take sandstone from the nearby rubble, and use it to repair the south wall. For each piece added, use a chisel on the wall.", sandstone5);
-		repairWall.addDialogStep("Of course I'll help you out.");
+		repairWall.addDialogSteps("Of course, I'll help you out.", "Okay, I'll start building.");
 		repairWall.addIcon(ItemID.SANDSTONE_5KG);
 
 		useChiselOnWall = new ObjectStep(this, NullObjectID.NULL_11027, new WorldPoint(3107, 9291, 1), "Use a chisel on the wall.", chiselHighlighted);
-		useChiselOnWall.addDialogStep("Of course I'll help you out.");
+		useChiselOnWall.addDialogSteps("Of course, I'll help you out.", "Okay, I'll start building.");
 		useChiselOnWall.addIcon(ItemID.CHISEL);
 
 		talkToAkthankos = new NpcStep(this, NpcID.BONEGUARD_3577, new WorldPoint(3105, 9297, 1), "Talk to the Boneguard to finish the quest.");

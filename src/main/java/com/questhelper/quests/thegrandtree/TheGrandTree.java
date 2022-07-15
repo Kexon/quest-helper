@@ -58,6 +58,7 @@ import net.runelite.api.InventoryID;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.ObjectID;
+import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
 
@@ -152,8 +153,17 @@ public class TheGrandTree extends BasicQuestHelper
 
 		// Tuzo
 		goTalkToCharlie3 = goTalkToCharlie.copy();
-		goTalkToCharlie3.setText("Return to Charlie. If entering the Stronghold through the south entrance you'll " +
-			"need to talk to Femi there. If you didn't help them previously you'll need to pay them 1k.");
+		if (QuestHelperQuest.TREE_GNOME_VILLAGE.getState(client) == QuestState.FINISHED)
+		{
+			goTalkToCharlie3.setText("Return to Charlie. You won't be able to enter through the main entrance, so " +
+				"make use of a Spirit Tree to enter the Tree Gnome Stronghold. The easiest tree to use is the one in " +
+				"the Grand Exchange.");
+		}
+		else
+		{
+			goTalkToCharlie3.setText("Return to Charlie. If entering the Stronghold through the south entrance you'll " +
+				"need to talk to Femi there. If you didn't help them previously you'll need to pay them 1k.");
+		}
 		goTalkToCharlie3.addRequirement(lumberOrder);
 		steps.put(90, goTalkToCharlie3);
 
@@ -202,7 +212,7 @@ public class TheGrandTree extends BasicQuestHelper
 
 	public void setupItemRequirements()
 	{
-		oneThousandCoins = new ItemRequirement("Coins", ItemID.COINS_995, 1000);
+		oneThousandCoins = new ItemRequirement("Coins", ItemCollections.getCoins(), 1000);
 
 		accessToFairyRings = new ItemRequirement("Access to Fairy Rings", ItemID.DRAMEN_STAFF);
 		accessToFairyRings.addAlternates(ItemID.LUNAR_STAFF);
@@ -282,7 +292,8 @@ public class TheGrandTree extends BasicQuestHelper
 		goToStronghold = new DetailedQuestStep(this, locationBottomOfGrandTree, "Travel to the Tree Gnome Stronghold.");
 
 		// Getting Started
-		talkToKingNarnode = new NpcStep(this, NpcID.KING_NARNODE_SHAREEN, locationBottomOfGrandTree, "Talk to King Narnode Shareen in the Grand Tree.");
+		talkToKingNarnode = new NpcStep(this, NpcID.KING_NARNODE_SHAREEN, locationBottomOfGrandTree, "Talk to King Narnode Shareen in the Grand Tree" +
+			"(Make sure to have two empty inventory slots to start the quest).");
 		talkToKingNarnode.addDialogSteps("You seem worried, what's up?", "I'd be happy to help!");
 		talkToKingNarnodeCaves = new NpcStep(this, NpcID.KING_NARNODE_SHAREEN, new WorldPoint(2465, 9895, 0),
 			"Talk to King Narnode.");
@@ -389,7 +400,7 @@ public class TheGrandTree extends BasicQuestHelper
 		climbDownTrapDoor = new ObjectStep(this, ObjectID.TRAPDOOR_26243, "Go down the trap door. Be prepared for the fight against a Black Demon (level 172).");
 		talkToGloughBeforeFight = new NpcStep(this, NpcID.GLOUGH, "Talk to Glough. You can safespot the Demon from where he stands.");
 		killBlackDemon = new NpcStep(this, NpcID.BLACK_DEMON_1432, "Kill the black Demon. You can safespot from where Glough stands.");
-		((NpcStep) killBlackDemon).addSafeSpots(new WorldPoint(2487, 9858, 0));
+		((NpcStep) killBlackDemon).addSafeSpots(new WorldPoint(2492, 9865, 0));
 		climbDownTrapDoorAfterFight = new ObjectStep(this, ObjectID.TRAPDOOR_26243, "Go down the trap door again.");
 		talkToKingAfterFight = new NpcStep(this, NpcID.KING_NARNODE_SHAREEN, new WorldPoint(2465, 9895, 0), "Talk to King Narnode deeper in the cave.");
 		talkToKingAfterFight.addSubSteps(climbDownTrapDoorAfterFight);

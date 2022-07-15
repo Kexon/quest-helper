@@ -73,7 +73,7 @@ public class CreatureOfFenkenstrain extends BasicQuestHelper
 	ItemRequirement armor, hammer, ghostSpeakAmulet, silverBar, bronzeWire, needle, thread, spade, coins, telegrabOrCoins, pickledBrain,
 		obsidianAmulet, marbleAmulet, starAmulet, decapitatedHead, decapitatedHeadWithBrain, cavernKey, torso, legs, arms,
 		shedKey, brush, canes, extendedBrush3, conductorMould, lightningRod, towerKey,
-		fenkenstrainTeleports, teleportToFurnance, staminaPotion;
+		fenkenstrainTeleports, teleportToFurnace, staminaPotion;
 	Zone barZone, castleZoneFloor0, castleZoneFloor1, experimentCave, graveIsland, castleTower, monsterTower;
 	Requirement inCanifisBar, inCastleFloor0, inCastleFloor1, followingGardenerForHead, putStarOnGrave, inExperiementCave,
 		inGraveIsland, inCastleTower, usedTowerKey, inMonsterTower, keyNearby, hasDecapitatedHeadWithBrain, hasArm, hasLegs,
@@ -153,7 +153,7 @@ public class CreatureOfFenkenstrain extends BasicQuestHelper
 	{
 		ItemRequirement telegrab = new ItemRequirements("Telegrab runes", new ItemRequirement("Law rune",
 			ItemID.LAW_RUNE), new ItemRequirement("Air rune", ItemID.AIR_RUNE));
-		ItemRequirement coins50 = new ItemRequirement("Coins", ItemID.COINS_995, 50);
+		ItemRequirement coins50 = new ItemRequirement("Coins", ItemCollections.getCoins(), 50);
 
 		// TODO: Add magic req once rebased
 		telegrabOrCoins = new ItemRequirements(LogicType.OR,
@@ -166,7 +166,7 @@ public class CreatureOfFenkenstrain extends BasicQuestHelper
 		needle = new ItemRequirement("Needle", ItemID.NEEDLE);
 		thread = new ItemRequirement("Threads", ItemID.THREAD, 5);
 		spade = new ItemRequirement("Spade", ItemID.SPADE);
-		coins = new ItemRequirement("Coins at least", ItemID.COINS_995, 100);
+		coins = new ItemRequirement("Coins at least", ItemCollections.getCoins(), 100);
 		pickledBrain = new ItemRequirement("Pickled Brain", ItemID.PICKLED_BRAIN);
 		obsidianAmulet = new ItemRequirement("Obsidian Amulet", ItemID.OBSIDIAN_AMULET);
 		marbleAmulet = new ItemRequirement("Marble Amulet", ItemID.MARBLE_AMULET);
@@ -175,7 +175,7 @@ public class CreatureOfFenkenstrain extends BasicQuestHelper
 		decapitatedHeadWithBrain = new ItemRequirement("Decapitated Head (with brain)", ItemID.DECAPITATED_HEAD_4198);
 		armor = new ItemRequirement("Armour and weapons defeat a level 51 monster and run past level 72 monsters", -1, -1);
 		armor.setDisplayItemId(BankSlotIcons.getCombatGear());
-		cavernKey = new ItemRequirement("Tavern Key", ItemID.CAVERN_KEY);
+		cavernKey = new ItemRequirement("Cavern Key", ItemID.CAVERN_KEY);
 		torso = new ItemRequirement("Torso", ItemID.TORSO);
 		legs = new ItemRequirement("Legs", ItemID.LEGS);
 		arms = new ItemRequirement("Arms", ItemID.ARMS);
@@ -189,9 +189,9 @@ public class CreatureOfFenkenstrain extends BasicQuestHelper
 		towerKey = new ItemRequirement("Tower Key", ItemID.TOWER_KEY);
 
 		fenkenstrainTeleports = new ItemRequirement("Fenkenstrain's Castle Teleport", ItemID.FENKENSTRAINS_CASTLE_TELEPORT, 2);
-		teleportToFurnance = new ItemRequirement("Teleport to any furnance such as glory for edgeville teleport, ectophial to Port Phasmatys or a Falador teleport",
+		teleportToFurnace = new ItemRequirement("Teleport to any furnace such as glory for Edgeville teleport, Ectophial to Port Phasmatys or a Falador teleport",
 			ItemCollections.getAmuletOfGlories());
-		teleportToFurnance.addAlternates(ItemID.ECTOPHIAL, ItemID.FALADOR_TELEPORT);
+		teleportToFurnace.addAlternates(ItemID.ECTOPHIAL, ItemID.FALADOR_TELEPORT);
 		staminaPotion = new ItemRequirement("Stamina potions", ItemCollections.getStaminaPotions(), -1);
 	}
 
@@ -351,7 +351,7 @@ public class CreatureOfFenkenstrain extends BasicQuestHelper
 		goBackToFirstFloor = new DetailedQuestStep(this, "Go back to the first floor of the castle and talk to Dr" +
 			".Fenkenstrain.");
 		talkToFenkenstrainAfterFixingRod = new NpcStep(this, NpcID.DR_FENKENSTRAIN, new WorldPoint(3551, 3548, 0),
-			"Go back to the the first floor of the castle and talk to Dr.Fenkenstrain.");
+			"Go back to the first floor of the castle and talk to Dr.Fenkenstrain.");
 
 		goToMonsterFloor1 = new ObjectStep(this, ObjectID.STAIRCASE_5206, new WorldPoint(3538, 3552, 0),
 			"Go up to the second floor to confront Fenkenstrain's monster.");
@@ -377,7 +377,7 @@ public class CreatureOfFenkenstrain extends BasicQuestHelper
 	{
 		ArrayList<ItemRequirement> reqs = new ArrayList<>();
 		reqs.add(fenkenstrainTeleports);
-		reqs.add(teleportToFurnance);
+		reqs.add(teleportToFurnace);
 		reqs.add(staminaPotion);
 
 		return reqs;

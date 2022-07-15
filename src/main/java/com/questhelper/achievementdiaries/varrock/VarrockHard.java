@@ -114,10 +114,6 @@ public class VarrockHard extends ComplexStateQuestHelper
 		doHard.addStep(new Conditions(notYewChurch, cutYewTree), goUp1);
 		doHard.addStep(notYewChurch, cutYew);
 		doHard.addStep(notFancyStone, fancyStone);
-		doHard.addStep(new Conditions(notYewRoots, yewStump), digUpYewRoots);
-		doHard.addStep(new Conditions(notYewRoots, yewChecked), chopYew);
-		doHard.addStep(new Conditions(notYewRoots, yewNotChecked), chopYew);
-		doHard.addStep(notYewRoots, growYew);
 		doHard.addStep(new Conditions(notSmiteAltar, inUpstairs, smiteActive), prayAtAltar);
 		doHard.addStep(new Conditions(notSmiteAltar, inUpstairs), activateSmite);
 		doHard.addStep(notSmiteAltar, moveToUpstairs);
@@ -127,16 +123,23 @@ public class VarrockHard extends ComplexStateQuestHelper
 		doHard.addStep(notPipe, moveToEdge);
 		doHard.addStep(new Conditions(notSkullSceptre, combinedSkullSceptre.alsoCheckBank(questBank)), skullSceptre);
 		doHard.addStep(new Conditions(notSkullSceptre, runedSceptre.alsoCheckBank(questBank), strangeSkull.alsoCheckBank(questBank)), makeSkullSceptre);
-		doHard.addStep(new Conditions(notSkullSceptre, botSceptre.alsoCheckBank(questBank), topSceptre), makeSceptre);
+		doHard.addStep(new Conditions(notSkullSceptre, botSceptre.alsoCheckBank(questBank), topSceptre.alsoCheckBank(questBank)), makeSceptre);
 		doHard.addStep(new Conditions(notSkullSceptre, leftSkull.alsoCheckBank(questBank), rightSkull.alsoCheckBank(questBank)), makeSkull);
 		doHard.addStep(new Conditions(notSkullSceptre, inStronghold4), killAnkou);
-		doHard.addStep(new Conditions(notSkullSceptre, rightSkull.alsoCheckBank(questBank), inStronghold3), moveToStronghold4);
+		doHard.addStep(new Conditions(new Conditions(LogicType.OR, topSceptre.alsoCheckBank(questBank), runedSceptre.alsoCheckBank(questBank)),
+			notSkullSceptre, inStronghold3), moveToStronghold4);
 		doHard.addStep(new Conditions(notSkullSceptre, inStronghold3), killCatablepon);
-		doHard.addStep(new Conditions(notSkullSceptre, botSceptre.alsoCheckBank(questBank), inStronghold2), moveToStronghold3);
+		doHard.addStep(new Conditions(new Conditions(LogicType.OR, botSceptre.alsoCheckBank(questBank), runedSceptre.alsoCheckBank(questBank)),
+			notSkullSceptre, inStronghold2), moveToStronghold3);
 		doHard.addStep(new Conditions(notSkullSceptre, inStronghold2), killFlesh);
-		doHard.addStep(new Conditions(notSkullSceptre, rightSkull.alsoCheckBank(questBank), inStronghold1), moveToStronghold2);
+		doHard.addStep(new Conditions(new Conditions(LogicType.OR, rightSkull.alsoCheckBank(questBank), strangeSkull.alsoCheckBank(questBank)),
+				notSkullSceptre, inStronghold1), moveToStronghold2);
 		doHard.addStep(new Conditions(notSkullSceptre, inStronghold1), killMino);
 		doHard.addStep(notSkullSceptre, moveToStronghold);
+		doHard.addStep(new Conditions(notYewRoots, yewStump), digUpYewRoots);
+		doHard.addStep(new Conditions(notYewRoots, yewChecked), chopYew);
+		doHard.addStep(new Conditions(notYewRoots, yewNotChecked), chopYew);
+		doHard.addStep(notYewRoots, growYew);
 
 		return doHard;
 	}
@@ -164,23 +167,18 @@ public class VarrockHard extends ComplexStateQuestHelper
 		yewChecked = new VarbitRequirement(4771, 46);
 		yewStump = new VarbitRequirement(4771, 47);
 
-		// We consider the combined sceptre bits for logic checks (if have runed sceptre, don't need bottom for example)
 		botSceptre = new ItemRequirement("Bottom of sceptre", ItemID.BOTTOM_OF_SCEPTRE).showConditioned(notSkullSceptre);
-		botSceptre.addAlternates(ItemID.RUNED_SCEPTRE);
 		topSceptre = new ItemRequirement("Top of sceptre", ItemID.TOP_OF_SCEPTRE).showConditioned(notSkullSceptre);
-		topSceptre.addAlternates(ItemID.RUNED_SCEPTRE);
 		leftSkull = new ItemRequirement("Left skull half", ItemID.LEFT_SKULL_HALF).showConditioned(notSkullSceptre);
-		leftSkull.addAlternates(ItemID.STRANGE_SKULL);
 		rightSkull = new ItemRequirement("Right skull half", ItemID.RIGHT_SKULL_HALF).showConditioned(notSkullSceptre);
-		rightSkull.addAlternates(ItemID.STRANGE_SKULL);
-
 		strangeSkull = new ItemRequirement("Strange skull", ItemID.STRANGE_SKULL).showConditioned(notSkullSceptre);
 		runedSceptre = new ItemRequirement("Runed sceptre", ItemID.RUNED_SCEPTRE).showConditioned(notSkullSceptre);
 		combinedSkullSceptre = new ItemRequirement("Skull sceptre", ItemID.SKULL_SCEPTRE).showConditioned(notSkullSceptre);
 		dashingKeb = new ItemRequirement("Dashing kebbit fur", ItemID.DASHING_KEBBIT_FUR).showConditioned(notSpottyCape);
 		coins = new ItemRequirement("Coins", ItemCollections.getCoins()).showConditioned(new Conditions(LogicType.OR, notSpottyCape, notFancyStone));
 		cape = new ItemRequirement("Spottier cape", ItemID.SPOTTIER_CAPE).showConditioned(notSpottyCape);
-		axe = new ItemRequirement("Any axe", ItemCollections.getAxes()).showConditioned(notWakkaEdge);
+		axe = new ItemRequirement("Any axe", ItemCollections.getAxes()).showConditioned(new Conditions(LogicType.OR,
+			notWakkaEdge, notYewChurch, notYewRoots));
 		lawRune = new ItemRequirement("Law rune", ItemID.LAW_RUNE).showConditioned(notPaddewwaTP);
 		airRune = new ItemRequirement("Air rune", ItemID.AIR_RUNE).showConditioned(notPaddewwaTP);
 		fireRune = new ItemRequirement("Fire rune", ItemID.FIRE_RUNE).showConditioned(notPaddewwaTP);
@@ -226,7 +224,7 @@ public class VarrockHard extends ComplexStateQuestHelper
 		inYewZone = new ZoneRequirement(new Zone(new WorldPoint(3225, 3456, 0), new WorldPoint(3254, 3478, 0)));
 		cutYewTree = new ChatMessageRequirement(
 			inYewZone,
-			"You get some yew logs."
+			"<col=0040ff>Achievement Diary Stage Task - Current stage: 1.</col>"
 		);
 		((ChatMessageRequirement) cutYewTree).setInvalidateRequirement(
 			new ChatMessageRequirement(
@@ -253,27 +251,27 @@ public class VarrockHard extends ComplexStateQuestHelper
 	public void setupSteps()
 	{
 		moveToStronghold = new ObjectStep(this, ObjectID.ENTRANCE_20790, new WorldPoint(3081, 3420, 0),
-			"Enter the Security Stronghold.");
+			"Enter the Security Stronghold.", combatGear, food);
 		killMino = new NpcStep(this, NpcID.MINOTAUR, new WorldPoint(1888, 5220, 0),
-			"Kill Minotaurs until you recieve a right skull half.", rightSkull);
+			"Kill Minotaurs until you recieve a right skull half.", rightSkull, combatGear, food);
 		killMino.addAlternateNpcs(NpcID.MINOTAUR_2482);
 		killMino.addAlternateNpcs(NpcID.MINOTAUR_2483);
 		moveToStronghold2 = new ObjectStep(this, ObjectID.LADDER_20785, new WorldPoint(1902, 5222, 0),
-			"Go to the 2nd floor of the stronghold.");
+			"Go to the 2nd floor of the stronghold.", combatGear, food);
 		killFlesh = new NpcStep(this, NpcID.FLESH_CRAWLER, new WorldPoint(2019, 5215, 0),
-			"Kill Flesh crawlers until you receive a bottom of sceptre.", botSceptre);
+			"Kill Flesh crawlers until you receive a bottom of sceptre.", combatGear, food, botSceptre);
 		killFlesh.addAlternateNpcs(NpcID.FLESH_CRAWLER_2499);
 		killFlesh.addAlternateNpcs(NpcID.FLESH_CRAWLER_2500);
 		moveToStronghold3 = new ObjectStep(this, ObjectID.LADDER_19004, new WorldPoint(2026, 5218, 0),
-			"Go to the 3rd floor of the stronghold.");
+			"Go to the 3rd floor of the stronghold.", combatGear, food);
 		killCatablepon = new NpcStep(this, NpcID.CATABLEPON, new WorldPoint(2144, 5281, 0),
-			"Kill Catablepons until you receive a top of sceptre.", topSceptre);
+			"Kill Catablepons until you receive a top of sceptre.", combatGear, food, topSceptre);
 		killCatablepon.addAlternateNpcs(NpcID.CATABLEPON_2475);
 		killCatablepon.addAlternateNpcs(NpcID.CATABLEPON_2476);
 		moveToStronghold4 = new ObjectStep(this, ObjectID.DRIPPING_VINE_23706, new WorldPoint(2148, 5284, 0),
-			"Go to the 4th floor of the stronghold.");
+			"Go to the 4th floor of the stronghold.", combatGear, food);
 		killAnkou = new NpcStep(this, NpcID.ANKOU, new WorldPoint(2344, 5213, 0),
-			"Kill Ankous until you receive a left skull half.", leftSkull);
+			"Kill Ankous until you receive a left skull half.", combatGear, food, leftSkull);
 		killAnkou.addAlternateNpcs(NpcID.ANKOU_2515);
 		killAnkou.addAlternateNpcs(NpcID.ANKOU_2516);
 		makeSkull = new ItemStep(this, "Use both skull halves together.", leftSkull.highlighted(),
@@ -281,7 +279,9 @@ public class VarrockHard extends ComplexStateQuestHelper
 		makeSceptre = new ItemStep(this, "Use the sceptre pieces together.", botSceptre.highlighted(), topSceptre.highlighted());
 		makeSkullSceptre = new ItemStep(this, "Use the runed sceptre and strange skull together.",
 			runedSceptre.highlighted(), strangeSkull.highlighted());
-		skullSceptre = new DetailedQuestStep(this, "Use the sceptre to teleport to the stronghold.", combinedSkullSceptre.highlighted());
+		skullSceptre = new DetailedQuestStep(this,
+			"Right-click on the Skull sceptre and select 'Invoke' to teleport to the stronghold.",
+			combinedSkullSceptre.highlighted());
 		getCape = new NpcStep(this, NpcID.ASYFF, new WorldPoint(3281, 3398, 0),
 			"Have Asyff make a spotty cape.", dashingKeb.quantity(2), coins.quantity(800));
 		getCape.addDialogStep("Could you make anything out of this fur that I got from hunting?");
@@ -293,7 +293,7 @@ public class VarrockHard extends ComplexStateQuestHelper
 		getKudos = new DetailedQuestStep(this, "Complete more quests and tasks for kudos. " +
 			"Check out the kudos wiki page for more details.");
 		wakkaEdge = new ObjectStep(this, 12166, new WorldPoint(3131, 3510, 0),
-			"Make a Wakka at the canoe station in Edgeville.", axe);
+			"Make a Waka at the canoe station in Edgeville.", axe);
 		paddewwaTP = new DetailedQuestStep(this, "Cast teleport to Paddewwa.", ancientBook, lawRune.quantity(2), airRune.quantity(1), fireRune.quantity(1));
 		cutYew = new ObjectStep(this, 10823, new WorldPoint(3249, 3473, 0),
 			"Cut a yew tree until you get a log.", axe);
@@ -358,8 +358,6 @@ public class VarrockHard extends ComplexStateQuestHelper
 		reqs.add(new SkillRequirement(Skill.HUNTER, 66));
 		reqs.add(new SkillRequirement(Skill.MAGIC, 54));
 		reqs.add(new SkillRequirement(Skill.PRAYER, 52));
-		reqs.add(new SkillRequirement(Skill.RANGED, 40));
-		reqs.add(new SkillRequirement(Skill.THIEVING, 53));
 		reqs.add(new SkillRequirement(Skill.WOODCUTTING, 60));
 		reqs.add(ancientBook);
 		reqs.add(desertTreasure);
@@ -398,7 +396,7 @@ public class VarrockHard extends ComplexStateQuestHelper
 		List<PanelDetails> allSteps = new ArrayList<>();
 
 		PanelDetails spottierCapeSteps = new PanelDetails("Trade for A Spottier Cape", Arrays.asList(getCape, spottyCape),
-			new SkillRequirement(Skill.HUNTER, 66, true), dashingKeb.quantity(2), coins.quantity(800));
+			new SkillRequirement(Skill.HUNTER, 66), dashingKeb.quantity(2), coins.quantity(800));
 		spottierCapeSteps.setDisplayCondition(notSpottyCape);
 		allSteps.add(spottierCapeSteps);
 
@@ -417,12 +415,6 @@ public class VarrockHard extends ComplexStateQuestHelper
 			new SkillRequirement(Skill.CONSTRUCTION, 50), coins.quantity(25000));
 		fancyStoneSteps.setDisplayCondition(notFancyStone);
 		allSteps.add(fancyStoneSteps);
-
-		PanelDetails yewRootsSteps = new PanelDetails("Yew Roots", Arrays.asList(growYew, chopYew, digUpYewRoots),
-			new SkillRequirement(Skill.FARMING, 68, true), new SkillRequirement(Skill.WOODCUTTING, 60), axe, spade,
-			rake, yewSap);
-		yewRootsSteps.setDisplayCondition(notYewRoots);
-		allSteps.add(yewRootsSteps);
 
 		PanelDetails smitedSteps = new PanelDetails("Altar Smited", Arrays.asList(moveToUpstairs, activateSmite,
 			prayAtAltar), new SkillRequirement(Skill.PRAYER, 52));
@@ -451,6 +443,11 @@ public class VarrockHard extends ComplexStateQuestHelper
 		skullSceptreSteps.setDisplayCondition(notSkullSceptre);
 		allSteps.add(skullSceptreSteps);
 
+		PanelDetails yewRootsSteps = new PanelDetails("Yew Roots", Arrays.asList(growYew, chopYew, digUpYewRoots),
+			new SkillRequirement(Skill.FARMING, 68, true), new SkillRequirement(Skill.WOODCUTTING, 60), axe, spade,
+			rake, yewSap);
+		yewRootsSteps.setDisplayCondition(notYewRoots);
+		allSteps.add(yewRootsSteps);
 
 		PanelDetails finishOffSteps = new PanelDetails("Finishing off", Collections.singletonList(claimReward));
 		allSteps.add(finishOffSteps);

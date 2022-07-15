@@ -24,6 +24,7 @@
  */
 package com.questhelper.quests.ghostsahoy;
 
+import com.questhelper.ItemCollections;
 import com.questhelper.QuestDescriptor;
 import com.questhelper.QuestHelperQuest;
 import com.questhelper.QuestVarbits;
@@ -224,7 +225,7 @@ public class GhostsAhoy extends BasicQuestHelper
 
 		ghostspeak = new ItemRequirement("Ghostspeak amulet", ItemID.GHOSTSPEAK_AMULET, 1, true);
 		enchantedGhostspeakEquipped = new ItemRequirement("Ghostspeak amulet", ItemID.GHOSTSPEAK_AMULET_4250, 1, true);
-		coins400 = new ItemRequirement("400+ coins", ItemID.COINS_995, -1);
+		coins400 = new ItemRequirement("400+ coins", ItemCollections.getCoins(), -1);
 		silk = new ItemRequirement("Silk", ItemID.SILK);
 		silkHighlighted = new ItemRequirement("Silk", ItemID.SILK);
 		silkHighlighted.setHighlightInInventory(true);
@@ -377,7 +378,7 @@ public class GhostsAhoy extends BasicQuestHelper
 			new WorldPoint(3605, 3564, 0)
 		));
 
-		useMapsTogether = new DetailedQuestStep(this, "Use the map pieces together.", mapPiece1, mapPiece2, mapPiece3);
+		useMapsTogether = new DetailedQuestStep(this, "Use the map pieces together.", mapPiece1.highlighted(), mapPiece2.highlighted(), mapPiece3.highlighted());
 
 		if (canUseCharos)
 		{

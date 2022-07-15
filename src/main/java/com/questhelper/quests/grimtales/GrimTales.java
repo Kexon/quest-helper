@@ -36,7 +36,7 @@ import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.var.VarbitRequirement;
-import com.questhelper.requirements.WidgetModelRequirement;
+import com.questhelper.requirements.widget.WidgetModelRequirement;
 import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.util.Operation;
@@ -288,6 +288,7 @@ public class GrimTales extends BasicQuestHelper
 	public void setupSteps()
 	{
 		talkToSylas = new NpcStep(this, NpcID.SYLAS, new WorldPoint(2892, 3454, 0), "Talk to Sylas in Taverley.");
+		talkToSylas.addDialogStep("Yes");
 		talkToGrimgnash = new NpcStep(this, NpcID.GRIMGNASH, new WorldPoint(2862, 3511, 0), "Talk to Grimgnash in the north east of White Wolf Mountain.");
 		talkToGrimgnash.addDialogSteps("I heard you were a great and mighty Griffin!", "There once was a graveyard filled with undead.", "There lived a skeleton named Skullrot.",
 			"Skullrot was insane!", "Skullrot hungrily grabbed the gnome's hair.", "Started to strangle the poor gnome.", "He saw some bones lying in the corner.");
@@ -347,7 +348,7 @@ public class GrimTales extends BasicQuestHelper
 		plantBean = new ObjectStep(this, NullObjectID.NULL_24884, new WorldPoint(2922, 3425, 0), "Plant the magic beans in the earth mound in south east Taverley", magicBeans, dibber, can);
 		plantBean.addIcon(ItemID.MAGIC_BEANS);
 
-		waterBean = new ObjectStep(this, NullObjectID.NULL_24884, new WorldPoint(2922, 3425, 0), "Plant the magic beans in the earth mound in south east Taverley", canHighlight);
+		waterBean = new ObjectStep(this, NullObjectID.NULL_24884, new WorldPoint(2922, 3425, 0), "Use your watering can on the magic beans you just planted in the earth mound", canHighlight);
 		waterBean.addIcon(ItemID.WATERING_CAN);
 
 		climbBean = new ObjectStep(this, NullObjectID.NULL_24884, new WorldPoint(2922, 3425, 0), "Climb the bean stalk, ready to fight Glod.", combatGear);
@@ -415,7 +416,7 @@ public class GrimTales extends BasicQuestHelper
 			Arrays.asList(climbWall, talkToDrainPipe, talkToDrainPipeAgain, climbBeard, talkToRupert, climbDownBeard,
 				talkToMiazrqa, enterWitchsHouse, enterWitchBasement, playPiano, searchPiano, makePotions, leaveBasement, drinkPotion,
 				climb1, climb2, climb3, climb4, climb5, takePendant, givePendant, talkToRupertAfterAmulet),
-			tarrominUnf2, food));
+			tarrominUnf2, houseKey, food));
 		allSteps.add(new PanelDetails("Golden goblin",
 			Arrays.asList(giveHelmetToSylas, plantBean, waterBean, climbBean, killGlod, pickUpGoldenGoblin,
 				giveGoldenGoblinToSylas, usePotionOnBean, chopBean, talkToSylasFinish), combatGear, food, dibber, can,

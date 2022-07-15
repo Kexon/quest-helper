@@ -34,7 +34,7 @@ import com.questhelper.banktab.BankSlotIcons;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.WidgetTextRequirement;
+import com.questhelper.requirements.widget.WidgetTextRequirement;
 import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.conditional.NpcCondition;
@@ -190,9 +190,9 @@ public class TaiBwoWannaiTrio extends BasicQuestHelper
 	private void setupSteps()
 	{
 		goToTimfrakuLadder = new ObjectStep(this, ObjectID.LADDER_16683, timfrakuHutWorldPoint,
-			"Talk Timfraku upstairs in his house in Tai Bwo Wannai.");
+			"Talk to Timfraku upstairs in his house in Tai Bwo Wannai.");
 
-		talkToTimfrakuStart = new NpcStep(this, NpcID.TIMFRAKU, "Talk Timfraku upstairs in his house in Tai Bwo Wannai.");
+		talkToTimfrakuStart = new NpcStep(this, NpcID.TIMFRAKU, "Talk to Timfraku upstairs in his house in Tai Bwo Wannai.");
 		talkToTimfrakuStart.addDialogSteps("I am a roving adventurer.", "I am a travelling explorer.", "I am a " +
 			"wandering wayfarer.", "Who me? Oh I'm just a nobody.");
 		talkToTimfrakuStart.addDialogStep("Trufitus sent me.");
@@ -323,7 +323,7 @@ public class TaiBwoWannaiTrio extends BasicQuestHelper
 			"sandwich.", seaweed.highlighted(), monkeySkin.highlighted());
 
 		talkToTinsay = new NpcStep(this, NpcID.TINSAY, new WorldPoint(2764, 2975, 0),
-			"Talk to Tinsay on Carin Isle west of Shilo Village, south of fairy ring CKR. Keep talking to him, giving" +
+			"Talk to Tinsay on Cairn Isle west of Shilo Village, south of fairy ring CKR. Keep talking to him, giving" +
 				" him the items he asks for.");
 		talkToTinsay.addDialogStep("Yes.");
 
@@ -403,7 +403,7 @@ public class TaiBwoWannaiTrio extends BasicQuestHelper
 			new WidgetTextRequirement(119, 3, true, "<str>I have increased his agility to match the Shaikahan's.")
 		);
 		givenSpear = new Conditions(true, LogicType.OR,
-			new WidgetTextRequirement(217, 4, "Tamayu, try using this weapon."),
+			new WidgetTextRequirement(WidgetInfo.DIALOG_PLAYER_TEXT, "Tamayu, try using this weapon."),
 			new WidgetTextRequirement(WidgetInfo.DIALOG_SPRITE_TEXT, "You hand the spear to Tamayu."),
 			new WidgetTextRequirement(119, 3, true, "<str>I have give him a stronger and Karambwan poisoned spear.")
 		);
@@ -449,7 +449,7 @@ public class TaiBwoWannaiTrio extends BasicQuestHelper
 		talkedTinsay1 = new Conditions(true, LogicType.OR,
 			new WidgetTextRequirement(119, 3, true, "<col=000080>He requires <col=800000>banana in Karamja " +
 				"rum<col=000080> to repair the tribal"),
-			new WidgetTextRequirement(217, 4, "And you're going to use this to repair the"),
+			new WidgetTextRequirement(WidgetInfo.DIALOG_PLAYER_TEXT, "And you're going to use this to repair the"),
 			new WidgetTextRequirement(WidgetInfo.DIALOG_NPC_TEXT, "Hmm ... I think I need banana in Karamjan rum.")
 		);
 
@@ -506,7 +506,7 @@ public class TaiBwoWannaiTrio extends BasicQuestHelper
 		karamjanRum = new ItemRequirement("Karamjan Rum", ItemID.KARAMJAN_RUM);
 		karambwanji = new ItemRequirement("Or More Raw Karambwanji", ItemID.RAW_KARAMBWANJI, 23);
 		rawKarambwans = new ItemRequirement("Karambwan", ItemID.RAW_KARAMBWAN);
-		coins = new ItemRequirement("Coins", ItemID.COINS_995);
+		coins = new ItemRequirement("Coins", ItemCollections.getCoins());
 		poisonKarambwan = new ItemRequirement("Poison karambwan", ItemID.POISON_KARAMBWAN);
 		karambwanjiPaste = new ItemRequirement("Karambwanji paste", ItemID.KARAMBWANJI_PASTE);
 

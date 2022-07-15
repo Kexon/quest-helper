@@ -120,7 +120,7 @@ public class KandarinEasy extends ComplexStateQuestHelper
         notTalkSherlock = new VarplayerRequirement(1178, false, 10);
         notLogShortcut = new VarplayerRequirement(1178, false, 11);
 
-        coins = new ItemRequirement("Coins", ItemID.COINS_995).showConditioned(new Conditions(LogicType.OR, notPetFish, notBuyCandle, notBuyStew));
+        coins = new ItemRequirement("Coins", ItemCollections.getCoins()).showConditioned(new Conditions(LogicType.OR, notPetFish, notBuyCandle, notBuyStew));
         bigFishingNet = new ItemRequirement("Big fishing net", ItemID.BIG_FISHING_NET).showConditioned(notCatchMackerel);
 
         emptyFishbowl = new ItemRequirement("Empty fishbowl", ItemID.EMPTY_FISHBOWL).showConditioned(notPetFish);
@@ -231,11 +231,11 @@ public class KandarinEasy extends ComplexStateQuestHelper
     {
 		setupGenericRequirements();
         ArrayList<Requirement> req = new ArrayList<>();
-
-        req.add(eleWorkI);
         req.add(new SkillRequirement(Skill.AGILITY, 20, true));
         req.add(new SkillRequirement(Skill.FARMING, 13, true));
         req.add(new SkillRequirement(Skill.FISHING, 16, true));
+
+		req.add(eleWorkI);
 
         return req;
     }

@@ -145,7 +145,7 @@ public class DemonSlayer extends BasicQuestHelper
 		bucketOfWaterOptional = new ItemRequirement("Bucket of water (obtainable during quest)", ItemID.BUCKET_OF_WATER);
 		varrockTeleport = new ItemRequirement("Varrock teleport", ItemID.VARROCK_TELEPORT);
 		wizardsTowerTeleport = new ItemRequirement("Teleport to the Wizards' Tower", ItemID.NECKLACE_OF_PASSAGE5);
-		coin = new ItemRequirement("Coin", ItemID.COINS_995);
+		coin = new ItemRequirement("Coin", ItemCollections.getCoins());
 		food = new ItemRequirement("Food", ItemCollections.getGoodEatingFood(), -1);
 	}
 
@@ -211,7 +211,7 @@ public class DemonSlayer extends BasicQuestHelper
 
 		goUpManhole = new ObjectStep(this, ObjectID.LADDER_11806, new WorldPoint(3237, 9858, 0), "Bring Wizard Traiborn 25 bones in the Wizards' Tower.", bones);
 		goUpstairsWizard = new ObjectStep(this, ObjectID.STAIRCASE_12536, new WorldPoint(3104, 3160, 0), "Bring Wizard Traiborn 25 bones in the Wizards' Tower.", bones);
-		talkToTraiborn = new NpcStep(this, NpcID.TRAIBORN, new WorldPoint(3114, 3163, 1), "Bring Wizard Traiborn 25 bones in the Wizards' Tower. You don't need to bring them all at once.", bones);
+		talkToTraiborn = new NpcStep(this, NpcID.WIZARD_TRAIBORN, new WorldPoint(3114, 3163, 1), "Bring Wizard Traiborn 25 bones in the Wizards' Tower. You don't need to bring them all at once.", bones);
 		talkToTraiborn.addDialogStep("I need to get a key given to you by Sir Prysin.");
 		talkToTraiborn.addDialogStep("Well, have you got any keys knocking around?");
 		talkToTraiborn.addDialogStep("I'll get the bones for you.");
@@ -241,7 +241,7 @@ public class DemonSlayer extends BasicQuestHelper
 	@Override
 	public List<String> getCombatRequirements()
 	{
-		return Collections.singletonList("Delirth (level 27)");
+		return Collections.singletonList("Delrith (level 27)");
 	}
 
 	@Override

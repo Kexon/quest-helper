@@ -37,7 +37,7 @@ import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
-import com.questhelper.requirements.WidgetTextRequirement;
+import com.questhelper.requirements.widget.WidgetTextRequirement;
 import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.util.Operation;
 import com.questhelper.rewards.ItemReward;
@@ -69,9 +69,9 @@ public class MonkeyMadnessI extends BasicQuestHelper
 	//Items Required
 	ItemRequirement monkeyBonesOrCorpse, ballOfWool, goldBar, royalSeal, narnodesOrders, monkeyDentures, mould, monkeyDenturesHighlight, mouldHighlight, barHighlight, enchantedBar,
 		enchantedBarHighlight, ballOfWoolHighlight, unstrungAmuletHighlight, amulet, banana5, amuletWorn, talisman, talismanHighlight, karamjanGreegree, monkeyBonesOrCorpseHighlight,
-		monkey, karamjanGreegreeEquipped, sigilEquipped;
+		monkey, karamjanGreegreeEquipped, sigilEquipped, bananaReq;
 
-	//Items Recommendded
+	//Items Recommended
 	ItemRequirement combatGear, antipoison;
 
 	Requirement inStronghold, inFloor1, inFloor2, inFloor3, inKaramja, talkedToCaranock, reportedBackToNarnode, inHangar, startedPuzzle, solvedPuzzle,
@@ -247,8 +247,12 @@ public class MonkeyMadnessI extends BasicQuestHelper
 		ballOfWoolHighlight = new ItemRequirement("Ball of wool", ItemID.BALL_OF_WOOL);
 		ballOfWoolHighlight.setHighlightInInventory(true);
 
-		monkeyBonesOrCorpse = new ItemRequirement("Monkey bones or corpse", ItemID.MONKEY_BONES_3183);
+		bananaReq = new ItemRequirement("Banana", ItemID.BANANA, 5);
+		bananaReq.setTooltip("Obtainable during quest");
+
+		monkeyBonesOrCorpse = new ItemRequirement("Monkey bones or corpse", ItemID.MONKEY_BONES);
 		monkeyBonesOrCorpse.addAlternates(ItemID.MONKEY_CORPSE);
+		monkeyBonesOrCorpse.setTooltip("Obtainable during quest");
 
 		monkeyBonesOrCorpseHighlight = new ItemRequirement("Monkey bones or corpse", ItemID.MONKEY_BONES);
 		monkeyBonesOrCorpseHighlight.setHighlightInInventory(true);
@@ -442,7 +446,7 @@ public class MonkeyMadnessI extends BasicQuestHelper
 		talkToNarnodeAfterShipyard = new NpcStep(this, NpcID.KING_NARNODE_SHAREEN, new WorldPoint(2465, 3496, 0), "Return to King Narnode Shareen in the Tree Gnome Stronghold.");
 
 		goUpToDaero = new ObjectStep(this, ObjectID.LADDER_16683, new WorldPoint(2466, 3495, 0), "Talk to Daero on the 1st floor of the Tree Gnome Stronghold.");
-		talkToDaero = new NpcStep(this, NpcID.DAERO, new WorldPoint(2482, 3486, 1), "Talk to Daero on the 1st floor of the Tree Gnome Stronghold.", narnodesOrders, royalSeal);
+		talkToDaero = new NpcStep(this, NpcID.DAERO, new WorldPoint(2482, 3486, 1), "Talk to Daero on the 1st floor of the Tree Gnome Stronghold. Make sure to go through all of the Chat Options to be teleported to a new location.", narnodesOrders, royalSeal);
 		talkToDaero.addDialogSteps("Leave...", "Who is it?", "Yes");
 		talkToDaero.addAlternateNpcs(NpcID.DAERO_1445);
 		talkToDaero.addSubSteps(goUpToDaero);
@@ -505,7 +509,8 @@ public class MonkeyMadnessI extends BasicQuestHelper
 
 		leaveToPrepareForBar = new DetailedQuestStep(this, "Teleport out to prepare for a dangerous portion. You'll want energy/stamina potions, food and prayer potions.");
 
-		goUpToDaeroForAmuletRun = new ObjectStep(this, ObjectID.LADDER_16683, new WorldPoint(2466, 3495, 0), "Get food, antipoison, energy/stamina/prayer potions, and return to Ape Atoll.", goldBar, monkeyDentures, mould);
+		goUpToDaeroForAmuletRun = new ObjectStep(this, ObjectID.LADDER_16683, new WorldPoint(2466, 3495, 0), "Get food, antipoison, energy / stamina / prayer potions, and return to Ape Atoll.", goldBar, monkeyDentures,
+			mould);
 
 		talkToDaeroForAmuletRun = new NpcStep(this, NpcID.DAERO, new WorldPoint(2482, 3486, 1), "Travel with Daero on the 1st floor of the Tree Gnome Stronghold.", goldBar, monkeyDentures, mould);
 		talkToDaeroForAmuletRun.addDialogSteps("Yes");
@@ -661,9 +666,10 @@ public class MonkeyMadnessI extends BasicQuestHelper
 		leaveDungeonWithGreeGree = new DetailedQuestStep(this, "If you want to make a zombie, ninja and gorilla greegree talk to and give Zooknock the bones/talismans. Once you're done, teleport away for the next step.");
 		leaveDungeonWithGreeGree.addDialogSteps("Can you make another monkey talisman?", "Yes");
 
-		talkToMinder = new NpcStep(this, NpcID.MONKEY_MINDER, new WorldPoint(2608, 3278, 0), "Talk to the Monkey Minder in Ardougne Zoo whilst wielding the karmjan monkey greegree.", karamjanGreegreeEquipped, amuletWorn);
+		talkToMinder = new NpcStep(this, NpcID.MONKEY_MINDER, new WorldPoint(2608, 3278, 0), "Talk to the Monkey " +
+			"Minder in Ardougne Zoo whilst wielding the Karamjan monkey greegree.", karamjanGreegreeEquipped, amuletWorn);
 		talkToMonkeyAtZoo = new NpcStep(this, NpcID.MONKEY_5279, new WorldPoint(2603, 3278, 0), "Talk to a monkey in the pen.", true);
-		talkToMinderAgain = new NpcStep(this, NpcID.MONKEY_MINDER, new WorldPoint(2608, 3278, 0), "UNEQUIP the gree gree, then talk to the Monkey Minder again to leave.");
+		talkToMinderAgain = new NpcStep(this, NpcID.MONKEY_MINDER, new WorldPoint(2608, 3278, 0), "UNEQUIP the greegree, then talk to the Monkey Minder again to leave.");
 
 		goUpToDaeroForTalkingToAwow = new ObjectStep(this, ObjectID.LADDER_16683, new WorldPoint(2466, 3495, 0), "WALK/RUN to Daero to return to Ape Atoll. If you teleport, you'll have to start again.", karamjanGreegree, amuletWorn, monkey);
 
@@ -703,7 +709,7 @@ public class MonkeyMadnessI extends BasicQuestHelper
 	@Override
 	public List<ItemRequirement> getItemRequirements()
 	{
-		return Arrays.asList(goldBar, ballOfWool, monkeyBonesOrCorpse);
+		return Arrays.asList(goldBar, ballOfWool, bananaReq, monkeyBonesOrCorpse);
 	}
 
 	@Override

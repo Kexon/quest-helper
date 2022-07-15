@@ -69,9 +69,11 @@ public class FremennikHard extends ComplexStateQuestHelper
 	Requirement normalBook, lunarBook;
 
 	// Steps
-	QuestStep tpTroll, catchKyatt, mixSuperDef, stealGem, craftShield, mineAddy, miscSupport, tpWaterbirth, freeBlast,
+	QuestStep tpTroll, catchKyatt, mixSuperDef, stealGem, craftShield, mineAddy, tpWaterbirth, freeBlast,
 		moveToRiver, moveToCave, moveToKeldagrim, moveToKeldagrimVarrock, moveToNeitiznot, moveToJatizso, moveToMisc,
-		moveToMine, moveToBlast, claimReward;
+		moveToMine, moveToBlast, claimReward, moveToRellekka;
+
+	ObjectStep miscSupport;
 
 	Zone misc, neitiznot, keldagrim, jatizso, caveArea, riverArea, varrockArea, hunterArea, rellekkaArea, mineArea,
 		blastArea;
@@ -93,7 +95,8 @@ public class FremennikHard extends ComplexStateQuestHelper
 		doHard.addStep(notMineAddy, moveToJatizso);
 		doHard.addStep(new Conditions(notCraftShield, inNeitiznot), craftShield);
 		doHard.addStep(notCraftShield, moveToNeitiznot);
-		doHard.addStep(notMixSuperDef, mixSuperDef);
+		doHard.addStep(new Conditions(notMixSuperDef, inRellekka), mixSuperDef);
+		doHard.addStep(notMixSuperDef, moveToRellekka);
 		doHard.addStep(notCatchKyatt, catchKyatt);
 		doHard.addStep(new Conditions(notStealGem, inKeldagrim), stealGem);
 		doHard.addStep(new Conditions(notStealGem, inRiverArea), moveToKeldagrim);
@@ -145,7 +148,7 @@ public class FremennikHard extends ComplexStateQuestHelper
 		normalBook = new SpellbookRequirement(Spellbook.NORMAL);
 		lunarBook = new SpellbookRequirement(Spellbook.LUNAR);
 
-		giantDwarf = new QuestRequirement(QuestHelperQuest.THE_GIANT_DWARF, QuestState.FINISHED);
+		giantDwarf = new QuestRequirement(QuestHelperQuest.THE_GIANT_DWARF, QuestState.IN_PROGRESS);
 		fremIsles = new QuestRequirement(QuestHelperQuest.THE_FREMENNIK_ISLES, QuestState.FINISHED);
 		throneOfMisc = new QuestRequirement(QuestHelperQuest.THRONE_OF_MISCELLANIA, QuestState.FINISHED);
 		eadgarsRuse = new QuestRequirement(QuestHelperQuest.EADGARS_RUSE, QuestState.FINISHED);
@@ -186,10 +189,12 @@ public class FremennikHard extends ComplexStateQuestHelper
 		catchKyatt = new NpcStep(this, NpcID.SABRETOOTHED_KYATT, new WorldPoint(2725, 3770, 0),
 			"Place logs over a pit in the hunter area, and poke a kyatt with a teasing stick. " +
 				"Jump over the pits until the kyatt falls in and loot it.", teasingStick, log, knife);
+		moveToRellekka = new DetailedQuestStep(this, new WorldPoint(2659, 3671, 0),
+			"Enter the Relleka province.");
 		mixSuperDef = new ItemStep(this, new WorldPoint(2662, 3657, 0),
-			"Mix a super defence potion within the Fremennik Province.", cadantineUnfPot.highlighted(), whiteBerries.highlighted());
+			"Mix a Super defence potion within the Fremennik Province (only near Rellekka).", cadantineUnfPot.highlighted(), whiteBerries.highlighted());
 		moveToCave = new ObjectStep(this, ObjectID.TUNNEL_5008, new WorldPoint(2732, 3713, 0),
-			"Enter the tunnel that leads to Keldagrim. Alternatively TP to Varrock and take a minecart near the Grand Exchange.");
+			"Enter the tunnel that leads to Keldagrim. Alternatively teleport to Varrock and take a minecart near the Grand Exchange.");
 		moveToRiver = new ObjectStep(this, ObjectID.CAVE_ENTRANCE_5973, new WorldPoint(2781, 10161, 0),
 			"Go through the cave entrance.");
 		moveToKeldagrim = new NpcStep(this, NpcID.DWARVEN_BOATMAN_7726, new WorldPoint(2842, 10129, 0),
@@ -215,7 +220,8 @@ public class FremennikHard extends ComplexStateQuestHelper
 		moveToMisc = new NpcStep(this, NpcID.SAILOR_3936, new WorldPoint(2630, 3692, 0),
 			"Speak to the sailor to go to Miscellania.");
 		miscSupport = new ObjectStep(this, 15084, new WorldPoint(2527, 3849, 0),
-			"Rake the herb and flax patch until 100% support.", rake);
+			"Rake the herb and flax patch until 100% support.", true, rake);
+		miscSupport.addAlternateObjects(15079);
 		tpWaterbirth = new DetailedQuestStep(this,
 			"Teleport to Waterbirth.", waterRune.quantity(1), astralRune.quantity(2), lawRune2.quantity(1), lunarBook);
 		moveToBlast = new ObjectStep(this, ObjectID.STAIRS_9084, new WorldPoint(2930, 10197, 0),
@@ -248,10 +254,15 @@ public class FremennikHard extends ComplexStateQuestHelper
 		req.add(new SkillRequirement(Skill.SMITHING, 60, false));
 		req.add(new SkillRequirement(Skill.THIEVING, 75, true));
 		req.add(new SkillRequirement(Skill.WOODCUTTING, 56, true));
-		req.add(new ComplexRequirement("Normal and Lunar spellbooks",
-			new SpellbookRequirement(Spellbook.NORMAL),
-			new SpellbookRequirement(Spellbook.LUNAR))
-		);
+		req.add(new ItemRequirement("Normal and Lunar spellbooks", -1, -1));
+
+
+		req.add(eadgarsRuse);
+		req.add(lunarDiplomacy);
+		req.add(giantDwarf);
+		req.add(fremIsles);
+		req.add(throneOfMisc);
+
 		return req;
 	}
 

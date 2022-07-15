@@ -199,7 +199,7 @@ public class DesertTreasure extends BasicQuestHelper
 
 	public void setupItemRequirements()
 	{
-		coins650 = new ItemRequirement("Coins", ItemID.COINS_995, 650);
+		coins650 = new ItemRequirement("Coins", ItemCollections.getCoins(), 650);
 		magicLogs12 = new ItemRequirement("Magic logs", ItemID.MAGIC_LOGS, 12);
 		magicLogs12.addAlternates(NullItemID.NULL_1514);
 		steelBars6 = new ItemRequirement("Steel bar", ItemID.STEEL_BAR, 6);
@@ -264,8 +264,9 @@ public class DesertTreasure extends BasicQuestHelper
 		bloodDiamondHighlighted = new ItemRequirement("Blood diamond", ItemID.BLOOD_DIAMOND);
 		bloodDiamondHighlighted.setTooltip("You can get another from Malak in Canifis");
 
-		iceGloves = new ItemRequirement("Ice gloves", ItemID.ICE_GLOVES, 1, true);
-		iceGloves.setTooltip("You can kill the Ice Queen under White Wolf Mountain for these");
+		iceGloves = new ItemRequirement("Ice gloves or smiths gloves(i)", ItemID.ICE_GLOVES, 1, true);
+		iceGloves.setTooltip("You can kill the Ice Queen under White Wolf Mountain for ice gloves");
+		iceGloves.addAlternates(ItemID.SMITHS_GLOVES_I);
 
 		waterSpellOrMelee = new ItemRequirement("Water spells or melee gear", -1, -1);
 		waterSpellOrMelee.setDisplayItemId(ItemID.WATER_RUNE);
@@ -384,7 +385,8 @@ public class DesertTreasure extends BasicQuestHelper
 
 	public void setupSteps()
 	{
-		talkToArchaeologist = new NpcStep(this, NpcID.ARCHAEOLOGIST, new WorldPoint(3177, 3043, 0), "Talk to the Archaeologist in the Bedabin Camp.");
+		talkToArchaeologist = new NpcStep(this, NpcID.ARCHAEOLOGIST, new WorldPoint(3177, 3043, 0), "Talk to the " +
+			"Archaeologist in the Bedabin Camp. You can use the flying carpet service from the Shanty Pass to get here.");
 		talkToArchaeologist.addDialogStep("Do you have any quests?");
 		talkToArchaeologist.addDialogStep("Yes, I'll help you.");
 
@@ -408,7 +410,9 @@ public class DesertTreasure extends BasicQuestHelper
 		talkToEblis.addDialogStep("Tell me of The four diamonds of Azzanadra");
 		talkToEblis.addDialogStep("Yes");
 
-		bringItemsToEblis = new GiveItems(this, NpcID.EBLIS, new WorldPoint(3184, 2989, 0), "Use the items on Eblis in the east of the Bandit Camp.", ashes, bloodRune, bones, charcoal, moltenGlass6, magicLogs12, steelBars6);
+		bringItemsToEblis = new GiveItems(this, NpcID.EBLIS, new WorldPoint(3184, 2989, 0), "Use the items on Eblis " +
+			"in the east of the Bandit Camp. Items can be noted.", ashes, bloodRune, bones,
+			charcoal, moltenGlass6, magicLogs12, steelBars6);
 
 		talkToEblisAtMirrors = new NpcStep(this, NpcID.EBLIS_689, new WorldPoint(3214, 2954, 0), "Talk to Eblis at the mirrors south east of the Bandit Camp.");
 
@@ -460,8 +464,8 @@ public class DesertTreasure extends BasicQuestHelper
 
 		waitForDamis = new DetailedQuestStep(this, new WorldPoint(2745, 5115, 0), "Go to the far eastern room of the dungeon, and wait for Damis to spawn.");
 
-		killDamis1 = new NpcStep(this, NpcID.DAMIS, new WorldPoint(2745, 5115, 0), "Kill both phases of Damis. He can be safe spotted.");
-		killDamis2 = new NpcStep(this, NpcID.DAMIS_683, new WorldPoint(2745, 5115, 0), "Kill both phases of Damis. He can be safe spotted.");
+		killDamis1 = new NpcStep(this, NpcID.DAMIS, new WorldPoint(2745, 5115, 0), "Kill both phases of Damis. You can safespot him by attacking a bat and keeping the bat between the two of you.");
+		killDamis2 = new NpcStep(this, NpcID.DAMIS_683, new WorldPoint(2745, 5115, 0), "Kill both phases of Damis. You can safespot him by attacking a bat and keeping the bat between the two of you.");
 		killDamis1.addSubSteps(killDamis2);
 
 		enterSewer = new ObjectStep(this, ObjectID.TRAPDOOR_6434, new WorldPoint(3084, 3272, 0), "Bring a silver bar to Ruantun in Draynor Sewer.", silverBar);
@@ -537,9 +541,11 @@ public class DesertTreasure extends BasicQuestHelper
 
 		placeBlood.addSubSteps(placeSmoke, placeShadow, placeIce);
 
-		enterPyramid = new ObjectStep(this, ObjectID.LADDER_6497, new WorldPoint(3233, 2897, 0), "Bring any energy/stamina potions you have, some food, and enter the pyramid south east of the Bandit Camp.");
+		enterPyramid = new ObjectStep(this, ObjectID.LADDER_6497, new WorldPoint(3233, 2897, 0),
+				"Bring any energy/stamina potions you have, some food, and enter the pyramid south east of the Bandit Camp.", energyOrStaminas, food, antipoison);
 
-		goDownFromFirstFloor = new ObjectStep(this, ObjectID.LADDER_6498, new WorldPoint(2909, 4964, 3), "Go down to the bottom of the pyramid.");
+		goDownFromFirstFloor = new ObjectStep(this, ObjectID.LADDER_6498, new WorldPoint(2909, 4964, 3), "Go down to the bottom of the pyramid. " +
+				"You may randomly fall out of the pyramid as you traverse it and need to start again.");
 		goDownFromSecondFloor = new ObjectStep(this, ObjectID.LADDER_6499, new WorldPoint(2846, 4973, 2), "Go down to the bottom of the pyramid.");
 		goDownFromThirdFloor = new ObjectStep(this, ObjectID.LADDER_6500, new WorldPoint(2784, 4941, 1), "Go down to the bottom of the pyramid.");
 

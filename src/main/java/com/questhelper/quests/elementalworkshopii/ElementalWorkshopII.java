@@ -32,7 +32,7 @@ import com.questhelper.Zone;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.WidgetModelRequirement;
+import com.questhelper.requirements.widget.WidgetModelRequirement;
 import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.item.ItemOnTileRequirement;
@@ -427,6 +427,7 @@ public class ElementalWorkshopII extends BasicQuestHelper
 	{
 		searchBookcase = new ObjectStep(this, ObjectID.BOOKCASE_17382, new WorldPoint(3367, 3335, 0),
 			"Search the marked bookcase in the Exam Centre in the Dig Site.");
+		searchBookcase.addDialogStep("Yes.");
 
 		readBook = new DetailedQuestStep(this, "Read the beaten book.", beatenBook.highlighted());
 		readScroll = new DetailedQuestStep(this, "Read the scroll.", scroll.highlighted());

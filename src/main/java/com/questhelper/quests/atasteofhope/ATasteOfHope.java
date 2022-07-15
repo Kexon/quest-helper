@@ -43,6 +43,7 @@ import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.util.Operation;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -70,7 +71,7 @@ public class ATasteOfHope extends BasicQuestHelper
 	ItemRequirement coins1000, knife, emerald, chisel, enchantEmeraldRunesOrTablet, rodOfIvandis, pestleAndMortarHighlighted, vialOfWater,
 		combatGear, airRune3, airStaff, cosmicRune, enchantTablet, enchantRunes, vial, herb, meatHighlighted, crushedMeat, unfinishedPotion,
 		unfinishedBloodPotion, potion, bloodPotion, bloodVial, oldNotes, flaygianNotes, sickleB, chain, emeraldSickleB, enchantedEmeraldSickleB,
-		ivandisFlail, rodOfIvandisHighlighted, ivandisFlailEquipped, emeraldHighlighted, vialOfWaterNoTip, food;
+		ivandisFlail, rodOfIvandisHighlighted, ivandisFlailEquipped, emeraldHighlighted, vialOfWaterNoTip, food, pickaxe;
 
 	Requirement inMyrequeBase, inTheatreP1, inTheatreP2, inTheatreP3, inTheatreP4, inTheatreP5, inTheatreP6,
 		inSerafinaHouse, inNewBase, inRanisFight, wallPressed, hasVialOrVialOfWater;
@@ -242,7 +243,7 @@ public class ATasteOfHope extends BasicQuestHelper
 
 	public void setupItemRequirements()
 	{
-		coins1000 = new ItemRequirement("Coins", ItemID.COINS_995, 1000);
+		coins1000 = new ItemRequirement("Coins", ItemCollections.getCoins(), 1000);
 		knife = new ItemRequirement("Knife", ItemID.KNIFE);
 		emerald = new ItemRequirement("Emerald", ItemID.EMERALD);
 		emeraldHighlighted = new ItemRequirement("Emerald", ItemID.EMERALD);
@@ -251,6 +252,8 @@ public class ATasteOfHope extends BasicQuestHelper
 		airRune3 = new ItemRequirement("Air rune", ItemCollections.getAirRune(), 3);
 		airStaff = new ItemRequirement("Air staff", ItemCollections.getAirStaff());
 		cosmicRune = new ItemRequirement("Cosmic rune", ItemID.COSMIC_RUNE);
+		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.getPickaxes());
+		pickaxe.setTooltip("You can get one from one of the miners in the mine");
 		enchantRunes = new ItemRequirements("Emerald enchant runes", new ItemRequirements(LogicType.OR, "3 air runes", airRune3, airStaff), cosmicRune);
 		enchantTablet = new ItemRequirement("Emerald enchant tablet", ItemID.ENCHANT_EMERALD_OR_JADE);
 		enchantEmeraldRunesOrTablet = new ItemRequirements(LogicType.OR, "Runes or tablet for Enchant Emerald", enchantRunes, enchantTablet);
@@ -259,7 +262,7 @@ public class ATasteOfHope extends BasicQuestHelper
 			"Old Man Ral's basement during the quest");
 
 		rodOfIvandisHighlighted = new ItemRequirement("Rod of Ivandis", ItemCollections.getRodOfIvandis());
-		rodOfIvandisHighlighted.setTooltip("You can get another from Veliaf Hurtz in Burgh de Rott");
+		rodOfIvandisHighlighted.setTooltip("You can get another from Veliaf Hurtz in Burgh de Rott, in the basement under the pub.");
 		rodOfIvandisHighlighted.setHighlightInInventory(true);
 
 		pestleAndMortarHighlighted = new ItemRequirement("Pestle and mortar", ItemID.PESTLE_AND_MORTAR);
@@ -539,6 +542,12 @@ public class ATasteOfHope extends BasicQuestHelper
 	{
 		return Arrays.asList(coins1000, vialOfWaterNoTip, rodOfIvandis, emerald, chisel,
 			enchantEmeraldRunesOrTablet, combatGear);
+	}
+
+	@Override
+	public List<ItemRequirement> getItemRecommended()
+	{
+		return Collections.singletonList(pickaxe);
 	}
 
 	@Override
